@@ -9,6 +9,6 @@ Developer On Fire with Dave Rael is an interview podcast with inspiring and succ
 
 ## Latest Episode
 
-{% for post in site.posts limit 1 %}
-  <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></li>
+{% for post in site.posts limit:1 %}
+  <span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
 {% endfor %}
