@@ -1,28 +1,55 @@
 ---
 layout: null
-title : RSS Feed
+redirect_from:
+  - /rss/
+  - /subscribe/
+  - /feed/
 ---
-
-<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-<channel>
-        <title>{{ site.title | xml_escape }}</title>
-        <description>{{ site.title | xml_escape }} - {{ site.author.name | xml_escape }}</description>
-        <link>{{ site.production_url }}</link>
-        <atom:link href="{{ site.production_url }}{{ site.JB.rss_path }}" rel="self" type="application/rss+xml" />
-        <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
-        <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
-        <ttl>60</ttl>
-
-{% for post in site.posts limit:20 %}
-        <item>
-                <title>{{ post.title | xml_escape }}</title>
-                <description>{{ post.content | xml_escape }}</description>
-                <link>{{ site.production_url }}{{ post.url }}</link>
-                <guid>{{ site.production_url }}{{ post.id }}</guid>
-                <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
-        </item>
-{% endfor %}
-
-</channel>
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+	<channel>
+		<title>{{ site.title }}</title>
+		<description>{{ site.description }}</description>
+		<link>{{ site.url }}</link>
+		<language>en</language>
+		<managingEditor>{{ site.managerName }} ({{ site.managerEmail }})</managingEditor>
+		<webMaster>{{ site.managerName }} ({{ site.managerEmail }})</webMaster>
+		<copyright>2014-{{site.time | "%Y" }} {{ site.organizationName }}</copyright>
+		<pubDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S GMT" }}</pubDate>
+		<lastBuildDate>{{ site.time | date: "%a, %d %b %Y" }}</lastBuildDate>
+		<image>
+			<link>{{ site.url}}</link>
+			<url>{{ site.url }}/{{ site.squareLogo}}</url>
+			<title>{{ site.title }}</title>
+		</image>
+		<itunes:subtitle>{{ site.podcastSubtitle }}</itunes:subtitle>
+		<itunes:author>{{ site.organizationName }}</itunes:author>
+		<itunes:summary></itunes:summary>
+		<itunes:keywords></itunes:keywords>
+		<itunes:owner>
+			<itunes:name>{{ site.managerName}}</itunes:name>
+			<itunes:email>{{ site.managerEmail}}</itunes:email>
+		</itunes:owner>
+		<itunes:image href="{{ site.url }}/{{ site.squareLogo}}" />
+    <itunes:category text="Technology">
+      <itunes:category text="Software How-To" />
+    </itunes:category>
+		{% for post in site.posts %}
+			<item>
+				<title>{{ post.title }}</title>
+				<link>{{ site.url }}/{{ post.url }}</link>
+				<pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S GMT" }}</pubDate>
+				<description>{{ post.content | xml_escape }}</description>
+				<guid isPermaLink="true">{{ post.link }}</guid>
+				<enclosure url="{{ post.link }}" length="{{ post.length }}" type="audio/mp3"/>
+				<itunes:author>{{ post.speaker }}</itunes:author>
+				<itunes:subtitle>{{ post.subtitle }}</itunes:subtitle>
+				<itunes:summary>{{ post.content | xml_escape }}</itunes:summary>
+				<itunes:duration>{{ post.duration }}</itunes:duration>
+				<itunes:keywords>{{ post.keywords }}</itunes:keywords>
+				<itunes:image href="{% if post.image %}{{ site.url }}/{{ post.image }}{% else %}{{ site.url }}/{{site.squareLogo}}{% endif %}" />
+				<itunes:explicit>no</itunes:explicit>
+			</item>
+		{% endfor %}
+	</channel>
 </rss>
