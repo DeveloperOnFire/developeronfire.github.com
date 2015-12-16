@@ -8,14 +8,14 @@ highlighter: pygments
 # Themes are encouraged to use these universal variables
 # so be sure to set them if your theme uses them.
 #
-title : Jekyll Bootstrap
-tagline: Site Tagline
+title: Developer On Fire
+email: dave@raelyard.com
+tagline: Podcast with Inspiring Interviews with Successful Software Professionals
 author :
   name : Dave Rael
   email : dave@raelyard.com
   github : raelyard
   twitter : raelyard
-  feedburner : feedname
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt
@@ -83,17 +83,6 @@ JB :
     provider : disqus
     disqus :
       short_name : developeronfire
-    livefyre :
-      site_id : 123
-    intensedebate :
-      account : 123abc
-    facebook :
-      appid : 123
-      num_posts: 5
-      width: 580
-      colorscheme: light
-    duoshuo :
-      short_name : jekyllbootstrap
 
   # Settings for analytics helper
   # Set 'provider' to the analytics provider you want to use.
