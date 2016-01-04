@@ -7,6 +7,18 @@
     <div class="date">
       <span>{{ page.date | date_to_long_string }}</span>
     </div>
+
+  {% unless page.guest_name == empty %}
+    <div class="guest">
+      <span>Guest: </span><span><a target="_blank" href="{{ page.guest_blog }}">{{ page.guest_name }}</a></span>
+        {% unless page.guest_twitter == empty %}
+        <span> (</span>
+        <span><a target="_blank" href="http://twitter.com/{{ page.guest_twitter }}">@{{ page.guest_twitter }}</a></span>
+        <span>)</span>
+      {% endunless %}
+    </div>
+  {% endunless %}
+
     <div class="content">
       {{ content }}
     </div>
@@ -17,7 +29,7 @@
       {% assign categories_list = page.categories %}
       {% include JB/categories_list %}
     </ul>
-  {% endunless %}  
+  {% endunless %}
 
   {% unless page.tags == empty %}
     <ul class="tag_box inline">
@@ -25,8 +37,8 @@
       {% assign tags_list = page.tags %}
       {% include JB/tags_list %}
     </ul>
-  {% endunless %}  
-  
+  {% endunless %}
+
     <hr>
     <ul class="pagination">
     {% if page.previous %}
@@ -34,7 +46,7 @@
     {% else %}
       <li class="prev disabled"><a>&larr; Previous</a></li>
     {% endif %}
-      <li><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">Archive</a></li>
+      <li><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">All Episodes</a></li>
     {% if page.next %}
       <li class="next"><a href="{{ BASE_PATH }}{{ page.next.url }}" title="{{ page.next.title }}">Next &raquo;</a></li>
     {% else %}
