@@ -42,7 +42,7 @@ redirect_from:
 				<link>{{ site.url }}/{{ post.url }}</link>
 				<pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S GMT" }}</pubDate>
 				<description>{{ post.content | xml_escape }}</description>
-				<guid isPermaLink="true">{{ post.link }}</guid>
+				<guid isPermaLink="true">"{{ post.guid || post.link }}"</guid>
 				<enclosure url="{{ post.link }}" length="{{ post.length }}" type="audio/mp3"/>
 				<itunes:author>{{ post.speaker }}</itunes:author>
 				<itunes:subtitle>{{ post.subtitle }}</itunes:subtitle>
