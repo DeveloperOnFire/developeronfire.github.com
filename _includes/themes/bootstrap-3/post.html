@@ -8,6 +8,17 @@
       <span>{{ page.date | date_to_long_string }}</span>
     </div>
 
+    {% unless page.link == empty %}
+    <div class="medium">
+      <div>
+        <audio src="{{ page.link }}" controls="controls"></audio>
+      </div>
+      <div>
+        <a target="_blank" href="{{ page.link }}">Download</a>
+      </div>
+    </div>
+    {% endunless %}
+
   {% unless page.guest_name == empty %}
     <div class="guest">
       <span>Guest: </span><span><a target="_blank" href="{{ page.guest_blog }}">{{ page.guest_name }}</a></span>
