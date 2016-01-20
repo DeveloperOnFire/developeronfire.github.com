@@ -3,7 +3,7 @@
 </div>
 
 <div class="row post-full">
-  <div class="col-xs-12">
+  <main class="col-xs-8">
     <div class="date">
       <span>{{ page.date | date_to_long_string }}</span>
     </div>
@@ -33,7 +33,42 @@
     <div class="content">
       {{ content }}
     </div>
+  </main>
+  <aside class="col-xs-3">
+    <h2>Podcast Updates in Your Inbox</h2>
+    <div>Keep up with Developer On Fire by subscribing to the mailing list</div>
+    <form action="https://api.elasticemail.com/contact/add?version=2" method="post">
+      <fieldset style="border:none;">
+        <input type="hidden" name="publicaccountid" value="33efcb9d-ba8b-4132-8dd4-c60975e52393">
+        <input type="hidden" name="return_url" value="https://elasticemail.com/verify-email">
+        <input type="hidden" name="activation_return_url" value="https://elasticemail.com/thank-you">
+        <input type="hidden" name="activation_template" value="Simple Subscription Activation">
+        <input type="hidden" name="type" value="3">
+        <div>
+          <span id="email">
+            <label for="email">Email
+            </label>
+            <input maxlength="40" class="form-control" name="email" size="20" type="email" required="">
+          </span>
+          <span id="firstname">
+            <label for="firstname">First Name
+            </label>
+            <input maxlength="40" class="form-control" name="firstname" size="20" type="text">
+          </span>
+        </div>
+        <ul class="lists" style="list-style:none">
+          <li id="wrapper_5adaefaf-d37c-43e3-8067-712ef526b544">
+            <input type="checkbox" name="publiclistid" id="5adaefaf-d37c-43e3-8067-712ef526b544" value="5adaefaf-d37c-43e3-8067-712ef526b544" checked="checked" style="display: none;">
+            <label class="publiclistlabel" for="publiclistid" style="display: none;">Developer On Fire
+            </label>
+          </li>
+        </ul>
+        <input type="submit" name="submit" value="Subscribe">
+      </fieldset>
+    </form>
+  </aside>
 
+  <div class="col-xs-12">
   {% unless page.categories == empty %}
     <ul class="tag_box inline">
       <li><i class="glyphicon glyphicon-open"></i></li>
