@@ -101,3 +101,12 @@ input[type="submit"]:active {
 	position:relative;
 	top:1px;
 }
+.search-result-container {
+  position: relative;
+  visibility: hidden;
+}
+
+.search-result-container.shown {
+  position: relative;
+  visibility: visible;
+}
