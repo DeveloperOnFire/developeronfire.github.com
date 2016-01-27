@@ -8,38 +8,46 @@ redirect_from:
   - /feed/
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
 	<channel>
 		<title>{{ site.title }}</title>
 		<description>{{ site.description }}</description>
+		<itunes:summary>{{ site.description }}</itunes:summary>
+		<media:description>{{ site.description }}</media:description>
+  	<atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml" href="http://developeronfire.com/rss.xml" />
+  	<atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/" />
+		<media:copyright>{{ 'now' | date: "%Y" }} {{ site.organizationName }}</media:copyright>
+		<copyright>{{ 'now' | date: "%Y" }} {{ site.organizationName }}</copyright>
+  	<media:thumbnail url="{{ site.url }}{{ site.squareLogo}}" />
+  	<media:keywords>{{ site.keywords }}</media:keywords>
+  	<media:category scheme="http://www.itunes.com/dtds/podcast-1.0.dtd">Technology/Software How-To</media:category>
+  	<media:category scheme="http://www.itunes.com/dtds/podcast-1.0.dtd">Technology/Gadgets</media:category>
 		<link>{{ site.url }}</link>
 		<language>en</language>
-		<managingEditor>{{ site.managerName }} ({{ site.managerEmail }})</managingEditor>
-		<webMaster>{{ site.managerName }} ({{ site.managerEmail }})</webMaster>
-		<copyright>2014-{{site.time | "%Y" }} {{ site.organizationName }}</copyright>
 		<pubDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S GMT" }}</pubDate>
 		<lastBuildDate>{{ site.time | date: "%a, %d %b %Y" }}</lastBuildDate>
 		<image>
 			<link>{{ site.url}}</link>
-			<url>{{ site.url }}/{{ site.squareLogo}}</url>
+			<url>{{ site.url }}{{ site.squareLogo}}</url>
 			<title>{{ site.title }}</title>
 		</image>
 		<itunes:subtitle>{{ site.podcastSubtitle }}</itunes:subtitle>
-		<itunes:author>{{ site.organizationName }}</itunes:author>
-		<itunes:summary></itunes:summary>
-		<itunes:keywords></itunes:keywords>
+		<itunes:author>{{ site.author.name }}</itunes:author>
+		<itunes:keywords>{{ site.keywords }}</itunes:keywords>
 		<itunes:owner>
-			<itunes:name>{{ site.managerName}}</itunes:name>
-			<itunes:email>{{ site.managerEmail}}</itunes:email>
+			<itunes:name>{{ site.author.name}}</itunes:name>
+			<itunes:email>{{ site.email}}</itunes:email>
 		</itunes:owner>
-		<itunes:image href="{{ site.url }}/{{ site.squareLogo}}" />
+		<itunes:image href="{{ site.url }}{{ site.squareLogo}}" />
     <itunes:category text="Technology">
       <itunes:category text="Software How-To" />
     </itunes:category>
+    <media:credit role="author">{{ site.author.name }}</media:credit>
+    <media:rating>nonadult</media:rating>
 		{% for post in site.posts %}
 			<item>
 				<title>{{ post.title }}</title>
-				<link>{{ site.url }}/{{ post.url }}</link>
+				<link>{{ site.url }}{{ post.url }}</link>
 				<pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S GMT" }}</pubDate>
 				<description>{{ post.content | xml_escape }}</description>
 				<guid isPermaLink="true">"{{ post.guid || post.link }}"</guid>
@@ -48,8 +56,8 @@ redirect_from:
 				<itunes:subtitle>{{ post.subtitle }}</itunes:subtitle>
 				<itunes:summary>{{ post.content | xml_escape }}</itunes:summary>
 				<itunes:duration>{{ post.duration }}</itunes:duration>
-				<itunes:keywords>{{ post.keywords }}</itunes:keywords>
-				<itunes:image href="{% if post.image %}{{ site.url }}/{{ post.image }}{% else %}{{ site.url }}/{{site.squareLogo}}{% endif %}" />
+				<itunes:keywords>{{ site.keywords }}</itunes:keywords>
+				<itunes:image href="{% if post.image %}{{ site.url }}{{ post.image }}{% else %}{{ site.url }}{{site.squareLogo}}{% endif %}" />
 				<itunes:explicit>no</itunes:explicit>
 			</item>
 		{% endfor %}
