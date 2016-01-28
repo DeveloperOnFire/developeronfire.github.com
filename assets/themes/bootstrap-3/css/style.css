@@ -110,3 +110,7 @@ input[type="submit"]:active {
   position: relative;
   visibility: visible;
 }
+
+div.medium audio, div.medium img {
+  width: 600px;
+}
