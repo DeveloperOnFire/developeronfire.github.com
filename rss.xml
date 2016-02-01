@@ -4,8 +4,9 @@ header: Subscribe
 group: navigation
 redirect_from:
   - /rss/
-  - /subscribe/
   - /feed/
+  - /feed.rss/
+  - /feed.xml/
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
