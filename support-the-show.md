@@ -2,6 +2,7 @@
 layout: page
 title : Support The Show
 header : Podcast Episodes
+group: navigation
 ---
 {% include JB/setup %}
 
