@@ -8,5 +8,7 @@ permalink: /thank-you/
 
 ## Thank you for subscribing!
 
-This will help you keep up with what is happening in the Developer On Fire world.
-We'll be in touch...
+The Empire requires one step before your subscription is fully operational...
+You should have an email address verification email in your inbox.  Please click on the "Confirm" link there.
+
+May the Force be with you.
