@@ -3,16 +3,32 @@
 </div>
 
 <div class="row post-full">
-  <main class="col-xs-8">
+  <main class="col-xs-12 col-sm-8">
     <div class="date">
       <span>{{ page.date | date_to_long_string }}</span>
     </div>
 
+    {% unless page.guest_name == empty %}
+      <h4>Guest:</h4>
+      <div class="guest">
+        <div class="guest col-xs-6">
+          <div class="vertical-center">
+            <div>
+              <div><a target="_blank" href="{{ page.guest_blog }}">{{ page.guest_name }}</a></div>
+              {% unless page.guest_twitter == empty %}
+              <div><a target="_blank" href="http://twitter.com/{{ page.guest_twitter }}">@{{ page.guest_twitter }}</a></div>
+              {% endunless %}
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-6 col-sm-4">
+          <img class="img img-circle guest" src="{{ page.image }}" />
+        </div>
+      </div>
+    {% endunless %}
+
     {% unless page.link == empty %}
     <div class="medium">
-      <div>
-        <img src="{{ page.image }}" />
-      </div>
       <div>
         <audio src="{{ page.link }}" controls="controls"></audio>
       </div>
@@ -22,26 +38,15 @@
     </div>
     {% endunless %}
 
-  {% unless page.guest_name == empty %}
-    <div class="guest">
-      <span>Guest: </span><span><a target="_blank" href="{{ page.guest_blog }}">{{ page.guest_name }}</a></span>
-        {% unless page.guest_twitter == empty %}
-        <span> (</span>
-        <span><a target="_blank" href="http://twitter.com/{{ page.guest_twitter }}">@{{ page.guest_twitter }}</a></span>
-        <span>)</span>
-      {% endunless %}
-    </div>
-  {% endunless %}
-
     <div class="content">
       {{ content }}
     </div>
   </main>
-  <aside class="col-xs-3">
+  <aside class="col-xs-12 col-sm-4">
     <h2>Support the show</h2>
     <div><a href="https://www.patreon.com/developeronfire">Show your support by making a pledge on Patreon</a></div>
   </aside>
-  <aside class="col-xs-3">
+  <aside class="col-xs-12 col-sm-4">
     <h2>Podcast Updates in Your Inbox</h2>
     <div>Keep up with Developer On Fire by subscribing to the mailing list</div>
     <form action="https://api.elasticemail.com/contact/add?version=2" method="post">

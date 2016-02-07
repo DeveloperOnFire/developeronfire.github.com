@@ -5,8 +5,6 @@ tagline: Podcast with inspiring interviews with successful software developers, 
 ---
 {% include JB/setup %}
 
-Developer On Fire with Dave Rael is an interview podcast with inspiring and successful software professionals telling personal stories about their experiences with delivering value.  It is a chance for you to get to know your favorite geeks and learn more about who they are, how they deliver, and what makes them tick.
-
 ## Latest Episode
 
 {% for post in site.posts limit:1 %}
