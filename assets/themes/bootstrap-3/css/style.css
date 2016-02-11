@@ -102,13 +102,22 @@ input[type="submit"]:active {
 	top:1px;
 }
 .search-result-container {
-  position: relative;
   visibility: hidden;
+  position: relative;
 }
 
 .search-result-container.shown {
-  position: relative;
+  position: relative;;
   visibility: visible;
+}
+
+.search-result-container.shown .search-result {
+  position: absolute;
+  visibility: visible;
+  z-index: 1;
+  left: -100px;
+  background-color: #fdcd60;
+  width: 300px;
 }
 
 .vertical-center {
@@ -124,7 +133,8 @@ input[type="submit"]:active {
 .vertical-center div {
 	position: relative;
 	top: 50%;
-	transform: 			translateY(-50%);
+	transform:
+  translateY(-50%);
 }
 
 div.medium audio {
@@ -134,4 +144,15 @@ div.medium audio {
 img.guest {
   width: 150px;
   height: : 150px;
+}
+
+img.search-result-image {
+  width: 50px;
+  height: : 50px;
+}
+
+li.selected {
+  background-color: red;
+  border-color: black;
+  border-width: 2px;
 }

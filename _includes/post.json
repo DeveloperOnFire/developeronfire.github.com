@@ -3,6 +3,7 @@
   "category" : "{{ post.category }}",
   "tags"     : [{% for tag in post.tags %}"{{ tag }}",{% endfor %} null],
   "url"     : "{{ post.url }}",
+  "image"     : "{{ post.image }}",
   "date"     : {
     "day"   : "{{ post.date | date: "%d" }}",
     "month" : "{{ post.date | date: "%B" }}",
