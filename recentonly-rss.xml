@@ -46,7 +46,7 @@ group: navigation
 				<link>{{ site.url }}{{ post.url }}</link>
 				<pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S GMT" }}</pubDate>
 				<description>{{ post.content | xml_escape }}</description>
-				<guid isPermaLink="true">"{{ post.guid || post.link }}"</guid>
+				<guid isPermaLink="true">{% if post.guid %}"{{ post.guid }}"{% else %}{{ post.link }}{% endif %}</guid>
 				<enclosure url="{{ post.link }}" length="{{ post.length }}" type="audio/mp3"/>
 				<itunes:author>{{ post.speaker }}</itunes:author>
 				<itunes:subtitle>{{ post.subtitle }}</itunes:subtitle>
