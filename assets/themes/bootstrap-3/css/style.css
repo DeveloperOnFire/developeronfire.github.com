@@ -156,3 +156,7 @@ li.selected {
   border-color: black;
   border-width: 2px;
 }
+
+time.chapter-timestamp {
+  font-weight: bold;
+}
