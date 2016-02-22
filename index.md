@@ -18,7 +18,7 @@ redirect_from:
 
 ## Recent Shows
 
-{% for post in site.posts limit:3 offset:1 %}
+{% for post in site.posts limit:6 offset:1 %}
   [{{ post.title }}]({{ BASE_PATH }}{{ post.url }})
   {{ post.date | date_to_string }}
 {% endfor %}
