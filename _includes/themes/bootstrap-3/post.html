@@ -30,7 +30,7 @@
     {% unless page.link == empty %}
     <div class="medium">
       <div>
-        <audio src="{{ page.link }}" controls="controls"></audio>
+        <audio src="{{ page.link }}" id="episode-audio" controls="controls"></audio>
       </div>
       <div>
         <a target="_blank" href="{{ page.link }}">Download</a>
@@ -115,3 +115,5 @@
     {% include JB/comments %}
   </div>
 </div>
+
+<script src="/assets/themes/bootstrap-3/scripts/mediaPlayer.js"></script>
