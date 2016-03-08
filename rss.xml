@@ -39,6 +39,7 @@ redirect_from:
 			<itunes:name>{{ site.author.name}}</itunes:name>
 			<itunes:email>{{ site.email}}</itunes:email>
 		</itunes:owner>
+    <itunes:explicit>no</itunes:explicit>
 		<itunes:image href="{{ site.url }}{{ site.squareLogo}}" />
     <itunes:category text="Technology">
       <itunes:category text="Software How-To" />
