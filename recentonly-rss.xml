@@ -1,11 +1,11 @@
 ---
 layout: null
 header: Subscribe
-group: navigation
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
 	<channel>
+		<itunes:new-feed-url>http://developeronfire.com/rss.xml</itunes:new-feed-url>
 		<title>{{ site.title }}</title>
 		<description>{{ site.description }}</description>
 		<itunes:summary>{{ site.description }}</itunes:summary>
@@ -34,6 +34,7 @@ group: navigation
 			<itunes:name>{{ site.author.name}}</itunes:name>
 			<itunes:email>{{ site.email}}</itunes:email>
 		</itunes:owner>
+    <itunes:explicit>no</itunes:explicit>
 		<itunes:image href="{{ site.url }}{{ site.squareLogo}}" />
     <itunes:category text="Technology">
       <itunes:category text="Software How-To" />

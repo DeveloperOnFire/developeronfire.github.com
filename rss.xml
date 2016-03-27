@@ -1,7 +1,6 @@
 ---
 layout: null
 header: Subscribe
-group: navigation
 redirect_from:
   - /rss/
   - /feed/
