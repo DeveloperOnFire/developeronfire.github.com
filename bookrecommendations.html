@@ -1,0 +1,64 @@
+---
+layout: page
+title : Book Recommendations
+header : Book Recommendations
+group: navigation
+---
+{% include JB/setup %}
+
+{% assign bookUrls = "" | split:"|" %}
+{% assign bookTitles = "" | split:"|" %}
+{% assign bookAuthors = "" | split:"|" %}
+{% assign bookRecommendationsEpisodes = "" | split:"|||" %}
+{% for post in site.posts %}
+  {% for book in post.book_recommendations %}
+    <p>
+      {{book["url"]}}
+    </p>
+    {% if bookUrls contains book["url"] %}
+      <p>
+        repeat
+      </p>
+      {% for url in bookUrls %}
+        {% if book["url"] == url %}
+          {% assign bookRecommendationsEpisodes[forloop.index0] = bookRecommendationsEpisodes[forloop.index0] | push: post.title %}
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {% assign bookUrls = bookUrls | push: book["url"] %}
+      {% assign bookTitles = bookTitles | push: book["title"] %}
+      {% assign bookAuthors = bookAuthors | push: book["author"] %}
+      {% assign bookRecommendationEpisodes = post.title | split: "||" %}
+      {% assign bookRecommendationsEpisodes = bookRecommendationsEpisodes | push: bookRecommendationEpisodes %}
+    {% endif %}
+
+  {% endfor %}
+{% endfor %}
+
+{% for url in bookUrls %}
+  <p>
+    {{url}}
+  </p>
+{% endfor %}
+
+
+  {% if bookUrls contains "http://www.amazon.com/dp/1572315482/?tag=devonfir-20" %}
+    <p>
+      contains
+    </p>
+  {% else %}
+    <p>
+      not contains
+    </p>
+  {% endif %}
+
+<div>
+  <ul>
+    {% for bookUrl in bookUrls %}
+      <li>
+        <h6>{{bookTitles[forloop.index0]}}</h6>
+        {{ bookUrl }} - {{bookRecommendationsEpisodes[forloop.index0]}}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
