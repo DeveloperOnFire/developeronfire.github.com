@@ -45,7 +45,7 @@ redirect_from:
     </itunes:category>
     <media:credit role="author">{{ site.author.name }}</media:credit>
     <media:rating>nonadult</media:rating>
-		{% for post in site.posts %}
+		{% for post in site.posts limit:20 %}
 			<item>
 				<title>{{ post.title }}</title>
 				<link>{{ site.url }}{{ post.url }}</link>
