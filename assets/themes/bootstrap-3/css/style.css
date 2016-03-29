@@ -107,7 +107,7 @@ input[type="submit"]:active {
 }
 
 .search-result-container.shown {
-  position: relative;;
+  position: relative;
   visibility: visible;
 }
 
