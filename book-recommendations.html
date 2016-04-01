@@ -1,0 +1,25 @@
+---
+layout: page
+title : Book Recommendations
+header : Book Recommendations
+group : navigation
+---
+{% include JB/setup %}
+
+{% for tag in site.tags | sort: title %}
+  {% assign t = tag | first %}
+  {% assign posts = tag | last %}
+
+  <a href="{{t.url}}">{{ t.title }} - {{ t.author }}</a>
+  <ul>
+  {% for post in posts %}
+    {% if post.tags contains t %}
+    <capture>
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+      <span class="date">{{ post.date | date: "%B %-d, %Y"  }}</span>
+    </li>
+    {% endif %}
+  {% endfor %}
+  </ul>
+{% endfor %}
