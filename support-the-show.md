@@ -3,6 +3,7 @@ layout: page
 title : Support The Show
 header : Podcast Episodes
 group: navigation
+group-sort: 300
 ---
 {% include JB/setup %}
 
