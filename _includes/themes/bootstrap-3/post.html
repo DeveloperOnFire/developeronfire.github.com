@@ -98,14 +98,6 @@
     </ul>
   {% endunless %}
 
-  {% unless page.tags == empty %}
-    <ul class="tag_box inline">
-      <li><i class="glyphicon glyphicon-tags"></i></li>
-      {% assign tags_list = page.tags %}
-      {% include JB/tags_list %}
-    </ul>
-  {% endunless %}
-
     <hr>
     <ul class="pagination">
     {% if page.previous %}
