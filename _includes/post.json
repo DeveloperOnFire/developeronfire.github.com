@@ -1,7 +1,6 @@
 {
   "title"    : "{{ post.title | replace:'"', '' }}",
   "category" : "{{ post.category }}",
-  "tags"     : [{% for tag in post.tags %}"{{ tag }}",{% endfor %} null],
   "url"     : "{{ post.url }}",
   "image"     : "{{ post.image }}",
   "date"     : {

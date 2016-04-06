@@ -26,7 +26,6 @@ function parseTimeToSeconds(time) {
 }
 
 (function init(){
-  console.log('entering init');
   var jumpAudioLinks = document.getElementsByClassName('chapter-timestamp');
   for(var i = 0;i<jumpAudioLinks.length; ++i) {
     (function(timeElement) {
