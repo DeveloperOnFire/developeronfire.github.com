@@ -49,12 +49,34 @@
       <a href="https://twitter.com/raelyard" class="twitter-follow-button" data-show-count="false">Follow @raelyard</a>
     </div>
   </main>
+  {% if page.sponsors %}
+    {% unless page.sponsors == empty %}
+  <aside class="col-xs-12 col-sm-4">
+    <h2>Episode sponsored by:</h2>
+      {% for sponsor_ad in page.sponsors  %}
+        <div>
+          <a href="{{ sponsor_ad.url}}">
+            <div class="sponsor-ad">
+              <img class="img" src="{{ sponsor_ad.image }}" />
+              <div class="sponsor-title">
+                {{sponsor_ad.title}}
+              </div>
+              <div class="sponsor-text">
+                {{sponsor_ad.text}}
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+  </aside>
+    {% endunless %}
+  {% endif %}
   <aside class="col-xs-12 col-sm-4">
     <h2>Support the show</h2>
     <div><a href="https://www.patreon.com/developeronfire">Show your support by making a pledge on Patreon</a></div>
   </aside>
   <aside class="col-xs-12 col-sm-4">
-    <h2>Podcast Updates in Your Inbox</h2>
+    <h2>Podcast updates in Your inbox</h2>
     <div>Get previews of upcoming guests and more by subscribing to the mailing list</div>
     <form action="https://api.elasticemail.com/contact/add?version=2" method="post">
       <fieldset style="border:none;">
