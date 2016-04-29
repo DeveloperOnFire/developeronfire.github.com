@@ -1,0 +1,18 @@
+---
+---
+[
+  {% for post in site.posts %}
+    {% for book in post.book_recommendations %}
+      {
+        "url": "{{ book.url | jsonify }}",
+        "title": "{{ book.title | jsonify }}",
+        "author": "{{ book.author | jsonify }}",
+        "recommended_by": {
+          "title": "{{ post.title | jsonify }}",
+          "url": "{{ post.url | jsonify }}"
+        }
+      },
+    {% endfor %}
+  {% endfor %}
+  null
+]

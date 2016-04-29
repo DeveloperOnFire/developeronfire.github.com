@@ -1,8 +1,8 @@
 {
-  "title"    : "{{ post.title | replace:'"', '' }}",
-  "category" : "{{ post.category }}",
-  "url"     : "{{ post.url }}",
-  "image"     : "{{ post.image }}",
+  "title"    : {{ post.title | jsonify }},
+  "category" : {{ post.category | jsonify }},
+  "url"     : {{ post.url  | jsonify}},
+  "image"     : {{ post.image  | jsonify}},
   "date"     : {
     "day"   : "{{ post.date | date: "%d" }}",
     "month" : "{{ post.date | date: "%B" }}",

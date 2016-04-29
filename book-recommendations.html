@@ -11,20 +11,10 @@ redirect_from:
 
 <h2>Your reading assignment from the guests of the show:</h2>
 
-{% for tag in site.tags | sort: title %}
-  {% assign t = tag | first %}
-  {% assign posts = tag | last %}
+<div>
+  <ul id="book-recommendations">
 
-  <a href="{{t.url}}">{{ t.title }} - {{ t.author }}</a>
-  <ul>
-  {% for post in posts %}
-    {% if post.tags contains t %}
-    <capture>
-    <li>
-      <a href="{{ post.url }}">{{ post.title }}</a>
-      <span class="date">{{ post.date | date: "%B %-d, %Y"  }}</span>
-    </li>
-    {% endif %}
-  {% endfor %}
   </ul>
-{% endfor %}
+</div>
+
+<script src="/assets/themes/bootstrap-3/scripts/book-recommendations.js"></script>
