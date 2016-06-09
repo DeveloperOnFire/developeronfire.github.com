@@ -37,9 +37,10 @@ function layoutResultsPage(posts) {
   for(var i=0;i<posts.length;++i) {
     var link = document.createElement('a');
     var image = document.createElement('img');
+    var text = document.createElement('span');
     var post = document.createElement('li');
     link.href = posts[i].url;
-    link.innerText = posts[i].title;
+    text.innerText = posts[i].title;
     image.src = posts[i].image;
     image.classList.add('img');
     image.classList.add('img-circle');
@@ -47,7 +48,8 @@ function layoutResultsPage(posts) {
     if(i===0) {
       post.classList.add('selected');
     }
-    post.appendChild(image);
+    link.appendChild(image);
+    link.appendChild(text);
     post.appendChild(link);
     searchResultsList.appendChild(post);
   }
