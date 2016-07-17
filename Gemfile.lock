@@ -126,4 +126,4 @@ DEPENDENCIES
   nokogiri (>= 1.6.8.rc3)
 
 BUNDLED WITH
-   1.12.4
+   1.12.5
