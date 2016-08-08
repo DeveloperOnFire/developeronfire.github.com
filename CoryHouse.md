@@ -2,6 +2,14 @@
 layout: page
 title : Cory House on Developer On Fire
 header : Podcast Episodes
+redirect-from:
+-- "/Podcast/Episodes/CoryHouse/"
+-- "/Cory-House/"
+-- "/Podcast/Episodes/Cory-House/"
+-- "/coryhouse/"
+-- "/Podcast/Episodes/coryhouse/"
+-- "/cory-house/"
+-- "/Podcast/Episodes/cory-house/"
 ---
 <img class="img img-circle guest" src="/assets/images/CoryHouse.jpg" />
 
