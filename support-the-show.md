@@ -1,9 +1,11 @@
 ---
 layout: page
-title : Support The Show
-header : Podcast Episodes
+title: Support The Show
+header: Podcast Episodes
 group: navigation
 group-sort: 300
+redirect_from:
+- "/support/"
 ---
 {% include JB/setup %}
 
