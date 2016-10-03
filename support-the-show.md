@@ -6,6 +6,9 @@ group: navigation
 group-sort: 300
 redirect_from:
 - "/support/"
+- "/donate/"
+- "/donation/"
+- "/donations/"
 ---
 {% include JB/setup %}
 
