@@ -8,7 +8,7 @@
       <span>{{ page.date | date_to_long_string }}</span>
     </div>
 
-    {% unless page.guest_name == empty %}
+    {% if page.guest_name %}
       <h4>Guest:</h4>
       <div class="guest">
         <div class="guest col-xs-6">
@@ -25,7 +25,38 @@
           <img class="img img-circle guest" src="{{ page.image }}" />
         </div>
       </div>
-    {% endunless %}
+    {% endif %}
+
+    {% if page.guests %}
+      {% unless page.guests == empty %}
+        <div class="row">
+        {% for guest in page.guests %}
+          <div class="col-xs-{{ 12 | divided_by: page.guests.size }}">
+            <h4>Guest:</h4>
+            <div class="guest">
+              <div class="guest col-xs-6">
+                <div class="vertical-center">
+                  <div>
+                    {% if guest.blog %}
+                    <div><a target="_blank" href="{{ guest.blog }}">{{ guest.name }}</a></div>
+                    {% else %}
+                    <div>{{ guest.name }}</div>
+                    {% endif %}
+                    {% if guest.twitter %}
+                    <div><a target="_blank" href="http://twitter.com/{{ guest.twitter }}">@{{ guest.twitter }}</a></div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-4">
+                <img class="img img-circle guest" src="{{ guest.image }}" />
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+      {% endunless %}
+    {% endif %}
 
     {% if page.link %}
     <div class="medium">
@@ -51,24 +82,24 @@
   </main>
   {% if page.sponsors %}
     {% unless page.sponsors == empty %}
-  <aside class="col-xs-12 col-sm-4">
-    <h2>Episode sponsored by:</h2>
-      {% for sponsor_ad in page.sponsors  %}
-        <div>
-          <a href="{{ sponsor_ad.url}}">
-            <div class="sponsor">
-              <img class="img" src="{{ sponsor_ad.image }}" />
-              <div class="sponsor-title">
-                {{sponsor_ad.title}}
+      <aside class="col-xs-12 col-sm-4">
+        <h2>Episode sponsored by:</h2>
+        {% for sponsor_ad in page.sponsors  %}
+          <div>
+            <a href="{{ sponsor_ad.url}}">
+              <div class="sponsor">
+                <img class="img" src="{{ sponsor_ad.image }}" />
+                <div class="sponsor-title">
+                  {{sponsor_ad.title}}
+                </div>
+                <div class="sponsor-message">
+                  {{sponsor_ad.text}}
+                </div>
               </div>
-              <div class="sponsor-message">
-                {{sponsor_ad.text}}
-              </div>
-            </div>
-          </a>
-        </div>
-      {% endfor %}
-  </aside>
+            </a>
+          </div>
+        {% endfor %}
+      </aside>
     {% endunless %}
   {% endif %}
   <aside class="col-xs-12 col-sm-4">
