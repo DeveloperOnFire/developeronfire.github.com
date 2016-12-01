@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Developer On Fire
-tagline: Podcast with inspiring interviews with successful software developers, architects, testers, and other professionals with stories of success, failure, excellence, and inspiration.
+tagline: Stories from inspiring people in and around software
 redirect_from:
 - "/Podcast/"
 ---
