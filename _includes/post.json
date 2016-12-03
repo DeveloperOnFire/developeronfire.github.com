@@ -2,7 +2,11 @@
   "title"    : {{ post.title | jsonify }},
   "category" : {{ post.category | jsonify }},
   "url"     : {{ post.url  | jsonify}},
-  "image"     : {{ post.image  | jsonify}},
+  {% if post.image %}
+    "image"     : {{ post.image  | jsonify}},
+  {% else %}
+    "image"     : {{ post.guests[0].image  | jsonify}},
+  {% endif %}
   "date"     : {
     "day"   : "{{ post.date | date: "%d" }}",
     "month" : "{{ post.date | date: "%B" }}",
