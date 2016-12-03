@@ -165,3 +165,7 @@ time.chapter-timestamp {
   font-weight: bold;
   color: black;
 }
+
+.guest-bio, .podcast-summary {
+  padding: 25px;
+}
