@@ -30,4 +30,4 @@ Among the services offered:
 * Consulting
 * Coding and/or Automated Testing Muscle
 
-To talk about how working with Dave can help you, please [get in contact](dave@raelyard.com).
+To talk about how working with Dave can help you, please get in contact: dave at raelyard dot com.
