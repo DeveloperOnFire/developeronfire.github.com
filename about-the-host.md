@@ -23,3 +23,5 @@ Dave started Developer On Fire in 2015 as a way of stepping outside the comforta
 The approach was to ask developers for interviews.  This included some names you already know and some names you don't know but should.  The result was Developer On Fire, the podcast that shares the humanity of developers and tells stories of some of the amazing people in software.
 
 Check out Dave sharing [this story with John Sonmez in an interview for John's Simple Programmer site](https://simpleprogrammer.com/2016/09/09/dave-rael-from-developer-on-fire/).
+
+If you want to work with Dave or could use some help with coaching or training, learn more about how to [hire Dave](/hire-dave).
