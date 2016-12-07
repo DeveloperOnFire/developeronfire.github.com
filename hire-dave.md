@@ -20,9 +20,10 @@ Among the services offered:
 
 * Individual/Team Coaching
   * Distributed Systems/Software Development
-  * Learning Approaches
   * Career Counseling
   * Instruction and Advice on Getting Involved
+  * Productivity
+  * Learning Approaches
   * Podcasting/Blogging/Media
   * Personal Life Coaching
 * Project-Based Product Development
