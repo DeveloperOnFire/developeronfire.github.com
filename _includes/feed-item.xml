@@ -1,0 +1,33 @@
+<item>
+  <title>{{ post.title }}</title>
+  <link>{{ site.production_url }}{{ post.url }}</link>
+  <pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S GMT" }}</pubDate>
+  <description>
+    &lt;div&gt;
+      &lt;div&gt;Guest:&lt;/div&gt;
+      &lt;div&gt;
+        &lt;div&gt;&lt;a target="_blank" href="{{ post.guest_blog }}"&gt;{{ post.guest_name }}&lt;/a&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;a target="_blank" href="http://twitter.com/{{ post.guest_twitter }}"&gt;@{{ post.guest_twitter }}&lt;/a&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    {{ post.content | xml_escape }}
+  </description>
+  <guid isPermaLink="true">{% if post.guid %}"{{ post.guid }}"{% else %}{{ post.link }}{% endif %}</guid>
+  <enclosure url="{{ post.link }}" length="{{ post.length }}" type="audio/mp3"/>
+  <itunes:author>{{ post.speaker }}</itunes:author>
+  <itunes:subtitle>{{ post.subtitle }}</itunes:subtitle>
+  <itunes:summary>
+    &lt;div&gt;
+      &lt;div&gt;Guest:&lt;/div&gt;
+      &lt;div&gt;
+        &lt;div&gt;&lt;a target="_blank" href="{{ post.guest_blog }}"&gt;{{ post.guest_name }}&lt;/a&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;a target="_blank" href="http://twitter.com/{{ post.guest_twitter }}"&gt;@{{ post.guest_twitter }}&lt;/a&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    {{ post.content | xml_escape }}
+  </itunes:summary>
+  <itunes:duration>{{ post.duration }}</itunes:duration>
+  <itunes:keywords>{{ site.keywords }}</itunes:keywords>
+  <itunes:image href="{% if post.image %}{{ site.production_url }}{{ post.image }}{% else %}{{ site.production_url }}{{site.squareLogo}}{% endif %}" />
+  <itunes:explicit>no</itunes:explicit>
+</item>

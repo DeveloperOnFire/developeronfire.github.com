@@ -1,0 +1,35 @@
+<title>{{ site.title }}</title>
+<description>{{ site.description }}</description>
+<itunes:summary>{{ site.description }}</itunes:summary>
+<media:description>{{ site.description }}</media:description>
+<atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml" href="http://developeronfire.com/rss.xml" />
+<atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/" />
+<media:copyright>{{ 'now' | date: "%Y" }} {{ site.organizationName }}</media:copyright>
+<copyright>{{ 'now' | date: "%Y" }} {{ site.organizationName }}</copyright>
+<media:thumbnail url="{{ site.production_url }}{{ site.squareLogo}}" />
+<media:keywords>{{ site.keywords }}</media:keywords>
+<media:category scheme="http://www.itunes.com/dtds/podcast-1.0.dtd">Technology/Software How-To</media:category>
+<media:category scheme="http://www.itunes.com/dtds/podcast-1.0.dtd">Technology/Gadgets</media:category>
+<link>{{ site.production_url }}</link>
+<language>en</language>
+<pubDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S GMT" }}</pubDate>
+<lastBuildDate>{{ site.time | date: "%a, %d %b %Y" }}</lastBuildDate>
+<image>
+  <link>{{ site.production_url}}</link>
+  <url>{{ site.production_url }}{{ site.squareLogo}}</url>
+  <title>{{ site.title }}</title>
+</image>
+<itunes:subtitle>{{ site.podcastSubtitle }}</itunes:subtitle>
+<itunes:author>{{ site.author.name }}</itunes:author>
+<itunes:keywords>{{ site.keywords }}</itunes:keywords>
+<itunes:owner>
+  <itunes:name>{{ site.author.name}}</itunes:name>
+  <itunes:email>{{ site.email}}</itunes:email>
+</itunes:owner>
+<itunes:explicit>no</itunes:explicit>
+<itunes:image href="{{ site.production_url }}{{ site.squareLogo}}" />
+<itunes:category text="Technology">
+  <itunes:category text="Software How-To" />
+</itunes:category>
+<media:credit role="author">{{ site.author.name }}</media:credit>
+<media:rating>nonadult</media:rating>
