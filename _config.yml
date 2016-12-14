@@ -15,6 +15,7 @@ tagline: Podcast with Inspiring Interviews with Successful Software Professional
 description: Developer On Fire with Dave Rael is an interview podcast with inspiring and successful software professionals telling personal stories about their experiences with delivering value. It is a chance for you to get to know your favorite geeks and learn more about who they are, how they deliver, and what makes them tick.  Learn from and get to know special geeks like Matt Wynne, Rob Eisenberg, Udi Dahan, Ted Neward, John Sonmez, Phil Haack, and David Heinemeier Hansson.
 keywords: software,developer,software,developer on fire,developeronfire,programmer,inspiration,fire,on fire,lit,lit up,success,failure,story,stories,feed,podcast
 squareLogo: /assets/images/developeronfire.png
+squareLogo-itunes: /assets/images/developeronfire-itunes.png
 organizationName: developeronfire.com
 author :
   name : Dave Rael
