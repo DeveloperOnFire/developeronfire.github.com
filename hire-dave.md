@@ -6,7 +6,9 @@ permalink: /hire-dave/
 group: navigation
 group-sort: 275
 redirect_from:
-  /hire/
+  - /hire/
+  - /hiredave/
+  - /services/
 ---
 {% include JB/setup %}
 
