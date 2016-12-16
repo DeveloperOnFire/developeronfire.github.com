@@ -20,7 +20,7 @@ In addition to being a dynamic podcast host, Dave Rael offers services designed 
 
 Among the services offered:
 
-* Individual/Team Coaching
+* {:.list-group-item} Individual/Team Coaching
   * Distributed Systems/Software Development
   * Career Counseling
   * Instruction and Advice on Getting Involved
@@ -28,9 +28,11 @@ Among the services offered:
   * Learning Approaches
   * Podcasting/Blogging/Media
   * Personal Life Coaching
-* Project-Based Product Development
-* Next-Level Training
-* Consulting
-* Coding and/or Automated Testing Muscle
+
+  [Schedule a free 15-minute coaching call here](http://www.meetme.so/daverael)
+* {:.list-group-item} Project-Based Product Development
+* {:.list-group-item} Next-Level Training
+* {:.list-group-item} Consulting
+* {:.list-group-item} Architecture, Process, Coding, and/or Automated Testing Muscle
 
 To talk about how working with Dave can help you, please get in contact: dave at raelyard dot com.
