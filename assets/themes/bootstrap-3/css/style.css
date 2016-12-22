@@ -169,3 +169,7 @@ time.chapter-timestamp {
 .guest-bio, .podcast-summary {
   padding: 25px;
 }
+
+.sponsor-message {
+  padding-bottom: 30px;
+}
