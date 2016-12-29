@@ -1,9 +1,9 @@
 ---
 layout: guest
-title:Mark Seemann on Developer On Fire
+title: Mark Seemann on Developer On Fire
 guest:
     firstName: Mark
-    name:Mark Seemann
+    name: Mark Seemann
     image: /assets/images/MarkSeemann.jpg
     blog: http://blog.ploeh.dk/
     twitter: ploeh
