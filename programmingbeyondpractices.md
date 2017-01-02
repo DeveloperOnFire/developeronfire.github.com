@@ -13,5 +13,5 @@ redirect_from:
 <meta http-equiv=refresh content="0; url=http://www.oreilly.com/pub/cpc/42645">
 <h1>Redirecting...</h1>
 <img src="http://akamaicovers.oreilly.com/images/0636920047391/lrg.jpg"/>
-<a href="http://www.oreilly.com/pub/cpc/42645">Click here</a> to get started at DailyDrip.
+<a href="http://www.oreilly.com/pub/cpc/42645">Click here</a> if you don't redirect automatically.
 <script>location='http://www.oreilly.com/pub/cpc/42645'</script>
