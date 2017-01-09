@@ -12,7 +12,7 @@ redirect_from:
 	<channel>
     {% include feed-channel-root-content.xml %}
     {% capture use_itunes_summary %}true{% endcapture %}
-		{% for post in site.posts %}
+		{% for post in site.categories.Podcast %}
       {% include feed-item.xml %}
 		{% endfor %}
 	</channel>

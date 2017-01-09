@@ -1,7 +1,7 @@
 ---
 ---
 [
-  {% for post in site.posts %}
+  {% for post in site.categories.Podcast %}
     {% for book in post.book_recommendations %}
       {
         "url": {{ book.url | jsonify }},

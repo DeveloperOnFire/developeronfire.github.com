@@ -1,0 +1,11 @@
+---
+layout: page
+title : Blog
+header : Blog
+group: navigation
+group-sort: 150
+---
+{% include JB/setup %}
+
+{% assign posts_collate = site.categories.Blog %}
+{% include JB/posts_collate %}

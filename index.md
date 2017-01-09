@@ -9,7 +9,7 @@ redirect_from:
 
 ## Latest Episode
 
-{% for post in site.posts limit:1 %}
+{% for post in site.categories.Podcast limit:1 %}
   <div class="row">
     <div class="col-xs-6 col-sm-4 col-md-2 text-center">
       <img class="img guest" src="{{ post.image }}" />
@@ -32,7 +32,7 @@ redirect_from:
 
 ## Recent Shows
 
-{% for post in site.posts limit:6 offset:1 %}
+{% for post in site.categories.Podcast limit:6 offset:1 %}
   [{{ post.title }}]({{ BASE_PATH }}{{ post.url }})
   {{ post.date | date_to_string }}
 {% endfor %}
