@@ -2,8 +2,6 @@
 layout: page
 title: Developer On Fire
 tagline: Stories from inspiring people in and around software
-redirect_from:
-- "/Podcast/"
 ---
 {% include JB/setup %}
 
