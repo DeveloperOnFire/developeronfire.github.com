@@ -2,7 +2,7 @@
 <script type="text/javascript">
     {% include JB/is_production %}
     {% if is_production == false %}var disqus_developer = 1;{% endif %}
-    var disqus_shortname = '{{ site.JB.comments.disqus.short_name }}'; // required: replace example with your forum shortname
+    var disqus_shortname = '{% if page.disqus_short_name %}{{page.disqus_short_name}}{% else %}{{ site.JB.comments.disqus.short_name }}{% endif %}'; // required: replace example with your forum shortname
     {% if page.wordpress_id %}var disqus_identifier = '{{page.wordpress_id}} {{site.production_url}}/?p={{page.wordpress_id}}';{% endif %}
     {% if page.disqus_url %}var disqus_url = '{{page.disqus_url}}';{% endif %}
     /* * * DON'T EDIT BELOW THIS LINE * * */
