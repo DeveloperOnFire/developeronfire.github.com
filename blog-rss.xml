@@ -25,7 +25,7 @@ redirect_from:
                 <title>{{ post.title | xml_escape }}</title>
                 <description>{{ post.content | xml_escape }}</description>
                 <link>{{ site.production_url }}{{ post.url }}</link>
-                <guid>{% if post.guid %}"{{ post.guid }}"{% else %}{{ site.production_url }}{{ post.id }}{% endif %}</guid>
+                <guid>{% if post.guid %}{{ post.guid }}{% else %}{{ site.production_url }}{{ post.id }}{% endif %}</guid>
                 <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
         </item>
 {% endfor %}
