@@ -21,7 +21,7 @@ To support this change and make things smoother for finding what you seek, I hav
 You can find the lists of all blog posts or all podcasts here:
 
 - {:.list-group-item} [Podcast Episodes](/podcast/)
-- {:.list-group-item} [Blog Posts](/blog/)
+- {:.list-group-item} [Blog Posts](/blog)
 
 ### Feeds
 
