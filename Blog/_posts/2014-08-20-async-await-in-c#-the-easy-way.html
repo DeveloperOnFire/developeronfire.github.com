@@ -28,8 +28,8 @@ guid: http://optimizedprogrammer.com:80/blog/async-await-in-c-the-easy-way
 }</pre>
 <p>This is not a very good example, because a method returning void doesn’t demonstrate the use of async and await very well at all, but it is a simple example of a valid use of the modifier.&nbsp; Async methods retuning void are really just fire-and-forget
   methods.&nbsp; They return immediately and the caller does not have any knowledge regarding when or if they complete.&nbsp; In fact, such a method cannot even be awaited:
-  <a href="http://raelyard.com/Media/OptimizedProgrammer/Windows-Live-Writer/AsyncAwait-in-.NET-4.5-and-above_A457/image_6.png"><img title="image" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; float: none; padding-top: 0px; padding-left: 0px; margin-left: auto; border-left: 0px; display: block; padding-right: 0px; margin-right: auto"
-    border="0" alt="image" src="http://raelyard.com/Media/OptimizedProgrammer/Windows-Live-Writer/AsyncAwait-in-.NET-4.5-and-above_A457/image_thumb_2.png" width="1028" height="565"></a>
+  <a href="/assets/images/blog/image_6.png"><img title="image" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; float: none; padding-top: 0px; padding-left: 0px; margin-left: auto; border-left: 0px; display: block; padding-right: 0px; margin-right: auto"
+    border="0" alt="image" src="/assets/images/blog/image_thumb_2.png" width="1028" height="565"></a>
 </p>
 <p>In general, it’s better not to use async methods returning void, as the C# compiler helpfully recommends.&nbsp; The most notable exception to this is to use them to be able to put async on an event handler in an application with user interface events
   because these methods must return void, but in order to be able to await async methods inside these event handlers, they need to be modified with async.&nbsp; Otherwise, you should return Task or Task&lt;T&gt; from your async methods.&nbsp; Better examples
@@ -66,8 +66,8 @@ using Should;<br> <br>namespace AsyncAwaitTest<br>{<br>&nbsp;&nbsp;&nbsp; [TestF
 <p>In the code we have seen so far, each of the methods calling and awaiting an async method have been async themselves.&nbsp; This is required by the framework.&nbsp; I found it confusing when I first encountered async and await that in order for a method
   to await an async method, the calling method itself also has to be async.</p>
 <p>
-  <a href="http://raelyard.com/Media/OptimizedProgrammer/Windows-Live-Writer/AsyncAwait-in-.NET-4.5-and-above_A457/image_2.png"><img title="image" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; float: none; padding-top: 0px; padding-left: 0px; margin-left: auto; border-left: 0px; display: block; padding-right: 0px; margin-right: auto"
-    border="0" alt="image" src="http://raelyard.com/Media/OptimizedProgrammer/Windows-Live-Writer/AsyncAwait-in-.NET-4.5-and-above_A457/image_thumb.png" width="1028" height="565"></a>
+  <a href="/assets/images/blog/image_2.png"><img title="image" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; float: none; padding-top: 0px; padding-left: 0px; margin-left: auto; border-left: 0px; display: block; padding-right: 0px; margin-right: auto"
+    border="0" alt="image" src="/assets/images/blog/image_thumb.png" width="1028" height="565"></a>
 </p>
 <p>I think understanding this correctly is the key to understanding how await works and how to properly use it.&nbsp; Notice that the compiler generates a useful error in failing the build.&nbsp; This is useful and great and offers suggestions on how to
   proceed, but it doesn’t tell us anything about why.&nbsp; Why does the calling method have to be async?&nbsp; The answer lies in understanding that if one assumes that await causes the thread executing the calling method to block, one is operating on
