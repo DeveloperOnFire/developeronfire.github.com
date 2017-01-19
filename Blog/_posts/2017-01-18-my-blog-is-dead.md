@@ -25,7 +25,7 @@ You can find the lists of all blog posts or all podcasts here:
 
 ### Feeds
 
-The existing feed will still contain only podcast episodes, so your subscription does not need to change.  You can also [subscribe to the blog with this feed](/blog-rss.xml).  All options for subscribing to the text and audio content on this site [can be found here](/subscribe/).
+The existing feed will still contain only podcast episodes, so your subscription does not need to change.  You can also [subscribe to the blog with this feed](/blog-rss.xml).  All options for subscribing to the text and audio content on this site [can be found here](/subscribe).
 
 ### More to Come
 
