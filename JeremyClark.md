@@ -3,7 +3,7 @@ layout: guest
 title: Jeremy Clark on Developer On Fire
 guest:
     firstName: Jeremy
-    name: Mark Clark
+    name: Jeremy Clark
     image: /assets/images/JeremyClark.jpg
     blog: http://www.jeremybytes.com/
     twitter: jeremybytes
