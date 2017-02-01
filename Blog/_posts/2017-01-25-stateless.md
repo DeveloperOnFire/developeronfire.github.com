@@ -4,8 +4,6 @@ title: Stateless
 author: Dave Rael
 ---
 
-### Stateless
-
 There are some blog posts so good you just have to periodically read them again and again.  [Leo Babauta](https://twitter.com/zen_habits) wrote [one of them](https://zenhabits.net/stateless/).  He begins with a reference to statelessness in computing and the virtue of simplicity achieved by handling requests statelessly.  He takes the lesson of handling requests statelessly leading to simpler, more performant, and more scalable solutions and applies it to living your life.  You, the server, handle requests most [effectively and efficiently](http://codingwithempathy.com/2017/01/24/efficiency-effectiveness-teams/) if there is not state required in each interaction or if you are able to persist state to a medium easily recoverable and reconstitutable between requests.
 
 ![peaceful statelessness](/assets/images/blog/peace.jpg)
