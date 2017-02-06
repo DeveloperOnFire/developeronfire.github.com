@@ -2,7 +2,16 @@
 layout: post
 title: What I've Learned From Interviewing Over 200 Developers
 author: Dave Rael
+redirect_from:
+- /blog/what-ive-learned-interviewing
 ---
+
+## Source of this post
+This is [a repost of content I wrote for studywebdevelopment.com](https://studywebdevelopment.com/what-i-learned-interviewing.html).
+
+I was contacted via email by Kyle Prinsloo from [studywebdevelopment.com](https://studywebdevelopment.com/) with a request that I write a post for his site and with a suggestion for a topic (the very topic for the post you are now reading).  I thought it was a good idea and wrote the post.  You can find the [requested post here](https://studywebdevelopment.com/what-i-learned-interviewing.html).  This is a repost to my site to make sure as many readers as would like are able to access the content.  Please check out Kyle's site and the post there.
+
+Kyle wanted me to write a post for his site and asked me to do so.  That he took this action is relevant to the content of this post.
 
 ### What Is a Software Developer?
 Software developers are a diverse group.  There are many shapes, sizes, and styles of human being that qualify to be called developer.  Having spoken with a great many of these people - developers using different tech stacks, different platforms, different languages, and different tools, I've learned that it's not easy to define what characteristics make for a good software developer.  There is not one demographic, gender, body composition, nationality, or tool chain that makes for consistently delivering quality software.
@@ -12,6 +21,8 @@ I have asked the question of what makes for a good software developer in the [De
 There is so much that we can learn from each other and we have more in common than we have things that set us apart.  It's amazing that I have been able to grow an audience and engage with people who have a common interest in delivering value via software.
 
 Developer On Fire has grown from not having an audience to a point where thousands of people listen to every episode.  I have spoken to developers from all over the world and have made connections with some exceptional people.
+
+![Dave Recording](/assets/images/blog/dave-rael-microphone.jpg)
 
 During the process, I've learned a few things.
 
@@ -25,7 +36,11 @@ Developer stories are human stories.  That Developer On Fire came along to expos
 ### Punch Fear In The Face
 When I had the thought that I should become a podcaster, I was afraid to execute on it.  There are many reasons I was fearful. Doing something like creating a blog or a podcast or a YouTube channel is [simple, but it's not easy](http://www.marksdailyapple.com/simple-but-not-easy/).  The mechanics of doing these things have a low degree of technical difficutlty such that pretty much anyone can figure out how to do it.  The part that's not easy is in putting your efforts in front of the world.  I have spent much of my life thinking I was an exceptional person, but not putting that hypothesis to the test.
 
+![Fear](/assets/images/blog/fear.jpg)
+
 I was afraid of what I might find out if I gave my best effort.  Having now tried my hand at the incredibly uncomfortable task of podcasting, I'm thrilled and filled with joy at having done it.  I'm also inspired to try new and even more uncomfortable things.
+
+If you've listened to the show regularly, you've probably already heard me saying "Comfort is the enemy of growth."
 
 I [wrote a book](http://developeronfire.com/punch-fear) about my experiences with leaving comfort behind and changing my approach.  It is available in a free pdf form that will not be updated further and in a form that will be expanded to include more story and philosophy about living the best life you can.
 
@@ -34,15 +49,17 @@ Humility is a virtue.  From the time we are children in the Western world, we ar
 
 This, however, does not mean that you do not matter.  It is folly to view humilty as the opposite of self-esteem.  It is a [mistake to view selflessness](http://developeronfire.com/blog/self-sacrifice) as the ultimate in empathetic goodness.
 
-The simple fact is that being a positive force for humanity means being a positive force for a humanity that includes the self.  It is not a necessarily a shortage of humility that leads to a person believing in their own goodness.  In fact, arrogance is usually a cover for a lack of self-worth, rather than having thinking too much of oneself.
+The simple fact is that being a positive force for humanity means being a positive force for a humanity that includes the self.  It is not a necessarily a shortage of humility that leads to a person believing in their own goodness.  In fact, arrogance is usually a cover for a lack of self-worth, rather than thinking too much of oneself.
 
 Interviewing some of the greatest software developers in the world has taught me that I have a lot of good to offer the world and that I am serving humanity by moving forward on things I enjoy.  There is nothing wrong with saying that I have something to offer and that I am doing and sharing good things.
 
 ### The Biggest Lesson From The Podcast
 If there is one giant takeaway from my story of getting involved, stepping out of the shadows, and becoming a valued community member, it's that you can and should ask for what you want.  I would not have been able to share with my audience my interviews with some of the biggest names in software development if I didn't ask for the interviews in the first place.  For a majority of my life I have let experiences pass by without enjoying some of the finest things life has to offer.  Reflecting on regrets I have in my existence, the first things springing to mind are the times I missed something I should have done.  I think of times I didn't submit a proposal for a talk I could have given.  I think of times I didn't ask for a date with a woman I wanted to know better.  I recall many times I let opportunity pass.
 
-It's a shame.  I could have had many wonderful experiences and a richer and fuller life.  Not only could my life experience have been enhanced, but the people around me could have had more joy.  In the same way that sharing my expertise and personality via the podcast has provided value for a world-wide audience, audience members for a talk or ladies I may have dated could have had some life-improving joy as a result of having interacted with me or more completely done so.
+It's a shame.  I could have had many wonderful experiences and a richer and fuller life.  Not only could my life experience have been enhanced, but the people around me could have had more joy.  In the same way that sharing my expertise and personality via the podcast has provided value for a world-wide audience, audience members for a talk or ladies I may have dated could have had some life-improving joy as a result of having interacted with me or having more completely done so.
 
 The simple lesson that is the most important take away from my experiences is that when you want something from someone, you must ask.  It's [a lesson present in the Bible](http://biblehub.com/matthew/7-7.htm), but one I hadn't ever taken to heart until Developer On Fire taught me its importance.  This simple shift will enhance your life in ways you cannot anticipate.
+
+![Ask](/assets/images/blog/ask.jpg)
 
 Another way of looking at this is to simply say: "Go for it!"  Whatever it is you want and desire and need, you must take action to make it happen.  You are worth it.  Also realize that in making the things you want to make, you are serving others.  Serving others and self at the same time and increasing the joy and inspiration in the world and giving without sacrificing is a dream of a way to live.  Please join me in making this our reality.
