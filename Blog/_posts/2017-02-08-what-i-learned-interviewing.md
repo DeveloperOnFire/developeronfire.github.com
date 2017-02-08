@@ -2,12 +2,10 @@
 layout: post
 title: What I've Learned From Interviewing Over 200 Developers
 author: Dave Rael
-redirect_from:
-- /blog/what-ive-learned-interviewing
 ---
 
 ## Source of this post
-This is [a repost of content I wrote for studywebdevelopment.com](https://studywebdevelopment.com/what-i-learned-interviewing.html).
+This is [a repost of content I wrote for studywebdevelopment.com](https://studywebdevelopment.com/interviews-with-200-developers.html).
 
 I was contacted via email by Kyle Prinsloo from [studywebdevelopment.com](https://studywebdevelopment.com/) with a request that I write a post for his site and with a suggestion for a topic (the very topic for the post you are now reading).  I thought it was a good idea and wrote the post.  You can find the [requested post here](https://studywebdevelopment.com/what-i-learned-interviewing.html).  This is a repost to my site to make sure as many readers as would like are able to access the content.  Please check out Kyle's site and the post there.
 
