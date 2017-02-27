@@ -2,9 +2,6 @@
 redirect_from:
   - /cfc/
 ---
-<!DOCTYPE html>
-<meta charset=utf-8>
-<title>Redirecting...</title>
 <link rel=canonical href="https://transactions.sendowl.com/packages/33190/BDD12EB5/add_to_cart">
 <meta http-equiv=refresh content="0; url=https://transactions.sendowl.com/packages/33190/BDD12EB5/add_to_cart">
 <h1>Redirecting...</h1>
