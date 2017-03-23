@@ -9,15 +9,17 @@ tagline: Stories from inspiring people in and around software
 
 {% for post in site.categories.Podcast limit:1 %}
   <div class="row">
-    <div class="col-xs-6 col-sm-4 col-md-2 text-center">
-      <img class="img guest" src="{{ post.image }}" />
+    <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2 text-center">
+      {% for guest in post.guests %}
+        <img class="img guest" src="{{ guest.image }}" />
+      {% endfor %}
     </div>
-    <div class="col-xs-6 col-sm-8 col-md-10 text-center vertical-center">
+    <div class="col-xs-6 col-sm-8 col-md-10 col-lg-10 text-center vertical-center">
       <div>
         <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
       </div>
     </div>
-    <div class="col-xs-12 medium">
+    <div class="col-12 medium">
       <div>
         <audio src="{{ post.link }}" controls="controls"></audio>
       </div>
