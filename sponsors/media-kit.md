@@ -11,7 +11,7 @@ header: Podcast Episodes
 * {:.list-group-item} Two episodes of the show publish every week - one on Monday and one on Thursday.
 * {:.list-group-item} The audience is a mix of software developers, testers, managers, and others interested in software using various platforms, languages, tools, and technology.
   * {:.list-group-item} Each episode gets roughly 3,000 downloads.  There some with significantly more.
-  * {:.list-group-item} Episodes are downloaded 35,000-40,000 times per month
+  * {:.list-group-item} Episodes are downloaded in the range of 35,000-40,000 times per month and this number is growing
 * {:.list-group-item} There are listeners all over the world.
 * {:.list-group-item} The current sponsorship rate is $75 US per episode.  This includes:
   * {:.list-group-item} Pre-roll spoken advertisement by show host in show audio, up to 60 seconds
