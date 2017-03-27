@@ -23,6 +23,7 @@ redirect_from:
 {% for post in site.categories.Blog %}
         <item>
                 <title>{{ post.title | xml_escape }}</title>
+                <author>{{ post.author | xml_escape }}</author>
                 <description>{{ post.content | xml_escape }}</description>
                 <link>{{ site.production_url }}{{ post.url }}</link>
                 <guid>{% if post.guid %}{{ post.guid }}{% else %}{{ site.production_url }}{{ post.id }}{% endif %}</guid>
