@@ -10,9 +10,13 @@ tagline: Stories from inspiring people in and around software
 {% for post in site.categories.Podcast limit:1 %}
   <div class="row">
     <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2 text-center">
-      {% for guest in post.guests %}
-        <img class="img guest" src="{{ guest.image }}" />
-      {% endfor %}
+      {% if post.guests %}
+        {% for guest in post.guests %}
+          <img class="img guest" src="{{ guest.image }}" />
+        {% endfor %}
+      {% else %}
+        <img class="img guest" src="{{ post.image }}" />
+      {% endif %}
     </div>
     <div class="col-xs-6 col-sm-8 col-md-10 col-lg-10 text-center vertical-center">
       <div>
