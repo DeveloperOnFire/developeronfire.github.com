@@ -6,7 +6,15 @@ permalink: /about-the-host/
 group: navigation
 group-sort: 250
 redirect_from:
-  /about/
+- /about/
+- "/Podcast/Episodes/DaveRael/"
+- "/DaveRael/"
+- "/Dave-Rael/"
+- "/Podcast/Episodes/DaveRael/"
+- "/daverael/"
+- "/Podcast/Episodes/daverael/"
+- "/dave-rael/"
+- "/Podcast/Episodes/dave-rael/"
 ---
 {% include JB/setup %}
 

@@ -7,6 +7,9 @@
     <div class="date">
       <span>{{ page.date | date_to_long_string }}</span>
     </div>
+    <div class="author">
+      <span>By: <a href="/{{ page.author | remove: ' ' }}"> {{ page.author }}</a></span>
+    </div>
 
     {% if page.guest_name %}
       <h4>Guest:</h4>

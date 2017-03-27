@@ -45,6 +45,20 @@
         {% endfor %}
       </ul>
     </div>
+
+    <div class="col-xs-12">
+      Here are {{ page.guest.firstName }}'s posts on the blog:
+    </div>
+
+    <div class="col-xs-12">
+      <ul class="list-group">
+        {% for post in site.categories.Blog reversed %}
+    		  {% if page.guest.name == post.author %}
+            <li class="list-group-item"><a href="{{post.url}}">{{post.title}}</a></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
   </main>
   <aside class="col-xs-12 col-sm-4">
     <h2>Support the show</h2>
