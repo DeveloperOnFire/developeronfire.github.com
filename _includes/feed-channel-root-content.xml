@@ -12,8 +12,8 @@
 <media:category scheme="http://www.itunes.com/dtds/podcast-1.0.dtd">Technology/Gadgets</media:category>
 <link>{{ site.production_url }}</link>
 <language>en</language>
-<pubDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S GMT" }}</pubDate>
-<lastBuildDate>{{ site.time | date: "%a, %d %b %Y" }}</lastBuildDate>
+<pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
+<lastBuildDate>{{ site.time | date: date_to_rfc822 }}</lastBuildDate>
 <image>
   <link>{{ site.production_url}}</link>
   <url>{{ site.production_url }}{{ site.squareLogo}}</url>

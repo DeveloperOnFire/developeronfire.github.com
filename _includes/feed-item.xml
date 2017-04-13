@@ -1,7 +1,7 @@
 <item>
   <title>{{ post.title }}</title>
   <link>{{ site.production_url }}{{ post.url }}</link>
-  <pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S GMT" }}</pubDate>
+  <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
   <description>
     &lt;div&gt;
       &lt;div&gt;Guest:&lt;/div&gt;
