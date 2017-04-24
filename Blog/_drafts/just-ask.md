@@ -20,6 +20,7 @@ As I was saying, I was listening to Tim Ferriss and he was doing a little routin
 
 ![audio recording](/assets/images/blog/audio-recording.jpg)
 
+
 One of the recipients of the calls from Ferriss was a software developer interested in advice on starting a podcast and on how to get big names in the field on his show.  The gist is that he doesn't have a recognizable name and wants to speak with exceptional people, but doesn't know how to approach them.  The call starts at 01:00:22 and finishes at 01:17:04.
 
 For your convenience, here is the audio, starting at the relevant point.
