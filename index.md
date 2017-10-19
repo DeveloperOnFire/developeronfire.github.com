@@ -9,7 +9,7 @@ tagline: Stories from inspiring people in and around software
 
 {% for post in site.categories.Podcast limit:1 %}
   <div class="row">
-    <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2 text-center">
+    <div class="col-lg-3 text-center">
       {% if post.guests %}
         {% for guest in post.guests %}
           <img class="img guest" src="{{ guest.image }}" />
@@ -18,7 +18,7 @@ tagline: Stories from inspiring people in and around software
         <img class="img guest" src="{{ post.image }}" />
       {% endif %}
     </div>
-    <div class="col-xs-6 col-sm-8 col-md-10 col-lg-10 text-center vertical-center">
+    <div class="col-lg-9 text-center vertical-center">
       <div>
         <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
       </div>
