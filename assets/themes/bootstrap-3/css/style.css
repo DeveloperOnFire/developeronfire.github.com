@@ -15,10 +15,10 @@
 
 /* Jekyll Bootstrap Colors */
 h1, h2, h3, h4 {
-  color: #f22430;
+  color: #072A5E;
 }
 #footer {
-  background-color: #fdcd60;
+  background-color: #b9b5b5c4;
 }
 
 
@@ -143,12 +143,17 @@ div.medium audio {
 
 img.guest {
   width: 150px;
-  height: : 150px;
+  height: 150px;
+}
+
+img.remote-conference-speaker {
+  width: 52px;
+  height: 52px;
 }
 
 img.search-result-image {
   width: 50px;
-  height: : 50px;
+  height: 50px;
 }
 
 li.selected {
@@ -172,4 +177,8 @@ time.chapter-timestamp {
 
 .sponsor-message {
   padding-bottom: 30px;
+}
+
+.promotion h3 {
+  color: #FD1C14
 }

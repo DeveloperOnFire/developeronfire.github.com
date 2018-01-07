@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Developer On Fire
-tagline: Stories from inspiring people in and around software
+tagline: Inspiring software developers tell their stories
 ---
 {% include JB/setup %}
 
