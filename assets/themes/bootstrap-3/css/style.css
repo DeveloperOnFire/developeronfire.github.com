@@ -179,6 +179,11 @@ time.chapter-timestamp {
   padding-bottom: 30px;
 }
 
+.sponsor-img {
+  width: 300px;
+  height: 250px;
+}
+
 .promotion h3 {
   color: #FD1C14
 }
