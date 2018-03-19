@@ -30,6 +30,6 @@
   {% endif %}
   <itunes:duration>{{ post.duration }}</itunes:duration>
   <itunes:keywords>{{ site.keywords }}</itunes:keywords>
-  <itunes:image href="{% if post.image %}{{ site.production_url }}{{ post.image }}{% else %}{{ site.production_url }}{{site.squareLogo}}{% endif %}" />
+  <itunes:image href="{% if post.image %}{{ site.production_url }}{{ post.image }}{% elsif post.guests %}{{ site.production_url }}{{ post.guests.first.image }}{% else %}{{ site.production_url }}{{site.squareLogo}}{% endif %}" />
   <itunes:explicit>no</itunes:explicit>
 </item>
