@@ -31,7 +31,7 @@
       {% unless page.guests == empty %}
         <div class="row">
         {% for guest in page.guests %}
-          <div class="col-xs-{{ 12 | divided_by: page.guests.size }}">
+          <div class="col-md-{{ 12 | divided_by: page.guests.size }}">
             <h4>Guest:</h4>
             <div class="guest">
               <div class="guest col-xs-6">

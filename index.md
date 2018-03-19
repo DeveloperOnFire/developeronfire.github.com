@@ -9,7 +9,7 @@ tagline: Inspiring software developers tell their stories
 
 {% for post in site.categories.Podcast limit:1 %}
   <div class="row">
-    <div class="col-lg-3 text-center">
+    <div class="text-center">
       {% if post.guests %}
         {% for guest in post.guests %}
           <img class="img guest" src="{{ guest.image }}" />
