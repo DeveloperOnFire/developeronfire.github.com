@@ -29,10 +29,11 @@ Among the services offered:
   * Podcasting/Blogging/Media
   * Personal Life Coaching
 
-  [Schedule a free 15-minute coaching call here](http://www.meetme.so/daverael)
-* {:.list-group-item} Project-Based Product Development
+  [Get in contact to schedule a free 15-minute coaching call](mailto:dave@developeronfire.com)
 * {:.list-group-item} Next-Level Training
 * {:.list-group-item} Consulting
+* {:.list-group-item} DevOps Expertise
 * {:.list-group-item} Architecture, Process, Coding, and/or Automated Testing Muscle
+* {:.list-group-item} Project-Based Product Development
 
 To talk about how working with Dave can help you, please get in contact: dave at raelyard dot com.
