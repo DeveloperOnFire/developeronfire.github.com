@@ -19,5 +19,5 @@ redirect_from:
 * {:.list-group-item} Ongoing Patronage on Patreon is preferred, but for one time contributions, you can [use PayPal](https://paypal.me/daverael).
 * {:.list-group-item} When you spend money with Developer On Fire sponsors and partners, you get what you need and the show benefits.
   * {:.list-group-item} ![](http://www.oreilly.com/partner_file/1_125x125.gif) As an O-Reilly media partner, [Developer On Fire can offer great discounts to listeners](/partners/oreilly).
-  * {:.list-group-item} Make your purchases at Amazon via [this link](http://www.amazon.com/?tag=devonfir-20).
+  * {:.list-group-item} Make your purchases at Amazon via [this link](https://www.amazon.com/?tag=devonfir-20).
   * {:.list-group-item} Sign up for a free trial and get a free book at [Audible](http://www.audibletrial.com/developeronfire).
