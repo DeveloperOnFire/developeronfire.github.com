@@ -12,7 +12,7 @@
     &lt;/div&gt;
     {{ post.content | xml_escape }}
   </description>
-  <guid isPermaLink="true">{% if post.guid %}"{{ post.guid }}"{% else %}{{ post.link }}{% endif %}</guid>
+  <guid isPermaLink="true">{% if post.guid %}{% if post.quoteguid %}"{{ post.guid }}"{% else %}{{ post.guid }}{% endif %}{% else %}{{ post.link }}{% endif %}</guid>
   <enclosure url="{{ post.link }}" length="{{ post.length }}" type="audio/mp3"/>
   <itunes:author>{{ post.speaker }}</itunes:author>
   <itunes:subtitle>{{ post.subtitle }}</itunes:subtitle>
