@@ -2,7 +2,7 @@
 <description>{{ site.description }}</description>
 <itunes:summary>{{ site.description }}</itunes:summary>
 <media:description>{{ site.description }}</media:description>
-<atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml" href="http://developeronfire.com/rss.xml" />
+<atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml" href="https://developeronfire.com/rss.xml" />
 <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/" />
 <media:copyright>{{ 'now' | date: "%Y" }} {{ site.organizationName }}</media:copyright>
 <copyright>{{ 'now' | date: "%Y" }} {{ site.organizationName }}</copyright>

@@ -1,6 +1,6 @@
 # Developer On Fire website
 
-This is the website for the popular podcast, [Developer On Fire](http://developeronfire.com)
+This is the website for the popular podcast, [Developer On Fire](https://developeronfire.com)
 
 ## Usage
 
