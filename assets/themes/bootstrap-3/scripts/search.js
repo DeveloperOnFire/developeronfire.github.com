@@ -91,8 +91,13 @@ searchBox.addEventListener('keydown', function(event) {
   }
   if(event.keyCode == 13) {
     event.preventDefault();
-    window.location = currentSelection().getElementsByTagName('a')[0].href;
-    return false;
+
+    var selection = currentSelection();
+    if(selection)
+    {
+      window.location = selection.getElementsByTagName('a')[0].href;
+      return false;
+    }
   }
   if(moveSelection){
     if(selectionMoveUp){
