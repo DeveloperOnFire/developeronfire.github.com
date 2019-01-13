@@ -10,7 +10,7 @@ redirect_from:
 ---
 
 <?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel>
         <title>{{ site.title | xml_escape }} - Blog</title>
         <description>{{ site.title | xml_escape }} - {{ site.author.name | xml_escape }}</description>
@@ -20,16 +20,17 @@ redirect_from:
         <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
         <ttl>60</ttl>
 
-{% for post in site.categories.Blog %}
-        <item>
-                <title>{{ post.title | xml_escape }}</title>
-                <author>{{ post.author | xml_escape }}</author>
-                <description>{{ post.content | xml_escape }}</description>
-                <link>{{ site.production_url }}{{ post.url }}</link>
-                <guid>{% if post.guid %}{{ post.guid }}{% else %}{{ site.production_url }}{{ post.id }}{% endif %}</guid>
-                <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
-        </item>
-{% endfor %}
+        {% for post in site.categories.Blog %}
+                <item>
+                        <title>{{ post.title | xml_escape }}</title>
+                        <author>{{ post.author | xml_escape }}</author>
+                        <description>{{ post.content | xml_escape }}</description>
+                        <link>{{ site.production_url }}{{ post.url }}</link>
+                        <guid>{% if post.guid %}{{ post.guid }}{% else %}{{ site.production_url }}{{ post.id }}{% endif %}</guid>
+                        <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
+                        <content:encoded><![CDATA[<img src="{% if post.image %}{{ site.production_url }}{{ post.image }}{% elsif post.guests %}{{ site.production_url }}{{ post.guests.first.image }}{% else %}{{ site.production_url }}{{site.squareLogo}}{% endif %}" />]]></content:encoded>
+                </item>
+        {% endfor %}
 
 </channel>
 </rss>
