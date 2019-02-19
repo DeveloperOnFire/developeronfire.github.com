@@ -63,8 +63,15 @@
       <div>
         <audio src="{{ page.link }}" id="episode-audio" controls="controls"></audio>
       </div>
-      <div>
-        <a target="_blank" href="{{ page.link }}">Download</a>
+      <div class="row">
+        <div class="col-xs-4">
+          <a target="_blank" href="{{ page.link }}">Download</a>
+        </div>
+        <div class="col-xs-8 text-right">
+          {% if page.audio_editing_message %}
+            {{ page.audio_editing_message }}
+          {% endif %}
+        </div>
       </div>
     </div>
     {% endif %}

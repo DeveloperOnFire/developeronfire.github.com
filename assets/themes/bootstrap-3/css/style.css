@@ -137,6 +137,10 @@ input[type="submit"]:active {
   translateY(-50%);
 }
 
+div.medium {
+  margin-bottom: 30px;
+}
+
 div.medium audio {
   width: 100%;
 }
