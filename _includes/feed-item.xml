@@ -3,52 +3,14 @@
   <link>{{ site.production_url }}{{ post.url }}</link>
   <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
   <description>
-    &lt;div&gt;
-      &lt;div&gt;Guest:&lt;/div&gt;
-      &lt;div&gt;
-        {% if post.guest_name %}
-          &lt;div&gt;&lt;a target="_blank" href="{{ post.guest_blog }}"&gt;{{ post.guest_name }}&lt;/a&gt;&lt;/div&gt;
-          &lt;div&gt;&lt;a target="_blank" href="http://twitter.com/{{ post.guest_twitter }}"&gt;@{{ post.guest_twitter }}&lt;/a&gt;&lt;/div&gt;
-        {% endif %}
-        {% if post.guests %}
-          {% unless post.guests == empty %}
-            &lt;div&gt;
-            {% for guest in post.guests %}
-              &lt;div&gt;&lt;a target="_blank" href="{{ guest.blog }}"&gt;{{ guest.name }}&lt;/a&gt;&lt;/div&gt;
-              &lt;div&gt;&lt;a target="_blank" href="http://twitter.com/{{ guest.twitter }}"&gt;@{{ guest.twitter }}&lt;/a&gt;&lt;/div&gt;
-            {% endfor %}
-            &lt;/div&gt;
-          {% endunless %}
-        {% endif %}
-      &lt;/div&gt;
-    &lt;/div&gt;
-    {{ post.content | xml_escape }}
+    <![CDATA[{% include feed-item-shownotes.html %}]]>
   </description>
   <guid isPermaLink="true">{% if post.guid %}{% if post.quoteguid %}"{{ post.guid }}"{% else %}{{ post.guid }}{% endif %}{% else %}{{ post.link }}{% endif %}</guid>
   <enclosure url="{{ post.link }}" length="{{ post.length }}" type="audio/mp3"/>
   <itunes:author>{{ post.speaker }}</itunes:author>
   <itunes:subtitle>{{ post.subtitle }}</itunes:subtitle>
   <itunes:summary>
-    &lt;div&gt;
-      &lt;div&gt;Guest:&lt;/div&gt;
-      &lt;div&gt;
-        {% if post.guest_name %}
-          &lt;div&gt;&lt;a target="_blank" href="{{ post.guest_blog }}"&gt;{{ post.guest_name }}&lt;/a&gt;&lt;/div&gt;
-          &lt;div&gt;&lt;a target="_blank" href="http://twitter.com/{{ post.guest_twitter }}"&gt;@{{ post.guest_twitter }}&lt;/a&gt;&lt;/div&gt;
-        {% endif %}
-        {% if post.guests %}
-          {% unless post.guests == empty %}
-            &lt;div&gt;
-            {% for guest in post.guests %}
-              &lt;div&gt;&lt;a target="_blank" href="{{ guest.blog }}"&gt;{{ guest.name }}&lt;/a&gt;&lt;/div&gt;
-              &lt;div&gt;&lt;a target="_blank" href="http://twitter.com/{{ guest.twitter }}"&gt;@{{ guest.twitter }}&lt;/a&gt;&lt;/div&gt;
-            {% endfor %}
-            &lt;/div&gt;
-          {% endunless %}
-        {% endif %}
-      &lt;/div&gt;
-    &lt;/div&gt;
-    {{ post.content | xml_escape }}
+    <![CDATA[{% include feed-item-shownotes.html %}]]>
   </itunes:summary>
   <itunes:duration>{{ post.duration }}</itunes:duration>
   <itunes:keywords>{{ site.keywords }}</itunes:keywords>

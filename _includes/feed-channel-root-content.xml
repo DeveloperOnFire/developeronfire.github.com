@@ -13,7 +13,7 @@
 <link>{{ site.production_url }}</link>
 <language>en</language>
 <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
-<lastBuildDate>{{ site.time | date: date_to_rfc822 }}</lastBuildDate>
+<lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
 <image>
   <link>{{ site.production_url}}</link>
   <url>{{ site.production_url }}{{ site.squareLogo}}</url>

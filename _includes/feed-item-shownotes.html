@@ -1,0 +1,22 @@
+<p>
+    <div>Guest:</div>
+    <div>
+        {% if post.guest_name %}
+        <div><a target="_blank" href="{{ post.guest_blog }}">{{ post.guest_name }}</a></div>
+        <div><a target="_blank" href="http://twitter.com/{{ post.guest_twitter }}">@{{ post.guest_twitter }}</a></div>
+        {% endif %}
+        {% if post.guests %}
+        {% unless post.guests == empty %}
+            <div>
+            {% for guest in post.guests %}
+            <div><a target="_blank" href="{{ guest.blog }}">{{ guest.name }}</a></div>
+            <div><a target="_blank" href="http://twitter.com/{{ guest.twitter }}">@{{ guest.twitter }}</a></div>
+            {% endfor %}
+            </div>
+        {% endunless %}
+        {% endif %}
+    </div>
+</p>
+<p>
+    {{ post.content }}
+</p>
