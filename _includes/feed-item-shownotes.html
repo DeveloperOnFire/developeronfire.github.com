@@ -2,21 +2,28 @@
     <div>Guest:</div>
     <div>
         {% if post.guest_name %}
-        <div><a target="_blank" href="{{ post.guest_blog }}">{{ post.guest_name }}</a></div>
-        <div><a target="_blank" href="http://twitter.com/{{ post.guest_twitter }}">@{{ post.guest_twitter }}</a></div>
+            <div><a target="_blank" href="{{ post.guest_blog }}">{{ post.guest_name }}</a></div>
+            <div><a target="_blank" href="http://twitter.com/{{ post.guest_twitter }}">@{{ post.guest_twitter }}</a></div>
         {% endif %}
         {% if post.guests %}
-        {% unless post.guests == empty %}
-            <div>
-            {% for guest in post.guests %}
-            <div><a target="_blank" href="{{ guest.blog }}">{{ guest.name }}</a></div>
-            <div><a target="_blank" href="http://twitter.com/{{ guest.twitter }}">@{{ guest.twitter }}</a></div>
-            {% endfor %}
-            </div>
-        {% endunless %}
+            {% unless post.guests == empty %}
+                <div>
+                {% for guest in post.guests %}
+                <div><a target="_blank" href="{{ guest.blog }}">{{ guest.name }}</a></div>
+                <div><a target="_blank" href="http://twitter.com/{{ guest.twitter }}">@{{ guest.twitter }}</a></div>
+                {% endfor %}
+                </div>
+            {% endunless %}
         {% endif %}
     </div>
 </p>
 <p>
-    {{ post.content }}
+    {% assign timeframe_full_shownotes_seconds = 2629746 %}
+    {% assign episode_epoch = post.date | date: "%s" | plus: 0 %}
+    {% assign full_shownotes_newer_epoch = 'now' | date: "%s" | minus : timeframe_full_shownotes_seconds %}
+    {% if episode_epoch > full_shownotes_newer_epoch %}
+        {{ post.content }}
+    {% else %}
+        <span>Full show notes are at <a href="{{ site.production_url }}{{ post.url }}">{{ site.production_url }}{{ post.url }}</a></span>
+    {% endif %}
 </p>
