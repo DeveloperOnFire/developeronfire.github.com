@@ -6,8 +6,20 @@
     &lt;div&gt;
       &lt;div&gt;Guest:&lt;/div&gt;
       &lt;div&gt;
-        &lt;div&gt;&lt;a target="_blank" href="{{ post.guest_blog }}"&gt;{{ post.guest_name }}&lt;/a&gt;&lt;/div&gt;
-        &lt;div&gt;&lt;a target="_blank" href="http://twitter.com/{{ post.guest_twitter }}"&gt;@{{ post.guest_twitter }}&lt;/a&gt;&lt;/div&gt;
+        {% if post.guest_name %}
+          &lt;div&gt;&lt;a target="_blank" href="{{ post.guest_blog }}"&gt;{{ post.guest_name }}&lt;/a&gt;&lt;/div&gt;
+          &lt;div&gt;&lt;a target="_blank" href="http://twitter.com/{{ post.guest_twitter }}"&gt;@{{ post.guest_twitter }}&lt;/a&gt;&lt;/div&gt;
+        {% endif %}
+        {% if post.guests %}
+          {% unless post.guests == empty %}
+            &lt;div&gt;
+            {% for guest in post.guests %}
+              &lt;div&gt;&lt;a target="_blank" href="{{ guest.blog }}"&gt;{{ guest.name }}&lt;/a&gt;&lt;/div&gt;
+              &lt;div&gt;&lt;a target="_blank" href="http://twitter.com/{{ guest.twitter }}"&gt;@{{ guest.twitter }}&lt;/a&gt;&lt;/div&gt;
+            {% endfor %}
+            &lt;/div&gt;
+          {% endunless %}
+        {% endif %}
       &lt;/div&gt;
     &lt;/div&gt;
     {{ post.content | xml_escape }}
@@ -20,8 +32,20 @@
     &lt;div&gt;
       &lt;div&gt;Guest:&lt;/div&gt;
       &lt;div&gt;
-        &lt;div&gt;&lt;a target="_blank" href="{{ post.guest_blog }}"&gt;{{ post.guest_name }}&lt;/a&gt;&lt;/div&gt;
-        &lt;div&gt;&lt;a target="_blank" href="http://twitter.com/{{ post.guest_twitter }}"&gt;@{{ post.guest_twitter }}&lt;/a&gt;&lt;/div&gt;
+        {% if post.guest_name %}
+          &lt;div&gt;&lt;a target="_blank" href="{{ post.guest_blog }}"&gt;{{ post.guest_name }}&lt;/a&gt;&lt;/div&gt;
+          &lt;div&gt;&lt;a target="_blank" href="http://twitter.com/{{ post.guest_twitter }}"&gt;@{{ post.guest_twitter }}&lt;/a&gt;&lt;/div&gt;
+        {% endif %}
+        {% if post.guests %}
+          {% unless post.guests == empty %}
+            &lt;div&gt;
+            {% for guest in post.guests %}
+              &lt;div&gt;&lt;a target="_blank" href="{{ guest.blog }}"&gt;{{ guest.name }}&lt;/a&gt;&lt;/div&gt;
+              &lt;div&gt;&lt;a target="_blank" href="http://twitter.com/{{ guest.twitter }}"&gt;@{{ guest.twitter }}&lt;/a&gt;&lt;/div&gt;
+            {% endfor %}
+            &lt;/div&gt;
+          {% endunless %}
+        {% endif %}
       &lt;/div&gt;
     &lt;/div&gt;
     {{ post.content | xml_escape }}
