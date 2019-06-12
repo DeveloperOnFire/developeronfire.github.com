@@ -12,11 +12,10 @@ redirect_from:
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-	<channel>
+  <channel>
     {% include feed-channel-root-content.xml %}
-    {% capture use_itunes_summary %}true{% endcapture %}
-		{% for post in site.categories.Podcast %}
+    {% for post in site.categories.Podcast %}
       {% include feed-item.xml %}
-		{% endfor %}
+    {% endfor %}
 	</channel>
 </rss>

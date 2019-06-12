@@ -16,18 +16,16 @@
   <enclosure url="{{ post.link }}" length="{{ post.length }}" type="audio/mp3"/>
   <itunes:author>{{ post.speaker }}</itunes:author>
   <itunes:subtitle>{{ post.subtitle }}</itunes:subtitle>
-  {% if use_itunes_summary %}
-    <itunes:summary>
+  <itunes:summary>
+    &lt;div&gt;
+      &lt;div&gt;Guest:&lt;/div&gt;
       &lt;div&gt;
-        &lt;div&gt;Guest:&lt;/div&gt;
-        &lt;div&gt;
-          &lt;div&gt;&lt;a target="_blank" href="{{ post.guest_blog }}"&gt;{{ post.guest_name }}&lt;/a&gt;&lt;/div&gt;
-          &lt;div&gt;&lt;a target="_blank" href="http://twitter.com/{{ post.guest_twitter }}"&gt;@{{ post.guest_twitter }}&lt;/a&gt;&lt;/div&gt;
-        &lt;/div&gt;
+        &lt;div&gt;&lt;a target="_blank" href="{{ post.guest_blog }}"&gt;{{ post.guest_name }}&lt;/a&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;a target="_blank" href="http://twitter.com/{{ post.guest_twitter }}"&gt;@{{ post.guest_twitter }}&lt;/a&gt;&lt;/div&gt;
       &lt;/div&gt;
-      {{ post.content | xml_escape }}
-    </itunes:summary>
-  {% endif %}
+    &lt;/div&gt;
+    {{ post.content | xml_escape }}
+  </itunes:summary>
   <itunes:duration>{{ post.duration }}</itunes:duration>
   <itunes:keywords>{{ site.keywords }}</itunes:keywords>
   <itunes:image href="{% if post.image %}{{ site.production_url }}{{ post.image }}{% elsif post.guests %}{{ site.production_url }}{{ post.guests.first.image }}{% else %}{{ site.production_url }}{{site.squareLogo}}{% endif %}" />
