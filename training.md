@@ -6,9 +6,8 @@ permalink: /training/
 group: navigation
 group-sort: 265
 redirect_from:
-  - /hire/
-  - /hiredave/
-  - /services/
+  - /trainings/
+  - /trainings
 ---
 {% include JB/setup %}
 
