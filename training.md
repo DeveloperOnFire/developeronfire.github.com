@@ -17,19 +17,25 @@ In addition to being a dynamic podcast host, Dave Rael offers training to help y
 
 <img class="img guest" src="/assets/images/DaveRael.jpg" />
 
-Training is available in the following topics:
+I'm prepared to train on following topics:
 
 * {:.list-group-item} Git
 * {:.list-group-item} .NET Core
-* {:.list-group-item} C#
 * {:.list-group-item} Docker
 * {:.list-group-item} Kubernetes
+
+I'm also considering offering training for:
+
 * {:.list-group-item} Command/Query Responsibility Segregation (CQRS)
 * {:.list-group-item} DevOps
+* {:.list-group-item} C#
 * {:.list-group-item} Continuous Integration/Continuous Deployment
 * {:.list-group-item} Behavior-Driven Development (BDD)
 * {:.list-group-item} Automated Testing
 * {:.list-group-item} Event Sourcing
 * {:.list-group-item} Domain Modeling
+* {:.list-group-item} Azure DevOps
+* {:.list-group-item} GitLab
+* {:.list-group-item} Podcasting
 
-[Get in contact to schedule training for your organization](mailto:dave@developeronfire.com)
+Let's talk about how I can help you. [Schedule a time now](https://calendly.com/dave-rael/training-conversation) or [get in contact](mailto:dave@developeronfire.com).
