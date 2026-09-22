@@ -1,38 +1,34 @@
-function audioPlayer(){
-  return document.getElementById('episode-audio');
-}
-
-function playPause() {
-  self.isPlaying() ? player.pause() : player.play();
-}
-
-function play(time) {
-  audioPlayer().play();
-}
-
-function jumpAudioToTime(time) {
-  audioPlayer().currentTime = time;
-  play();
-}
+// Episode player: clicking a chapter timestamp jumps the audio to that point.
 
 function parseTimeToSeconds(time) {
-  var timeParts = time.split(':');
+  var timeParts = String(time).trim().split(':');
   var seconds = 0;
   for (var i = 0; i < timeParts.length; ++i) {
     var timePartPower = timeParts.length - i - 1;
-    seconds += timeParts[i] * (Math.pow(60,timePartPower));
+    seconds += Number(timeParts[i]) * Math.pow(60, timePartPower);
   }
   return seconds;
 }
 
-(function init(){
-  var jumpAudioLinks = document.getElementsByClassName('chapter-timestamp');
-  for(var i = 0;i<jumpAudioLinks.length; ++i) {
-    (function(timeElement) {
-      timeElement.parentElement.addEventListener('click', function() {
-        var time = parseTimeToSeconds(timeElement.innerHTML);
-        jumpAudioToTime(time);
-      });
-    })(jumpAudioLinks[i]);
-  }
-})();
+if (typeof module !== 'undefined') {
+  module.exports = { parseTimeToSeconds: parseTimeToSeconds };
+}
+
+if (typeof document !== 'undefined') {
+  (function () {
+    var player = document.getElementById('episode-audio');
+    if (!player) {
+      return;
+    }
+    var chapterTimestamps = document.getElementsByClassName('chapter-timestamp');
+    for (var i = 0; i < chapterTimestamps.length; ++i) {
+      (function (timeElement) {
+        timeElement.parentElement.addEventListener('click', function (event) {
+          event.preventDefault();
+          player.currentTime = parseTimeToSeconds(timeElement.textContent);
+          player.play();
+        });
+      })(chapterTimestamps[i]);
+    }
+  })();
+}

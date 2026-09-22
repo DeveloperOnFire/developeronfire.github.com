@@ -1,8 +1,5 @@
 ---
 ---
-[
-  {% for post in site.categories.Podcast %}
-    {% include post.json %},
-  {% endfor %}
-  null
+[{% for post in site.categories.Podcast %}{% unless forloop.first %},{% endunless %}
+  {% include post.json %}{% endfor %}
 ]

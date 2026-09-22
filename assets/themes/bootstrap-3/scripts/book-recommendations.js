@@ -1,76 +1,67 @@
-var DataGrouper = (function() {
-    var has = function(obj, target) {
-        return _.any(obj, function(value) {
-            return _.isEqual(value, target);
-        });
-    };
+// Book recommendations: groups every recommendation made on the show by book,
+// most-recommended first, and lists the episodes that recommended each one.
 
-    var keys = function(data, names) {
-        return _.reduce(data, function(memo, item) {
-            var key = _.pick(item, names);
-            if (!has(memo, key)) {
-                memo.push(key);
-            }
-            return memo;
-        }, []);
-    };
+function compareBooks(book0, book1) {
+  if (book0.recommenders.length !== book1.recommenders.length) {
+    return book1.recommenders.length - book0.recommenders.length;
+  }
+  return book0.title.localeCompare(book1.title);
+}
 
-    var group = function(data, names) {
-        var stems = keys(data, names);
-        return _.map(stems, function(stem) {
-            return {
-                key: stem,
-                vals:_.map(_.where(data, stem), function(item) {
-                    return _.omit(item, names);
-                })
-            };
-        });
-    };
-
-    group.register = function(name, converter) {
-        return group[name] = function(data, names) {
-            return _.map(group(data, names), converter);
-        };
-    };
-
-    return group;
-}());
-DataGrouper.register("recommenders", function(item) {
-  return _.extend({}, item.key, {recommenders: _.reduce(item.vals, function(memo, book) {
-    memo.push(book.recommended_by);
-    return memo;
-  }, [])});
-});
-document.addEventListener("DOMContentLoaded", function() {
-  $.getJSON("/book-recommendations.json", function(bookData) {
-    bookData.pop();
-    books = DataGrouper.recommenders(bookData, ["url", "title", "author"]).sort(function(book0, book1) {
-      if(book0.recommenders.length > book1.recommenders.length){
-        return -1;
-      }
-      if(book0.recommenders.length < book1.recommenders.length){
-        return 1;
-      }
-      return book0.title > book1.title;
-    });
-    var bookRecommendationsList = document.getElementById("book-recommendations");
-    for (var i = 0; i < books.length; i++) {
-      var link = document.createElement("a");
-      var book = document.createElement("li");
-      link.href = books[i].url;
-      link.innerText = books[i].title + " - " + books[i].author;
-      var recommendersList = document.createElement("ul");
-      for (var j = 0; j < books[i].recommenders.length; j++) {
-        var recommender = document.createElement("li");
-        var recommenderLink = document.createElement("a");
-        recommenderLink.href = books[i].recommenders[j].url;
-        recommenderLink.innerText = books[i].recommenders[j].title;
-        recommender.appendChild(recommenderLink);
-        recommendersList.appendChild(recommender);
-      }
-      book.appendChild(link);
-      book.appendChild(recommendersList);
-      bookRecommendationsList.appendChild(book);
+function groupBooks(recommendations) {
+  var booksByKey = {};
+  var books = [];
+  recommendations.forEach(function (recommendation) {
+    var key = [recommendation.url, recommendation.title, recommendation.author].join('\n');
+    if (!booksByKey[key]) {
+      booksByKey[key] = {
+        url: recommendation.url,
+        title: recommendation.title,
+        author: recommendation.author,
+        recommenders: []
+      };
+      books.push(booksByKey[key]);
     }
+    booksByKey[key].recommenders.push(recommendation.recommended_by);
   });
-});
+  return books.sort(compareBooks);
+}
+
+if (typeof module !== 'undefined') {
+  module.exports = { groupBooks: groupBooks };
+}
+
+if (typeof document !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var bookRecommendationsList = document.getElementById('book-recommendations');
+    fetch('/book-recommendations.json').then(function (response) {
+      if (!response.ok) {
+        throw new Error('book-recommendations.json responded with ' + response.status);
+      }
+      return response.json();
+    }).then(function (recommendations) {
+      groupBooks(recommendations).forEach(function (book) {
+        var item = document.createElement('li');
+        var link = document.createElement('a');
+        link.href = book.url;
+        link.innerText = book.title + ' - ' + book.author;
+        var recommendersList = document.createElement('ul');
+        book.recommenders.forEach(function (recommender) {
+          var recommenderItem = document.createElement('li');
+          var recommenderLink = document.createElement('a');
+          recommenderLink.href = recommender.url;
+          recommenderLink.innerText = recommender.title;
+          recommenderItem.appendChild(recommenderLink);
+          recommendersList.appendChild(recommenderItem);
+        });
+        item.appendChild(link);
+        item.appendChild(recommendersList);
+        bookRecommendationsList.appendChild(item);
+      });
+    }).catch(function () {
+      var failure = document.createElement('li');
+      failure.innerText = 'The book list could not be loaded right now.';
+      bookRecommendationsList.appendChild(failure);
+    });
+  });
+}
