@@ -97,6 +97,9 @@ JB :
   analytics :
     provider : google
     google :
+        # Rendered with the gtag.js snippet. Universal Analytics (UA- ids) stopped
+        # collecting data on 2024-07-01; replace this with the GA4 measurement id
+        # (G-XXXXXXXXXX) of the property that should receive page views.
         tracking_id : 'UA-52607824-3'
 
   # Settings for sharing helper.
