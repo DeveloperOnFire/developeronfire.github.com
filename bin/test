@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Builds the site exactly as GitHub Pages does and runs every check against
+# the rendered output, the source posts, the scripts and the dependency set.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+export JEKYLL_ENV=production
+bundle exec jekyll build --destination _site
+
+bundle exec ruby -Itest test/site_test.rb
+
+command -v node >/dev/null || { echo "node is required for the script tests (test/js)" >&2; exit 1; }
+node --test 'test/js/*.test.js'
+
+# CVE-2026-85396 (rubyzip < 3.4) is ignored knowingly: github-pages pins
+# jekyll-remote-theme, which caps rubyzip below 3.0, and this site uses no
+# remote theme so the zip extraction path never runs. Remove the ignore once
+# github-pages lifts the cap.
+bundle exec bundle-audit check --update --ignore CVE-2026-85396
