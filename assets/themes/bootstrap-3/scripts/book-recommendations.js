@@ -1,5 +1,7 @@
 // Book recommendations: groups every recommendation made on the show by book,
 // most-recommended first, and lists the episodes that recommended each one.
+// A book is identified by its URL; the title and author shown are those of the
+// first recommendation, so spelling variants across episodes do not split a book.
 
 function compareBooks(book0, book1) {
   if (book0.recommenders.length !== book1.recommenders.length) {
@@ -12,7 +14,7 @@ function groupBooks(recommendations) {
   var booksByKey = {};
   var books = [];
   recommendations.forEach(function (recommendation) {
-    var key = [recommendation.url, recommendation.title, recommendation.author].join('\n');
+    var key = recommendation.url;
     if (!booksByKey[key]) {
       booksByKey[key] = {
         url: recommendation.url,

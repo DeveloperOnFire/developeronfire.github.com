@@ -11,20 +11,14 @@ tagline: Inspiring software developers tell their stories
 
   <div class="row episode">
     <div class="col-lg-2 col-sm-4 col-xs-12 text-center">
-      {% if post.guests %}
-        {% for guest in post.guests %}
-          <div>
-            <img class="img guest" src="{{ guest.image }}" alt="{{ guest.name }}" />
-          </div>
-          <div>
-            <a href="{{ BASE_PATH }}{{ post.url }}">{{ guest.name }}</a>
-          </div>
-        {% endfor %}
-      {% else %}
+      {% for guest in post.guests %}
         <div>
-          <img class="img guest" src="{{ post.image }}" alt="{{ post.title }}" />
+          <img class="img guest" src="{{ guest.image | escape }}" alt="{{ guest.name | escape }}" />
         </div>
-      {% endif %}
+        <div>
+          <a href="{{ BASE_PATH }}{{ post.url }}">{{ guest.name | escape }}</a>
+        </div>
+      {% endfor %}
     </div>
     <div class="col-lg-7 col-sm-8 col-xs-12 text-left text-center">
       <div>

@@ -30,7 +30,17 @@ test('groupBooks orders equally recommended books alphabetically by title', () =
   assert.deepEqual(books.map((b) => b.title), ['Clean Code', 'Deep Work', 'The Pragmatic Programmer']);
 });
 
-test('groupBooks treats the same title by a different author as a different book', () => {
-  const other = Object.assign({}, deepWork, { author: 'Someone Else', url: 'https://example.com/other' });
-  assert.equal(groupBooks([recommendation(deepWork, 'ep1'), recommendation(other, 'ep2')]).length, 2);
+test('groupBooks treats the same URL with a differently spelled title as one book', () => {
+  const variant = Object.assign({}, deepWork, { title: 'Deep Work: Rules for Focused Success' });
+  assert.equal(groupBooks([recommendation(deepWork, 'ep1'), recommendation(variant, 'ep2')]).length, 1);
+});
+
+test('groupBooks treats the same title at a different URL as a different book', () => {
+  const otherEdition = Object.assign({}, deepWork, { url: 'https://example.com/deep-work-2nd' });
+  assert.equal(groupBooks([recommendation(deepWork, 'ep1'), recommendation(otherEdition, 'ep2')]).length, 2);
+});
+
+test('groupBooks shows the title from the first recommendation of a book', () => {
+  const variant = Object.assign({}, deepWork, { title: 'Deep Work (variant)' });
+  assert.equal(groupBooks([recommendation(deepWork, 'ep1'), recommendation(variant, 'ep2')])[0].title, 'Deep Work');
 });

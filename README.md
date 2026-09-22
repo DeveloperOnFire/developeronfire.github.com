@@ -41,6 +41,12 @@ bin/test
 ```
 
 This builds the site, runs the checks in `test/site_test.rb` against the rendered
-output, runs the script tests in `test/js` with `node --test`, and audits the
-dependency set with bundler-audit. The same script runs in GitHub Actions on
-every push and pull request. Node 22 or newer is required for the script tests.
+output, and runs the script tests in `test/js` with `node --test`. It works
+offline. Node 22 or newer is required for the script tests.
+
+```sh
+bin/audit
+```
+
+This audits the locked gem set against the Ruby advisory database and needs
+network access. GitHub Actions runs both scripts on every push and pull request.

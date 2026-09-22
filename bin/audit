@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Audits the locked gem set against the ruby-advisory-db. Needs network access.
+#
+# CVE-2026-85396 (rubyzip < 3.4) is ignored knowingly: github-pages pins
+# jekyll-remote-theme, which caps rubyzip below 3.0, and this site uses no remote
+# theme, so the zip extraction path never runs. Remove the ignore once
+# github-pages lifts the cap.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+bundle exec bundle-audit check --update --ignore CVE-2026-85396

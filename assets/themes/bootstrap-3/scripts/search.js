@@ -7,7 +7,7 @@ function filterPosts(posts, query) {
   }
   var needle = query.toLowerCase();
   return posts.filter(function (post) {
-    return post !== null && post.title.toLowerCase().indexOf(needle) !== -1;
+    return post.title.toLowerCase().indexOf(needle) !== -1;
   });
 }
 
@@ -150,8 +150,9 @@ if (typeof document !== 'undefined') {
       } else if (event.key === 'Enter') {
         event.preventDefault();
         var selection = currentSelection();
-        if (selection) {
-          window.location = selection.getElementsByTagName('a')[0].href;
+        var link = selection && selection.getElementsByTagName('a')[0];
+        if (link) {
+          window.location = link.href;
         }
       }
     });

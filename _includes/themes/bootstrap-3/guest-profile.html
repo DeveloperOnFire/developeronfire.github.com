@@ -1,22 +1,26 @@
 {%- comment -%}
   A guest's profile: photo, links, bio, and every episode and blog post they appear in.
-  Appearances match on the guest's name, the identity used throughout the site.
+
+  Identity: two guest entries are the same person when both carry a Twitter handle and
+  the handles match (case-insensitively); when either side has no handle, the names
+  must match. Handles distinguish namesakes (two different Jared Smiths have pages);
+  names cover guests who have no handle.
   Usage: {% include themes/bootstrap-3/guest-profile.html guest=page.guest %}
 {%- endcomment -%}
 <div class="col-xs-12">
   <div class="col-xs-6 col-sm-4 col-md-2 text-center">
-    <img class="img img-circle guest" src="{{ include.guest.image }}" alt="{{ include.guest.name }}" />
+    <img class="img img-circle guest" src="{{ include.guest.image | escape }}" alt="{{ include.guest.name | escape }}" />
   </div>
   <div class="col-xs-6 col-sm-8 col-md-10 text-center">
     <div class="vertical-center">
       <div>
         {% if include.guest.blog %}
-        <div><a target="_blank" rel="noopener noreferrer" href="{{ include.guest.blog }}">{{ include.guest.name }}</a></div>
+        <div><a target="_blank" rel="noopener noreferrer" href="{{ include.guest.blog | escape }}">{{ include.guest.name | escape }}</a></div>
         {% else %}
-        <div>{{ include.guest.name }}</div>
+        <div>{{ include.guest.name | escape }}</div>
         {% endif %}
         {% if include.guest.twitter %}
-        <div><a target="_blank" rel="noopener noreferrer" href="https://twitter.com/{{ include.guest.twitter }}">@{{ include.guest.twitter }}</a></div>
+        <div><a target="_blank" rel="noopener noreferrer" href="https://twitter.com/{{ include.guest.twitter | escape }}">@{{ include.guest.twitter | escape }}</a></div>
         {% endif %}
       </div>
     </div>
@@ -25,20 +29,28 @@
 
 {% if include.guest.bio %}
   <div class="col-xs-12 guest-bio">
-    {{ include.guest.bio }}
+    {{ include.guest.bio | escape }}
   </div>
 {% endif %}
 
 <div class="col-xs-12">
-  {{ include.guest.firstName }}'s appearances on the show:
+  {{ include.guest.firstName | escape }}'s appearances on the show:
 </div>
 
 <div class="col-xs-12">
   <ul class="list-group appearances">
+    {%- assign page_handle = include.guest.twitter | downcase -%}
     {%- for post in site.categories.Podcast reversed -%}
       {%- for postGuest in post.guests -%}
-        {%- if postGuest.name == include.guest.name %}
-    <li class="list-group-item"><a href="{{ post.url }}">{{ post.title }}</a></li>
+        {%- assign same_guest = false -%}
+        {%- if include.guest.twitter and postGuest.twitter -%}
+          {%- assign post_handle = postGuest.twitter | downcase -%}
+          {%- if post_handle == page_handle -%}{%- assign same_guest = true -%}{%- endif -%}
+        {%- elsif postGuest.name == include.guest.name -%}
+          {%- assign same_guest = true -%}
+        {%- endif -%}
+        {%- if same_guest %}
+    <li class="list-group-item"><a href="{{ post.url }}">{{ post.title | escape }}</a></li>
         {%- endif -%}
       {%- endfor -%}
     {%- endfor %}
@@ -46,14 +58,14 @@
 </div>
 
 <div class="col-xs-12">
-  {{ include.guest.firstName }}'s posts on the blog:
+  {{ include.guest.firstName | escape }}'s posts on the blog:
 </div>
 
 <div class="col-xs-12">
   <ul class="list-group blog-posts">
     {%- for post in site.categories.Blog reversed -%}
       {%- if post.author == include.guest.name %}
-    <li class="list-group-item"><a href="{{ post.url }}">{{ post.title }}</a></li>
+    <li class="list-group-item"><a href="{{ post.url }}">{{ post.title | escape }}</a></li>
       {%- endif -%}
     {%- endfor %}
   </ul>

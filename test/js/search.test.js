@@ -11,6 +11,10 @@ test('filterPosts matches titles regardless of letter case', () => {
   assert.deepEqual(filterPosts(posts, 'aimee').map((p) => p.url), ['/podcast/b']);
 });
 
+test('filterPosts matches on any substring of the title', () => {
+  assert.deepEqual(filterPosts(posts, '452').map((p) => p.url), ['/podcast/b']);
+});
+
 test('filterPosts returns an empty list when no title contains the query', () => {
   assert.deepEqual(filterPosts(posts, 'zzz'), []);
 });

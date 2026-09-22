@@ -7,17 +7,17 @@
     <div class="vertical-center">
       <div>
         {% if include.guest.blog %}
-        <div><a target="_blank" rel="noopener noreferrer" href="{{ include.guest.blog }}">{{ include.guest.name }}</a></div>
+        <div><a target="_blank" rel="noopener noreferrer" href="{{ include.guest.blog | escape }}">{{ include.guest.name | escape }}</a></div>
         {% else %}
-        <div>{{ include.guest.name }}</div>
+        <div>{{ include.guest.name | escape }}</div>
         {% endif %}
         {% if include.guest.twitter %}
-        <div><a target="_blank" rel="noopener noreferrer" href="https://twitter.com/{{ include.guest.twitter }}">@{{ include.guest.twitter }}</a></div>
+        <div><a target="_blank" rel="noopener noreferrer" href="https://twitter.com/{{ include.guest.twitter | escape }}">@{{ include.guest.twitter | escape }}</a></div>
         {% endif %}
       </div>
     </div>
   </div>
   <div class="col-xs-6 col-sm-4">
-    <img class="img img-circle guest" src="{{ include.guest.image }}" alt="{{ include.guest.name }}" />
+    <img class="img img-circle guest" src="{{ include.guest.image | escape }}" alt="{{ include.guest.name | escape }}" />
   </div>
 </div>

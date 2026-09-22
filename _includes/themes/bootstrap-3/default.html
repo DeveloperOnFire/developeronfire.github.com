@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>{% if page.title == site.title %}{{ site.title }}{% else %}{{ page.title }} | {{ site.title }}{% endif %}</title>
-    <meta name="description" content="{{ page.description | default: site.description }}">
+    <title>{% if page.title == site.title %}{{ site.title }}{% else %}{{ page.title | escape }} | {{ site.title }}{% endif %}</title>
+    <meta name="description" content="{{ page.description | default: page.subtitle | default: site.description | escape }}">
     <meta name="author" content="{{ site.author.name }}">
 
     <!-- Enable responsive viewport -->

@@ -1,7 +1,11 @@
 // Episode player: clicking a chapter timestamp jumps the audio to that point.
 
+// "m:ss" or "h:mm:ss" (or bare seconds) to seconds; null when the text is not a timestamp.
 function parseTimeToSeconds(time) {
   var timeParts = String(time).trim().split(':');
+  if (timeParts.length > 3 || !timeParts.every(function (part) { return /^\d+$/.test(part); })) {
+    return null;
+  }
   var seconds = 0;
   for (var i = 0; i < timeParts.length; ++i) {
     var timePartPower = timeParts.length - i - 1;
@@ -25,7 +29,11 @@ if (typeof document !== 'undefined') {
       (function (timeElement) {
         timeElement.parentElement.addEventListener('click', function (event) {
           event.preventDefault();
-          player.currentTime = parseTimeToSeconds(timeElement.textContent);
+          var seconds = parseTimeToSeconds(timeElement.textContent);
+          if (seconds === null) {
+            return;
+          }
+          player.currentTime = seconds;
           player.play();
         });
       })(chapterTimestamps[i]);

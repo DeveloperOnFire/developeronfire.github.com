@@ -9,10 +9,10 @@
     </div>
 
     {% if page.guests and page.guests != empty %}
+      <h4>{% if page.guests.size > 1 %}Guests{% else %}Guest{% endif %}:</h4>
       <div class="row">
       {% for guest in page.guests %}
         <div class="col-md-{{ 12 | divided_by: page.guests.size }}">
-          <h4>Guest:</h4>
           {% include themes/bootstrap-3/guest-card.html guest=guest %}
         </div>
       {% endfor %}
@@ -22,11 +22,11 @@
     {% if page.link %}
     <div class="medium">
       <div>
-        <audio src="{{ page.link }}" id="episode-audio" controls="controls" preload="metadata"></audio>
+        <audio src="{{ page.link | escape }}" id="episode-audio" controls="controls" preload="metadata"></audio>
       </div>
       <div class="row">
         <div class="col-xs-4">
-          <a target="_blank" rel="noopener noreferrer" href="{{ page.link }}">Download</a>
+          <a target="_blank" rel="noopener noreferrer" href="{{ page.link | escape }}">Download</a>
         </div>
         <div class="col-xs-8 text-right">
           {% if page.audio_editing_message %}
@@ -48,14 +48,14 @@
         <h2>Episode sponsored by:</h2>
         {% for sponsor_ad in page.sponsors %}
           <div>
-            <a href="{{ sponsor_ad.url }}" rel="noopener noreferrer sponsored">
+            <a href="{{ sponsor_ad.url | escape }}" rel="sponsored">
               <div class="sponsor">
-                <img class="img sponsor-img" src="{{ sponsor_ad.image }}" alt="{{ sponsor_ad.title }}" />
+                <img class="img sponsor-img" src="{{ sponsor_ad.image | escape }}" alt="{{ sponsor_ad.title | escape }}" />
                 <div class="sponsor-title">
-                  {{ sponsor_ad.title }}
+                  {{ sponsor_ad.title | escape }}
                 </div>
                 <div class="sponsor-message">
-                  {{ sponsor_ad.text }}
+                  {{ sponsor_ad.text | escape }}
                 </div>
               </div>
             </a>
