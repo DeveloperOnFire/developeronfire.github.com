@@ -1,23 +1,13 @@
-<p>
+<div>
     <div>Guest:</div>
     <div>
-        {% if post.guest_name %}
-            <div><a target="_blank" href="{{ post.guest_blog }}">{{ post.guest_name }}</a></div>
-            <div><a target="_blank" href="http://twitter.com/{{ post.guest_twitter }}">@{{ post.guest_twitter }}</a></div>
-        {% endif %}
-        {% if post.guests %}
-            {% unless post.guests == empty %}
-                <div>
-                {% for guest in post.guests %}
-                <div><a target="_blank" href="{{ guest.blog }}">{{ guest.name }}</a></div>
-                <div><a target="_blank" href="http://twitter.com/{{ guest.twitter }}">@{{ guest.twitter }}</a></div>
-                {% endfor %}
-                </div>
-            {% endunless %}
-        {% endif %}
+        {% for guest in post.guests %}
+        <div>{% if guest.blog %}<a target="_blank" rel="noopener noreferrer" href="{{ guest.blog }}">{{ guest.name }}</a>{% else %}{{ guest.name }}{% endif %}</div>
+        {% if guest.twitter %}<div><a target="_blank" rel="noopener noreferrer" href="https://twitter.com/{{ guest.twitter }}">@{{ guest.twitter }}</a></div>{% endif %}
+        {% endfor %}
     </div>
-</p>
-<p>
+</div>
+<div>
     {% assign timeframe_full_shownotes_seconds = 2629746 %}
     {% assign episode_epoch = post.date | date: "%s" | plus: 0 %}
     {% assign full_shownotes_newer_epoch = 'now' | date: "%s" | minus : timeframe_full_shownotes_seconds %}
@@ -26,4 +16,4 @@
     {% else %}
         <span>Full show notes are at <a href="{{ site.production_url }}{{ post.url }}">{{ site.production_url }}{{ post.url }}</a></span>
     {% endif %}
-</p>
+</div>

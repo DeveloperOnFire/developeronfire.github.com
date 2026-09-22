@@ -1,0 +1,23 @@
+{%- comment -%}
+  A guest as shown on an episode: name (linked to their site), Twitter handle and photo.
+  Usage: {% include themes/bootstrap-3/guest-card.html guest=guest %}
+{%- endcomment -%}
+<div class="guest">
+  <div class="guest col-xs-6">
+    <div class="vertical-center">
+      <div>
+        {% if include.guest.blog %}
+        <div><a target="_blank" rel="noopener noreferrer" href="{{ include.guest.blog }}">{{ include.guest.name }}</a></div>
+        {% else %}
+        <div>{{ include.guest.name }}</div>
+        {% endif %}
+        {% if include.guest.twitter %}
+        <div><a target="_blank" rel="noopener noreferrer" href="https://twitter.com/{{ include.guest.twitter }}">@{{ include.guest.twitter }}</a></div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-4">
+    <img class="img img-circle guest" src="{{ include.guest.image }}" alt="{{ include.guest.name }}" />
+  </div>
+</div>

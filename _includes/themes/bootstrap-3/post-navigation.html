@@ -1,0 +1,28 @@
+{%- comment -%}
+  Previous / archive / next links that stay within one category of posts.
+  Jekyll's page.previous and page.next span every post on the site, which sent
+  blog readers to podcast episodes and vice versa.
+  Usage: {% include themes/bootstrap-3/post-navigation.html posts=site.categories.Blog archive_url="/blog" archive_label="All Posts" %}
+{%- endcomment -%}
+{%- assign posts = include.posts -%}
+{%- assign current = nil -%}
+{%- for post in posts -%}
+  {%- if post.url == page.url -%}{%- assign current = forloop.index0 -%}{%- endif -%}
+{%- endfor -%}
+{%- assign older_index = current | plus: 1 -%}
+{%- assign newer_index = current | minus: 1 -%}
+<ul class="pagination">
+{%- if current and older_index < posts.size -%}
+  {%- assign older = posts[older_index] %}
+  <li class="prev"><a href="{{ older.url }}" title="{{ older.title }}">&laquo; Previous</a></li>
+{%- else %}
+  <li class="prev disabled"><a>&larr; Previous</a></li>
+{%- endif %}
+  <li><a href="{{ include.archive_url }}">{{ include.archive_label }}</a></li>
+{%- if current and current > 0 -%}
+  {%- assign newer = posts[newer_index] %}
+  <li class="next"><a href="{{ newer.url }}" title="{{ newer.title }}">Next &raquo;</a></li>
+{%- else %}
+  <li class="next disabled"><a>Next &rarr;</a></li>
+{%- endif %}
+</ul>

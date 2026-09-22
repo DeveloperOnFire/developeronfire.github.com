@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>{{ page.title }}</title>
-    {% if page.description %}<meta name="description" content="{{ page.description }}">{% endif %}
+    <title>{% if page.title == site.title %}{{ site.title }}{% else %}{{ page.title }} | {{ site.title }}{% endif %}</title>
+    <meta name="description" content="{{ page.description | default: site.description }}">
     <meta name="author" content="{{ site.author.name }}">
 
     <!-- Enable responsive viewport -->
@@ -53,7 +53,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{ HOME_PATH }}"><img src="/assets/images/home-logo.png" alt="" /></a>
+          <a class="navbar-brand" href="{{ HOME_PATH }}"><img src="/assets/images/home-logo.png" alt="Developer On Fire" /></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -86,7 +86,7 @@
     <div id="footer">
       <div class="container">
         <p>&copy; {{ site.time | date: '%Y' }} {{ site.author.name }}
-          || Developer On Fire - Expresing, exposing, and sharing the humanity of software developers.
+          || Developer On Fire - Expressing, exposing, and sharing the humanity of software developers.
         </p>
       </div>
     </div>

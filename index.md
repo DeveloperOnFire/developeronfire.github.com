@@ -14,7 +14,7 @@ tagline: Inspiring software developers tell their stories
       {% if post.guests %}
         {% for guest in post.guests %}
           <div>
-            <img class="img guest" src="{{ guest.image }}" />
+            <img class="img guest" src="{{ guest.image }}" alt="{{ guest.name }}" />
           </div>
           <div>
             <a href="{{ BASE_PATH }}{{ post.url }}">{{ guest.name }}</a>
@@ -22,7 +22,7 @@ tagline: Inspiring software developers tell their stories
         {% endfor %}
       {% else %}
         <div>
-          <img class="img guest" src="{{ post.image }}" />
+          <img class="img guest" src="{{ post.image }}" alt="{{ post.title }}" />
         </div>
       {% endif %}
     </div>
@@ -31,10 +31,10 @@ tagline: Inspiring software developers tell their stories
         <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
       </div>
       <div>
-        <audio src="{{ post.link }}" controls="controls"></audio>
+        <audio src="{{ post.link }}" controls="controls" preload="none"></audio>
       </div>
       <div>
-        <a href="{{ post.link }}" target="_blank" class="btn btn-danger">Download MP3</a>
+        <a href="{{ post.link }}" target="_blank" rel="noopener noreferrer" class="btn btn-danger">Download MP3</a>
       </div>
     </div>
     <div class="col-lg-3 col-sm-12 col-xs-12 text-left text-left">
