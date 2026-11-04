@@ -490,6 +490,10 @@ class SiteTest < Minitest::Test
     assert html('book-recommendations.html').at_css(%(script[src="#{SCRIPTS}/book-recommendations.js"]))
   end
 
+  def test_book_recommendations_page_explains_itself_without_scripts
+    assert_includes html('book-recommendations.html').css('noscript').text, 'JavaScript'
+  end
+
   def test_book_recommendations_page_has_the_list_its_script_fills
     assert html('book-recommendations.html').at_css('ul#book-recommendations')
   end
