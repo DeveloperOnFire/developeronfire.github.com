@@ -16,6 +16,8 @@ class SiteTest < Minitest::Test
 
   # Hosts the site knowingly loads scripts from. Disqus injects its embed
   # script at runtime and so never appears as a script[src] in the markup.
+  # platform.twitter.com stays only for three old blog posts that embed tweets
+  # in their bodies; no layout loads it.
   KNOWN_SCRIPT_HOSTS = %w[cdn.trackjs.com platform.twitter.com].freeze
 
   # The only asset left at the old theme path: a 2015 blog post (and so blog-rss.xml)
@@ -402,6 +404,14 @@ class SiteTest < Minitest::Test
 
   def test_every_chapter_timestamp_sits_directly_in_the_link_the_media_player_binds
     assert_empty episode_pages.select { |page| html(page).css('time.chapter-timestamp').any? { |time| time.parent.name != 'a' } }
+  end
+
+  def test_no_episode_page_loads_the_twitter_widgets_script
+    assert_empty episode_pages.select { |page| html(page).at_css('script[src*="platform.twitter.com"]') }
+  end
+
+  def test_no_page_shows_the_tweet_or_follow_button
+    assert_empty content_pages.select { |page| html(page).at_css('.twitter-share-button, .twitter-follow-button') }
   end
 
   def test_every_episode_page_has_the_comment_thread

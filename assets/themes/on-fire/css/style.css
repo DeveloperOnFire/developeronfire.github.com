@@ -87,8 +87,8 @@ a:hover { color: var(--amber); }
   border-radius: 4px;
 }
 
-/* A dark colour scheme on the page makes a light third-party frame (Disqus, tweets,
-   the Tweet button) paint an opaque white canvas. */
+/* A dark colour scheme on the page makes a light third-party frame (Disqus, tweets
+   embedded in old posts) paint an opaque white canvas. */
 iframe { color-scheme: light; }
 
 .container {
@@ -799,14 +799,6 @@ time.chapter-timestamp {
 .sponsor-message ul { padding-left: 1.1em; }
 .sponsor-message li + li { margin-top: 0.15em; }
 .sponsor-message li::marker { color: var(--flame); }
-
-.social-share {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 2rem;
-}
 
 /* --- After the post: navigation and comments ------------------------------- */
 
