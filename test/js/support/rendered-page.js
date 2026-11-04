@@ -35,7 +35,8 @@ function errorResponse(body) {
 }
 
 // fetch: what window.fetch does, as a function of the requested URL.
-function loadPage(page, { fetch = () => Promise.reject(new Error('no network in tests')) } = {}) {
+// beforeScripts: runs before the page's scripts, to put the browser in an unusual state.
+function loadPage(page, { fetch = () => Promise.reject(new Error('no network in tests')), beforeScripts = () => {} } = {}) {
   const browser = { fetchCalls: [], scrolledIntoView: [], plays: 0, seeks: [], mediaListeners: [] };
 
   const dom = new JSDOM(pageWithOwnScriptsInline(page), {
@@ -68,6 +69,7 @@ function loadPage(page, { fetch = () => Promise.reject(new Error('no network in 
         get() { return browser.seeks[browser.seeks.length - 1] ?? 0; },
         set(value) { browser.seeks.push(value); },
       });
+      beforeScripts(window);
     },
   });
 
