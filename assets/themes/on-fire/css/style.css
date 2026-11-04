@@ -919,4 +919,7 @@ time.chapter-timestamp {
     forced-color-adjust: none;
   }
   .menu-toggle[aria-expanded="true"] .menu-toggle-bars { background: transparent; }
+
+  /* Forced colours remove the selected result's shadow and background. */
+  .search-result li.selected { outline: 3px solid Highlight; outline-offset: -3px; }
 }
