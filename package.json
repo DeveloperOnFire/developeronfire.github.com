@@ -1,0 +1,11 @@
+{
+  "name": "developeronfire-site-tests",
+  "private": true,
+  "description": "Test tooling only: the site itself has no npm dependencies.",
+  "engines": {
+    "node": ">=22.22.2"
+  },
+  "devDependencies": {
+    "jsdom": "30.1.3"
+  }
+}

@@ -2,7 +2,7 @@
 # For more see: http://jekyllrb.com/docs/permalinks/
 permalink: /:categories/:title
 
-exclude: ["README.md", "Rakefile", "Gemfile", "Gemfile.lock", "bin", "test", "vendor", "node_modules"]
+exclude: ["README.md", "Rakefile", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json", "bin", "test", "vendor", "node_modules"]
 highlighter: rouge
 
 # Themes are encouraged to use these universal variables
