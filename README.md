@@ -13,7 +13,10 @@ It is a [Jekyll](https://jekyllrb.com) site published by GitHub Pages from the
 - Guest pages (`CoryHouse.md` and friends) use the `guest` layout and list a
   guest's episodes and blog posts by matching on the guest's name.
 - Layouts are thin wrappers in `_layouts`; the markup is in
-  `_includes/themes/bootstrap-3`.
+  `_includes/themes/on-fire`. The stylesheet, scripts and self-hosted fonts
+  (with their OFL licences) are in `assets/themes/on-fire`.
+- `assets/themes/bootstrap-3/images/logo.png` is deliberately still there: a 2015
+  blog post, and so `blog-rss.xml`, links to that URL.
 
 ## Building locally
 
@@ -37,16 +40,19 @@ docker run --rm -it -p 4000:4000 -v "$PWD":/site -w /site \
 ## Tests
 
 ```sh
+npm ci
 bin/test
 ```
 
 This builds the site, runs the checks in `test/site_test.rb` against the rendered
-output, and runs the script tests in `test/js` with `node --test`. It works
-offline. Node 22 or newer is required for the script tests.
+output, and runs the script tests in `test/js` with `node --test`. The `*.dom.test.js`
+files run the real scripts against the rendered pages in jsdom, which is the only
+npm dependency and is used only by the tests. After `npm ci`, `bin/test` works
+offline. Node 22.22.2 or newer is required for the script tests.
 
 ```sh
 bin/audit
 ```
 
-This audits the locked gem set against the Ruby advisory database and needs
-network access. GitHub Actions runs both scripts on every push and pull request.
+This audits the locked gem and npm sets against their advisory databases and
+needs network access. GitHub Actions runs both scripts on every push and pull request.

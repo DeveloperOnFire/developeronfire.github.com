@@ -22,7 +22,7 @@ redirect_from:
 
 Dave Rael is the host of Developer On Fire.  He is, first and foremost, a father of 3 wonderful children.  That is the role in which he takes the most joy and gets the most benefit.  He is also a husband, podcaster, software developer and architect, and a philosopher.
 
-<img class="img img-circle guest" src="/assets/images/DaveRael.jpg" />
+<img class="guest" src="/assets/images/DaveRael.jpg" alt="Dave Rael" />
 
 When he's not playing with kids, recording and listening to his own voice, or building distributed systems, he likes to play basketball and racquetball, and lift weights.
 

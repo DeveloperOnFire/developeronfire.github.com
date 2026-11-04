@@ -1,0 +1,23 @@
+{%- comment -%}
+  A list of posts, newest first, grouped by year.
+  Usage: {% include themes/on-fire/post-list.html posts=site.categories.Blog %}
+{%- endcomment -%}
+{%- assign posts_by_year = include.posts | group_by_exp: 'post', "post.date | date: '%Y'" -%}
+{% for year in posts_by_year %}
+<section class="archive-year" aria-labelledby="year-{{ year.name }}">
+  <div class="section-heading">
+    <h2 id="year-{{ year.name }}">{{ year.name }}</h2>
+  </div>
+  <ol class="post-list">
+    {%- for post in year.items %}
+    <li>
+      <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%B %e" }}</time>
+      <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title | escape }}</a>
+      {%- if post.author %}
+      <span class="post-list-author">by <a href="/{{ post.author | remove: ' ' }}">{{ post.author | escape }}</a></span>
+      {%- endif %}
+    </li>
+    {%- endfor %}
+  </ol>
+</section>
+{% endfor %}

@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { groupBooks } = require('../../assets/themes/bootstrap-3/scripts/book-recommendations.js');
+const { groupBooks } = require('../../assets/themes/on-fire/scripts/book-recommendations.js');
 
 const deepWork = { url: 'https://example.com/deep-work', title: 'Deep Work', author: 'Cal Newport' };
 const pragProg = { url: 'https://example.com/prag', title: 'The Pragmatic Programmer', author: 'Hunt & Thomas' };

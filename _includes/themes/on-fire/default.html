@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>{% if page.title == site.title %}{{ site.title }}{% else %}{{ page.title | escape }} | {{ site.title }}{% endif %}</title>
+    <meta name="description" content="{{ page.description | default: page.subtitle | default: site.description | escape }}">
+    <meta name="author" content="{{ site.author.name }}">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0f1c">
+    <meta name="color-scheme" content="dark">
+
+    <!-- Loaded synchronously: it marks the page as scripted before first paint, so the mobile
+         menu never flashes open, and if it fails to load the menu simply stays open. -->
+    <script src="/assets/themes/on-fire/scripts/site-menu.js"></script>
+
+    <link rel="preload" href="/assets/themes/on-fire/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/themes/on-fire/fonts/space-grotesk-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link href="/assets/themes/on-fire/css/style.css" rel="stylesheet" type="text/css" media="all">
+
+    <link rel="icon" href="/assets/images/icon.png">
+    <link rel="apple-touch-icon" href="/assets/images/icon.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/images/icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/images/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/images/icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/images/icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/images/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icon-180x180.png">
+
+    <!-- atom & rss feed -->
+    <link href="{{ BASE_PATH }}{{ site.JB.atom_path }}" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="{{ BASE_PATH }}{{ site.JB.rss_path }}" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+    <!-- BEGIN TRACKJS -->
+    <script type="text/javascript">window._trackJs = { token: 'f052509eeda6484190736c0cfa708e55' };</script>
+    <script type="text/javascript" src="https://cdn.trackjs.com/releases/current/tracker.js"></script>
+    <!-- END TRACKJS -->
+
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    {%- assign current_section = page.url | replace: '.html', '' | split: '/' | last %}
+    <header class="site-header">
+      <div class="site-header-inner">
+        <a class="brand" href="{{ HOME_PATH }}">Developer <span class="brand-flame">On Fire</span></a>
+
+        <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
+          <span class="menu-toggle-bars" aria-hidden="true"></span>
+        </button>
+
+        <div class="site-menu" id="site-menu">
+          <nav class="site-nav" aria-label="Main">
+            <ul>
+              <li><a href="/episodes"{% if current_section == 'episodes' %} aria-current="page"{% endif %}>Episodes</a></li>
+              <li><a href="/subscribe"{% if current_section == 'subscribe' %} aria-current="page"{% endif %}>Subscribe</a></li>
+              <li><a href="/about-the-host"{% if current_section == 'about-the-host' %} aria-current="page"{% endif %}>About</a></li>
+              <li><a href="/blog"{% if current_section == 'blog' %} aria-current="page"{% endif %}>Blog</a></li>
+              <li><a href="/book-recommendations"{% if current_section == 'book-recommendations' %} aria-current="page"{% endif %}>Book Recommendations</a></li>
+            </ul>
+          </nav>
+          <form class="site-search" role="search">
+            <input type="text" id="search" placeholder="Find episode…" aria-label="Find episode" autocomplete="off" spellcheck="false">
+            <div class="search-result-container">
+              <ul class="search-result">
+              </ul>
+            </div>
+          </form>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" tabindex="-1">
+      {{ content }}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p class="site-footer-brand">Developer <span class="brand-flame">On Fire</span></p>
+        <p>Expressing, exposing, and sharing the humanity of software developers.</p>
+        <p class="site-footer-legal">&copy; {{ site.time | date: '%Y' }} {{ site.author.name }}</p>
+      </div>
+    </footer>
+
+    {% include JB/analytics %}
+
+    <script src="/assets/themes/on-fire/scripts/search.js"></script>
+  </body>
+</html>

@@ -2,7 +2,7 @@
 # For more see: http://jekyllrb.com/docs/permalinks/
 permalink: /:categories/:title
 
-exclude: ["README.md", "Rakefile", "Gemfile", "Gemfile.lock", "bin", "test", "vendor", "node_modules"]
+exclude: ["README.md", "Rakefile", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json", "bin", "test", "vendor", "node_modules"]
 highlighter: rouge
 
 # Themes are encouraged to use these universal variables
@@ -95,12 +95,7 @@ JB :
   # Set 'provider' to false to turn analytics off globally.
   #
   analytics :
-    provider : google
-    google :
-        # Rendered with the gtag.js snippet. Universal Analytics (UA- ids) stopped
-        # collecting data on 2024-07-01; replace this with the GA4 measurement id
-        # (G-XXXXXXXXXX) of the property that should receive page views.
-        tracking_id : 'UA-52607824-3'
+    provider : false
 
   # Settings for all other include helpers can be defined by creating
   # a hash with key named for the given helper. ex:

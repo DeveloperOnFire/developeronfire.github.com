@@ -1,0 +1,20 @@
+{%- comment -%}
+  A guest as shown on an episode: photo, name (linked to their site) and Twitter handle.
+  Two old episodes have a blog value that is not a URL ("pragdave.me", "ViktorSchepik");
+  as a link it would be relative and 404, so the name is shown plain instead. Correcting
+  the value itself would change the feeds, which print it.
+  Usage: {% include themes/on-fire/guest-card.html guest=guest %}
+{%- endcomment -%}
+<div class="guest guest-card">
+  <img class="guest" src="{{ include.guest.image | escape }}" width="72" height="72" alt="{{ include.guest.name | escape }}">
+  <div>
+    {%- if include.guest.blog contains '://' %}
+    <p class="guest-name"><a target="_blank" rel="noopener noreferrer" href="{{ include.guest.blog | escape }}">{{ include.guest.name | escape }}</a></p>
+    {%- else %}
+    <p class="guest-name">{{ include.guest.name | escape }}</p>
+    {%- endif %}
+    {%- if include.guest.twitter %}
+    <p class="guest-handle"><a target="_blank" rel="noopener noreferrer" href="https://twitter.com/{{ include.guest.twitter | escape }}">@{{ include.guest.twitter | escape }}</a></p>
+    {%- endif %}
+  </div>
+</div>

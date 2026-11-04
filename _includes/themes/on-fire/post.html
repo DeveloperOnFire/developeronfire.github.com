@@ -1,0 +1,22 @@
+<div class="container page">
+  <header class="page-heading">
+    <p class="eyebrow"><span class="date">{{ page.date | date_to_long_string }}</span></p>
+    <h1>{{ page.title }}</h1>
+    {%- if page.tagline %}
+    <p class="lede">{{ page.tagline }}</p>
+    {%- endif %}
+    <p class="author">By <a href="/{{ page.author | remove: ' ' }}">{{ page.author }}</a></p>
+  </header>
+
+  <div class="post-full">
+    <div class="content">
+      {{ content }}
+    </div>
+    {% include themes/on-fire/twitter-share.html %}
+  </div>
+
+  <div class="post-footer">
+    {% include themes/on-fire/post-navigation.html posts=site.categories.Blog archive_url="/blog" archive_label="All Posts" %}
+    {% include JB/comments %}
+  </div>
+</div>

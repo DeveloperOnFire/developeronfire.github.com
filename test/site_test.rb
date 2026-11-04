@@ -6,6 +6,7 @@ require 'json'
 require 'yaml'
 require 'digest'
 require 'nokogiri'
+require 'jekyll'
 require 'pathname'
 require 'uri'
 
@@ -15,16 +16,25 @@ class SiteTest < Minitest::Test
 
   # Hosts the site knowingly loads scripts from. Disqus injects its embed
   # script at runtime and so never appears as a script[src] in the markup.
-  KNOWN_SCRIPT_HOSTS = %w[cdn.trackjs.com platform.twitter.com www.googletagmanager.com].freeze
+  KNOWN_SCRIPT_HOSTS = %w[cdn.trackjs.com platform.twitter.com].freeze
 
-  # Self-hosted third-party libraries, pinned to the digests of the official releases
-  # (jQuery 3.7.1, Bootstrap 3.4.1) so an edit or bad merge cannot change them unnoticed.
-  VENDORED_LIBRARIES = {
-    'assets/themes/bootstrap-3/bootstrap/js/jquery.min.js' => 'fc9a93dd241f6b045cbff0481cf4e1901becd0e12fb45166a8f17f95823f0b1a',
-    'assets/themes/bootstrap-3/bootstrap/js/bootstrap.min.js' => '9ee2fcff6709e4d0d24b09ca0fc56aade12b4961ed9c43fd13b03248bfb57afe',
-    'assets/themes/bootstrap-3/bootstrap/css/bootstrap.min.css' => '6d92dfc1700fd38cd130ad818e23bc8aef697f815b2ea5face2b5dfad22f2e11',
-    'assets/themes/bootstrap-3/bootstrap/css/bootstrap-theme.min.css' => 'f2e1cc227d6bbb4192e4a3becdfed971c7fc530d76200e43add11c98cb962c53'
+  # The only asset left at the old theme path: a 2015 blog post (and so blog-rss.xml)
+  # links to it by absolute URL, and neither may change.
+  LEGACY_THEME_LOGO = 'assets/themes/bootstrap-3/images/logo.png'
+
+  SCRIPTS = '/assets/themes/on-fire/scripts'
+
+  # Self-hosted fonts, pinned to the files in @fontsource/inter and
+  # @fontsource/space-grotesk 5.3.0 so an edit or bad merge cannot change them unnoticed.
+  FONT_FILES = {
+    'inter-latin-400-normal.woff2' => '8909904ab6c872eb994093482a88a28eca2cd95912d7b6fecd72103b0dc07edc',
+    'inter-latin-500-normal.woff2' => 'f3779f1efccc4bdcdf9c0a02ab95bf6bd092ed09c48c08cedc725889edd1d19f',
+    'inter-latin-600-normal.woff2' => 'f9a06e79cd3a2a20951c0f0e28f66dd0e6d3fda73911d640a2125c8fcb78f21a',
+    'space-grotesk-latin-500-normal.woff2' => '1b1a8131d9edf975d9decee81e2f2bf504812f7a4f498e5500f28a613e22e64c',
+    'space-grotesk-latin-700-normal.woff2' => '35f8aec56cfd5cbfdb03cc68733a54a0b05bb3617ffcd5fd332badc0b045ca55'
   }.freeze
+
+  MAIN_NAVIGATION = ['Episodes', 'Subscribe', 'About', 'Blog', 'Book Recommendations'].freeze
 
   def setup
     assert SITE.join('index.html').exist?, "no rendered site at #{SITE}; run bin/test"
@@ -34,6 +44,14 @@ class SiteTest < Minitest::Test
 
   def test_every_episode_declares_at_least_one_guest
     assert_empty episodes.select { |episode| episode.fetch('guests', []).empty? }.map { |episode| episode['title'] }
+  end
+
+  def test_every_episode_source_renders_a_page
+    assert_empty episode_pages.reject { |page| SITE.join(page).file? }
+  end
+
+  def test_every_blog_source_renders_a_page
+    assert_empty blog_pages.reject { |page| SITE.join(page).file? }
   end
 
   def test_every_episode_guest_has_a_name
@@ -90,6 +108,14 @@ class SiteTest < Minitest::Test
     assert_empty incomplete
   end
 
+  def test_every_book_recommendation_has_a_url
+    assert_empty book_recommendations.select { |entry| entry['url'].to_s.strip.empty? }.map { |entry| entry['title'] }
+  end
+
+  def test_every_book_recommendation_has_an_author
+    assert_empty book_recommendations.select { |entry| entry['author'].to_s.strip.empty? }.map { |entry| entry['title'] }
+  end
+
   # --- feeds -------------------------------------------------------------------
 
   def test_podcast_feed_lists_every_episode
@@ -121,8 +147,16 @@ class SiteTest < Minitest::Test
     assert_equal 2, html(episode_page('episode-219')).css('main .guest img').size
   end
 
-  def test_analytics_tag_is_rendered_on_episode_pages
-    assert_equal 1, html(episode_page('episode-452')).css('script[src^="https://www.googletagmanager.com/gtag/js"]').size
+  def test_no_page_loads_google_analytics
+    assert_empty rendered_pages('**/*.html').select { |page| SITE.join(page).read.include?('googletagmanager') }
+  end
+
+  def test_every_episode_page_uses_the_episode_layout
+    assert_empty episode_pages.reject { |page| html(page).at_css('div.post-full') }
+  end
+
+  def test_every_blog_post_uses_the_post_layout
+    assert_empty blog_pages.reject { |page| html(page).at_css('div.post-full') }
   end
 
   # --- navigation ----------------------------------------------------------------
@@ -145,6 +179,10 @@ class SiteTest < Minitest::Test
 
   def test_every_episode_page_offers_previous_and_next_navigation
     assert_empty episode_pages.select { |page| html(page).css('ul.pagination li.prev, ul.pagination li.next').size != 2 }
+  end
+
+  def test_every_blog_post_offers_previous_and_next_navigation
+    assert_empty blog_pages.select { |page| html(page).css('ul.pagination li.prev, ul.pagination li.next').size != 2 }
   end
 
   def test_blog_post_navigation_stays_within_the_blog
@@ -200,18 +238,9 @@ class SiteTest < Minitest::Test
   def test_local_stylesheets_and_scripts_referenced_by_pages_exist
     missing = rendered_pages('**/*.html').flat_map do |page|
       html(page).css('link[rel="stylesheet"][href], script[src]').map { |node| node['href'] || node['src'] }
-                .select { |ref| local?(ref) }.reject { |ref| resolves?(ref) }.map { |ref| "#{page}: #{ref}" }
+                .select { |ref| local?(ref) }.reject { |ref| resolves?(ref, page) }.map { |ref| "#{page}: #{ref}" }
     end
     assert_empty missing.uniq
-  end
-
-  def test_vendored_libraries_are_the_official_releases
-    altered = VENDORED_LIBRARIES.reject { |path, sha256| Digest::SHA256.file(SOURCE.join(path)).hexdigest == sha256 }
-    assert_empty altered.keys
-  end
-
-  def test_homepage_audio_players_do_not_preload
-    assert_equal ['none'], html('index.html').css('audio').map { |audio| audio['preload'] }.uniq
   end
 
   def test_no_page_embeds_the_retired_mailing_list_form
@@ -223,9 +252,328 @@ class SiteTest < Minitest::Test
   def test_internal_links_from_layouts_resolve
     broken = rendered_pages('**/*.html').flat_map do |page|
       html(page).xpath('//a[@href][not(ancestor::div[@class="content"])]').map { |a| a['href'] }
-                .select { |href| local?(href) }.reject { |href| resolves?(href) }.map { |href| "#{page}: #{href}" }
+                .select { |href| local?(href) }.reject { |href| resolves?(href, page) }.map { |href| "#{page}: #{href}" }
     end
     assert_empty broken
+  end
+
+  # --- homepage ---------------------------------------------------------------------
+
+  def test_homepage_shows_the_eight_newest_episodes
+    assert_equal episode_sources.first(8).map { |episode| episode[:url] }, card_links('index.html')
+  end
+
+  def test_homepage_eyebrow_count_equals_the_episode_count
+    assert_equal "#{episodes.size} episodes · 2015–2019", html('index.html').at_css('.hero .eyebrow').text
+  end
+
+  def test_homepage_primary_button_names_the_episode_count
+    assert_equal "Browse all #{episodes.size} episodes", html('index.html').at_css('.hero a[href="/episodes"]').text
+  end
+
+  def test_homepage_has_no_audio_players
+    assert_empty html('index.html').css('audio')
+  end
+
+  def test_homepage_does_not_offer_a_guest_index
+    assert_empty html('index.html').css('a').select { |a| a.text.match?(/guests/i) }.map(&:text)
+  end
+
+  # --- episode archive --------------------------------------------------------------
+
+  def test_archive_lists_every_episode
+    assert_equal episode_sources.map { |episode| episode[:url] }.sort, card_links('episodes.html').sort
+  end
+
+  def test_archive_groups_episodes_by_year
+    assert_equal %w[2019 2018 2017 2016 2015], html('episodes.html').css('.archive-year h2').map(&:text)
+  end
+
+  def test_archive_files_every_card_under_the_year_of_its_episode
+    assert_equal episode_urls_by_year.transform_values(&:sort), archive_urls_by_year.transform_values(&:sort)
+  end
+
+  def test_archive_lists_each_years_episodes_newest_first
+    assert_equal episode_urls_by_year, archive_urls_by_year
+  end
+
+  def test_archive_images_load_lazily
+    assert_empty html('episodes.html').css('.episode-card img').reject { |img| img['loading'] == 'lazy' }.map { |img| img['src'] }
+  end
+
+  def test_archive_images_declare_their_size
+    assert_empty html('episodes.html').css('.episode-card img').reject { |img| img['width'] && img['height'] }.map { |img| img['src'] }
+  end
+
+  # --- episode cards ----------------------------------------------------------------
+
+  def test_card_shows_episode_number_and_rounded_minutes
+    assert_equal 'EP 452 · 43 min', card_for('episode-452').at_css('.episode-card-meta').text
+  end
+
+  def test_card_shows_the_guest_name
+    assert_equal 'Aimee Knight', card_for('episode-452').at_css('h3').text
+  end
+
+  def test_card_shows_the_episode_subject
+    assert_equal 'Inspired', card_for('episode-452').at_css('.episode-card-subject').text
+  end
+
+  def test_card_names_both_guests_of_a_two_guest_episode
+    assert_equal 'Lawrence Sowell & Ben Meyer', card_for('episode-219').at_css('h3').text
+  end
+
+  def test_card_shows_a_photo_of_each_guest_of_a_two_guest_episode
+    assert_equal 2, card_for('episode-219').css('img').size
+  end
+
+  def test_card_finds_the_subject_of_a_two_guest_episode
+    assert_equal 'Making Cool Stuff', card_for('episode-219').at_css('.episode-card-subject').text
+  end
+
+  def test_card_uses_the_guest_list_when_the_title_names_only_one_of_two_guests
+    assert_equal 'Logan Dutkiewicz & Sarah Dutkiewicz', card_for('episode-432').at_css('h3').text
+  end
+
+  def test_card_finds_the_subject_of_a_title_written_with_a_colon
+    assert_equal 'Simple Programmer', card_for('episode-001').at_css('.episode-card-subject').text
+  end
+
+  def test_card_has_no_subject_when_the_title_only_names_the_guest
+    assert_nil card_for('episode-278').at_css('.episode-card-subject')
+  end
+
+  def test_card_keeps_a_title_that_is_neither_guest_nor_subject_form
+    assert_equal 'Episode 0x100', card_for('episode-256').at_css('.episode-card-subject').text
+  end
+
+  def test_card_numbers_an_episode_with_no_episode_number_from_its_title
+    assert_equal 'EP 230', card_for('episode-230').at_css('.episode-card-meta').text[/EP \d+/]
+  end
+
+  def test_card_numbers_an_episode_with_a_wrong_episode_number_from_its_title
+    assert_equal 'EP 116', card_for('episode-116').at_css('.episode-card-meta').text[/EP \d+/]
+  end
+
+  def test_card_labels_the_bonus_episode
+    assert_equal 'Bonus', card_for('bonus-episode').at_css('.episode-card-meta').text[/\A\w+/]
+  end
+
+  def test_card_finds_the_subject_of_the_bonus_episode
+    assert_equal 'Remote Conference With Jeremy Clark', card_for('bonus-episode').at_css('.episode-card-subject').text
+  end
+
+  def test_card_reads_a_minutes_and_seconds_duration
+    assert_equal 'EP 0 · 9 min', card_for('episode-000').at_css('.episode-card-meta').text
+  end
+
+  def test_card_reads_a_duration_written_with_a_dot
+    assert_equal 'EP 3 · 31 min', card_for('episode-003').at_css('.episode-card-meta').text
+  end
+
+  def test_every_card_shows_a_running_time
+    assert_empty html('episodes.html').css('.episode-card-meta').reject { |meta| meta.text.match?(/· \d+ min\z/) }.map(&:text)
+  end
+
+  # --- episode page: what the scripts and guests rely on ------------------------------
+
+  def test_every_episode_page_has_the_audio_element_chapter_seeking_needs
+    assert_empty episode_pages.reject { |page| html(page).at_css('audio#episode-audio') }
+  end
+
+  def test_every_episode_audio_has_a_source
+    assert_empty episode_pages.select { |page| html(page).at_css('audio#episode-audio')&.[]('src').to_s.strip.empty? }
+  end
+
+  def test_every_episode_audio_plays_the_episode_link
+    assert_empty episode_sources.reject { |episode| html(episode[:page]).at_css('audio#episode-audio')&.[]('src') == episode[:data]['link'] }.map { |episode| episode[:page] }
+  end
+
+  # Episode 18 predates the .podcast-chapters wrapper and the bonus episode has no chapters,
+  # so what holds is: every numbered episode has timestamps, however they are wrapped.
+  def test_every_numbered_episode_page_has_chapter_timestamps
+    numbered = episode_sources.select { |episode| episode[:data]['title'].start_with?('Episode ') }
+    assert_empty numbered.reject { |episode| html(episode[:page]).at_css('time.chapter-timestamp') }.map { |episode| episode[:page] }
+  end
+
+  def test_every_chapter_link_carries_a_timestamp
+    assert_empty episode_pages.select { |page| html(page).css('.content a[href="#!"]').any? { |link| link.at_css('time.chapter-timestamp').nil? } }
+  end
+
+  def test_every_chapter_timestamp_sits_directly_in_the_link_the_media_player_binds
+    assert_empty episode_pages.select { |page| html(page).css('time.chapter-timestamp').any? { |time| time.parent.name != 'a' } }
+  end
+
+  def test_every_episode_page_has_the_comment_thread
+    assert_empty episode_pages.reject { |page| html(page).at_css('#disqus_thread') }
+  end
+
+  def test_every_blog_post_has_the_comment_thread
+    assert_empty blog_pages.reject { |page| html(page).at_css('#disqus_thread') }
+  end
+
+  def test_guest_twitter_link_is_rendered_on_an_episode_with_a_handle
+    assert_equal '@aimee_knight', html(episode_page('episode-452')).at_css('.guest a[href="https://twitter.com/aimee_knight"]')&.text
+  end
+
+  def test_guest_twitter_link_is_rendered_on_a_guest_profile
+    assert_equal '@housecor', html('CoryHouse.html').at_css('.guest-handle a[href="https://twitter.com/housecor"]')&.text
+  end
+
+  def test_no_page_embeds_the_retired_twitter_timeline
+    assert_empty content_pages.select { |page| SITE.join(page).read.include?('twitter-timeline') }
+  end
+
+  def test_sponsor_copy_renders_its_list_markup
+    assert_operator html(episode_page('episode-402')).css('.sponsor-message li').size, :>, 0
+  end
+
+  def test_no_sponsor_copy_shows_literal_tags
+    assert_empty episode_pages.select { |page| html(page).css('.sponsor-message, .sponsor-title').any? { |copy| copy.text.match?(%r{</?(ul|li|p)>}) } }
+  end
+
+  # --- site shell ---------------------------------------------------------------------
+
+  def test_every_page_has_a_skip_link
+    assert_empty content_pages.reject { |page| html(page).at_css('a.skip-link[href^="#"]') }
+  end
+
+  def test_every_skip_link_target_exists
+    missing = content_pages.reject do |page|
+      document = html(page)
+      link = document.at_css('a.skip-link[href^="#"]')
+      link && document.at_css(link['href'])
+    end
+    assert_empty missing
+  end
+
+  def test_every_page_has_exactly_one_h1
+    assert_empty content_pages.reject { |page| html(page).css('h1').size == 1 }
+  end
+
+  def test_every_page_offers_the_agreed_main_navigation
+    assert_empty content_pages.reject { |page| html(page).css('.site-nav a').map(&:text) == MAIN_NAVIGATION }
+  end
+
+  def test_every_page_has_a_menu_button_that_starts_collapsed
+    assert_empty content_pages.reject { |page| html(page).at_css('button.menu-toggle')&.[]('aria-expanded') == 'false' }
+  end
+
+  def test_every_menu_button_controls_an_element_that_exists
+    missing = content_pages.reject do |page|
+      document = html(page)
+      target = document.at_css('button.menu-toggle')&.[]('aria-controls').to_s
+      !target.empty? && document.at_css("##{target}")
+    end
+    assert_empty missing
+  end
+
+  # The menu collapses only once site-menu.js says it can work, so it must run before first
+  # paint, and nothing else may claim scripting works before it has actually loaded.
+  def test_every_page_loads_the_menu_script_in_the_head
+    assert_empty content_pages.reject { |page| html(page).at_css(%(head script[src="#{SCRIPTS}/site-menu.js"])) }
+  end
+
+  def test_no_page_marks_itself_scripted_inline
+    assert_empty content_pages.select { |page| html(page).css('script:not([src])').any? { |script| script.text.match?(/className|classList/) } }
+  end
+
+  def test_every_page_loads_the_search_script
+    assert_empty content_pages.reject { |page| html(page).at_css(%(script[src="#{SCRIPTS}/search.js"])) }
+  end
+
+  def test_every_episode_page_loads_the_media_player_script
+    assert_empty episode_pages.reject { |page| html(page).at_css(%(script[src="#{SCRIPTS}/mediaPlayer.js"])) }
+  end
+
+  def test_book_recommendations_page_loads_its_script
+    assert html('book-recommendations.html').at_css(%(script[src="#{SCRIPTS}/book-recommendations.js"]))
+  end
+
+  def test_book_recommendations_page_has_the_list_its_script_fills
+    assert html('book-recommendations.html').at_css('ul#book-recommendations')
+  end
+
+  def test_every_page_has_the_search_box_search_js_needs
+    assert_empty content_pages.reject { |page| html(page).at_css('input#search') }
+  end
+
+  def test_every_page_has_the_search_result_container_search_js_needs
+    assert_empty content_pages.reject { |page| html(page).at_css('.search-result-container') }
+  end
+
+  def test_search_result_list_is_inside_the_container_search_js_looks_in
+    assert_empty content_pages.reject { |page| html(page).at_css('.search-result-container .search-result') }
+  end
+
+  def test_sitemap_does_not_list_the_not_found_page
+    assert_empty SITE.join('sitemap.txt').read.lines.map(&:strip).select { |url| url.end_with?('developeronfire.com/404') }
+  end
+
+  # --- assets -------------------------------------------------------------------------
+
+  def test_no_page_loads_bootstrap_or_jquery_assets
+    offenders = content_pages.flat_map do |page|
+      html(page).css('link[href], script[src]').map { |node| node['href'] || node['src'] }
+                .select { |ref| ref.match?(/bootstrap|jquery/i) }.map { |ref| "#{page}: #{ref}" }
+    end
+    assert_empty offenders
+  end
+
+  def test_no_page_references_google_fonts
+    assert_empty content_pages.select { |page| SITE.join(page).read.match?(/fonts\.(googleapis|gstatic)\.com/) }
+  end
+
+  def test_stylesheet_does_not_reference_google_fonts
+    refute_match(/fonts\.(googleapis|gstatic)\.com/, stylesheet)
+  end
+
+  def test_stylesheet_declares_both_font_families
+    assert_equal ['Inter', 'Space Grotesk'], stylesheet.scan(/@font-face\s*\{[^}]*font-family:\s*"([^"]+)"/).flatten.uniq.sort
+  end
+
+  def test_every_font_face_declares_font_display_swap
+    assert_empty stylesheet.scan(/@font-face\s*\{[^}]*\}/).reject { |rule| rule.include?('font-display: swap') }
+  end
+
+  def test_every_font_face_url_resolves
+    urls = stylesheet.scan(/@font-face\s*\{[^}]*\}/).flat_map { |rule| rule.scan(/url\("([^"]+)"\)/).flatten }
+    assert_empty urls.reject { |url| SITE.join('assets/themes/on-fire/css').join(url).file? }
+  end
+
+  def test_every_font_file_is_not_empty
+    assert_empty FONT_FILES.keys.reject { |name| font_path(name).file? && font_path(name).size.positive? }
+  end
+
+  def test_font_files_are_the_fontsource_5_3_0_releases
+    assert_empty FONT_FILES.reject { |name, sha256| font_path(name).file? && Digest::SHA256.file(font_path(name)).hexdigest == sha256 }.keys
+  end
+
+  def test_font_licences_are_published_with_the_fonts
+    assert_equal %w[OFL-Inter.txt OFL-SpaceGrotesk.txt], Dir.glob(SITE.join('assets/themes/on-fire/fonts/OFL-*.txt')).map { |path| File.basename(path) }.sort
+  end
+
+  def test_legacy_theme_logo_stays_at_the_url_a_blog_post_links_to
+    assert SITE.join(LEGACY_THEME_LOGO).file?
+  end
+
+  # Guest and card photos must be self-hosted: a remote one could not be checked offline,
+  # so it fails here rather than passing unchecked. Images written into post and page
+  # bodies are content and may be remote (see test_internal_links_from_layouts_resolve).
+  def test_guest_and_card_images_are_self_hosted
+    remote = content_pages.flat_map do |page|
+      html(page).css('img.guest, .episode-card img').map { |img| img['src'].to_s }.select { |src| remote?(src) }.map { |src| "#{page}: #{src}" }
+    end
+    assert_empty remote.uniq
+  end
+
+  # Covers absolute and relative paths; a blank src counts as broken.
+  def test_local_images_from_layouts_resolve
+    missing = content_pages.flat_map do |page|
+      html(page).xpath('//img[not(ancestor::div[@class="content"])]').map { |img| img['src'].to_s }
+                .select { |src| local?(src) }.reject { |src| resolves?(src, page) }.map { |src| "#{page}: #{src}" }
+    end
+    assert_empty missing.uniq
   end
 
   private
@@ -265,7 +613,11 @@ class SiteTest < Minitest::Test
   end
 
   def html(page)
-    Nokogiri::HTML(SITE.join(page).read)
+    self.class.parsed[page] ||= Nokogiri::HTML(SITE.join(page).read)
+  end
+
+  def self.parsed
+    @parsed ||= {}
   end
 
   def xml(page)
@@ -276,18 +628,82 @@ class SiteTest < Minitest::Test
     Dir.glob(SITE.join(glob)).map { |path| Pathname.new(path).relative_path_from(SITE).to_s }
   end
 
+  # Every rendered page a visitor can land on, as distinct from redirect stubs.
+  def content_pages
+    self.class.content_pages
+  end
+
+  def self.content_pages
+    @content_pages ||= Dir.glob(SITE.join('**/*.html'))
+                          .reject { |path| File.read(path).match?(/http-equiv=["']?refresh/i) }
+                          .map { |path| Pathname.new(path).relative_path_from(SITE).to_s }
+  end
+
+  def stylesheet
+    SITE.join('assets/themes/on-fire/css/style.css').read
+  end
+
+  def card_links(page)
+    html(page).css('.episode-card a').map { |a| a['href'] }
+  end
+
+  def card_for(episode)
+    url = episode_url(episode)
+    self.class.archive.css('.episode-card').find { |card| card.at_css('a')['href'] == url } or raise "no card for #{episode}"
+  end
+
+  def self.archive
+    @archive ||= Nokogiri::HTML(SITE.join('episodes.html').read)
+  end
+
   # Pages whose markup comes from the layouts under test (episodes, blog posts, guest pages, home).
   def layout_pages
     ['index.html'] + rendered_pages('podcast/*.html') + rendered_pages('blog/*.html') + guest_pages.keys.map { |page| "#{page}.html" }
   end
 
-  # Rendered episode pages, as distinct from the redirect stubs that share the podcast/ directory.
+  # Episode and blog sources, newest first, in the order Jekyll sorts them. Front matter
+  # has no date key: as for Jekyll, a post's date is the one in its file name. The page
+  # lists come from here, not from the output, so a change to the markup cannot empty them.
+  def episode_sources
+    self.class.sources('Podcast', 'podcast')
+  end
+
+  def blog_sources
+    self.class.sources('Blog', 'blog')
+  end
+
+  def self.sources(directory, category)
+    @sources ||= {}
+    @sources[directory] ||= Dir.glob(SOURCE.join(directory, '_posts/*')).sort.reverse.map do |path|
+      name = File.basename(path, '.*')
+      slug = Jekyll::Utils.slugify(name[11..], mode: 'pretty', cased: true)
+      text = File.read(path)
+      { year: name[0, 4], url: "/#{category}/#{slug}", page: "#{category}/#{slug}.html", data: YAML.safe_load(text[/\A---\n(.*?)\n---\n/m, 1]) }
+    end
+  end
+
   def episode_pages
-    @episode_pages ||= rendered_pages('podcast/*.html').select { |page| html(page).at_css('div.post-full') }
+    episode_sources.map { |episode| episode[:page] }
+  end
+
+  def blog_pages
+    blog_sources.map { |post| post[:page] }
+  end
+
+  def episode_urls_by_year
+    episode_sources.group_by { |episode| episode[:year] }.transform_values { |group| group.map { |episode| episode[:url] } }
+  end
+
+  def archive_urls_by_year
+    self.class.archive.css('.archive-year').to_h { |year| [year.at_css('h2').text, year.css('.episode-card a').map { |a| a['href'] }] }
+  end
+
+  def font_path(name)
+    SITE.join('assets/themes/on-fire/fonts', name)
   end
 
   def episode_page(episode)
-    rendered_pages("podcast/#{episode}-*.html").first or raise "no rendered page for #{episode}"
+    rendered_pages("podcast/#{episode}*.html").first or raise "no rendered page for #{episode}"
   end
 
   def episode_url(episode)
@@ -303,8 +719,14 @@ class SiteTest < Minitest::Test
     end
   end
 
+  def remote?(reference)
+    reference.match?(%r{\A([a-z][a-z0-9+.-]*:|//)}i)
+  end
+
+  # Anything served from this site, whether written absolute or relative. Links to a
+  # place on the same page are not file references.
   def local?(reference)
-    reference.start_with?('/') && !reference.start_with?('//')
+    !remote?(reference) && !reference.start_with?('#')
   end
 
   def host_of(reference)
@@ -313,8 +735,11 @@ class SiteTest < Minitest::Test
     "(unparseable: #{reference})"
   end
 
-  def resolves?(href)
+  def resolves?(href, page)
+    return false if href.strip.empty?
+
     path = href.split(/[#?]/).first.to_s.chomp('/')
+    path = File.join('/', File.dirname(page), path) unless path.empty? || path.start_with?('/')
     path = '/index' if path.empty?
     [SITE.join(".#{path}"), SITE.join(".#{path}.html"), SITE.join(".#{path}/index.html")].any? { |candidate| candidate.file? }
   end

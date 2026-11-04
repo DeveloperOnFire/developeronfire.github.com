@@ -9,7 +9,8 @@ group-sort: 200
 
 ### Use one of the following:
 
-* {:.list-group-item} [Developer On Fire Podcast Full Feed](/rss.xml)
-* {:.list-group-item} [Developer On Fire Podcast Recent-Only Feed](/recentonly-rss.xml) (Last 20 Episodes)
-* {:.list-group-item} [Developer On Fire Blog Feed](/blog-rss.xml)
-* {:.list-group-item} [iTunes](https://itunes.apple.com/us/podcast/developer-on-fire/id1006105326)
+* [Developer On Fire Podcast Full Feed](/rss.xml)
+* [Developer On Fire Podcast Recent-Only Feed](/recentonly-rss.xml) (Last 20 Episodes)
+* [Developer On Fire Blog Feed](/blog-rss.xml)
+* [iTunes](https://itunes.apple.com/us/podcast/developer-on-fire/id1006105326)
+{:.link-rows}

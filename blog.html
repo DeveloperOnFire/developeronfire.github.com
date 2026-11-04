@@ -1,6 +1,7 @@
 ---
 layout: page
 title : Blog
+wide: true
 header : Blog
 group: navigation
 group-sort: 265
@@ -9,5 +10,4 @@ redirect_from:
 ---
 {% include JB/setup %}
 
-{% assign posts_collate = site.categories.Blog %}
-{% include JB/posts_collate %}
+{% include themes/on-fire/post-list.html posts=site.categories.Blog %}

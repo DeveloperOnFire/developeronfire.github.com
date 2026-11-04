@@ -1,0 +1,54 @@
+{%- comment -%}
+  Works out how an episode is presented, leaving the results in variables for the caller:
+    episode_label    "EP 452", or "Bonus" for an episode outside the numbered run
+    episode_minutes  running time rounded to the minute, blank if there is no duration
+    episode_guests   guest names, joined with " & "
+    episode_heading  the title without its "Episode N | " prefix
+    episode_subject  what the episode is about, blank when the title only names the guest
+
+  The number comes from the title rather than episode_number: the title is what the show
+  published, while episode_number is missing on episode 230, wrong on episode 116 and 0 on
+  the bonus episode. Durations are "hh:mm:ss" or "mm:ss", with one "mm.ss" from 2015.
+  Titles are mostly "Episode N | Name - Subject", but early ones use "Name: Subject", a few
+  have no subject, and the bonus episode is "Bonus Episode - Subject".
+
+  Usage: {% include themes/on-fire/episode-display.html episode=post %}
+{%- endcomment -%}
+{%- assign episode_title_parts = include.episode.title | split: ' | ' -%}
+{%- assign episode_heading = episode_title_parts | last | normalize_whitespace -%}
+{%- assign episode_label = 'Bonus' -%}
+{%- if episode_title_parts.size > 1 and episode_title_parts.first contains 'Episode ' -%}
+  {%- assign episode_number = episode_title_parts.first | remove: 'Episode ' | plus: 0 -%}
+  {%- assign episode_label = 'EP ' | append: episode_number -%}
+{%- endif -%}
+
+{%- assign episode_minutes = '' -%}
+{%- assign duration_parts = include.episode.duration | replace: '.', ':' | split: ':' -%}
+{%- if duration_parts.size > 1 -%}
+  {%- assign duration_seconds = duration_parts | last | plus: 0 -%}
+  {%- assign duration_index = duration_parts.size | minus: 2 -%}
+  {%- assign episode_minutes = duration_parts[duration_index] | plus: 0 -%}
+  {%- if duration_parts.size > 2 -%}
+    {%- assign duration_hour_minutes = duration_parts.first | plus: 0 | times: 60 -%}
+    {%- assign episode_minutes = episode_minutes | plus: duration_hour_minutes -%}
+  {%- endif -%}
+  {%- if duration_seconds >= 30 -%}{%- assign episode_minutes = episode_minutes | plus: 1 -%}{%- endif -%}
+{%- endif -%}
+
+{%- assign episode_guest_names = include.episode.guests | map: 'name' -%}
+{%- assign episode_guests = episode_guest_names | join: ' & ' -%}
+
+{%- assign episode_subject = '' -%}
+{%- if episode_heading contains ' - ' -%}
+  {%- assign subject_separator = ' - ' -%}
+{%- elsif episode_heading contains ': ' -%}
+  {%- assign subject_separator = ': ' -%}
+{%- else -%}
+  {%- assign subject_separator = nil -%}
+{%- endif -%}
+{%- if subject_separator -%}
+  {%- assign subject_prefix = episode_heading | split: subject_separator | first | append: subject_separator -%}
+  {%- assign episode_subject = episode_heading | remove_first: subject_prefix | strip -%}
+{%- elsif episode_heading != episode_guests -%}
+  {%- assign episode_subject = episode_heading -%}
+{%- endif -%}
