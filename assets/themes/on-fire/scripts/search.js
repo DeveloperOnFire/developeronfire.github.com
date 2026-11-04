@@ -1,16 +1,18 @@
 // Episode search: filters the episode index (search.json) by title as the
 // visitor types, and lets the keyboard pick a result.
 
-// Case, accents and surrounding spaces do not count: "lopez " finds "López".
+// Case, accents and surrounding spaces do not count: "lopez " finds "López". Decomposing
+// takes the marks off most letters, but ø and æ have no decomposed form.
 function searchable(text) {
-  return text.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().trim();
+  return text.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase()
+    .replace(/ø/g, 'o').replace(/æ/g, 'ae').trim();
 }
 
 function filterPosts(posts, query) {
-  if (query === null || query === undefined || query.match(/^\s*$/) !== null) {
+  var needle = searchable(query || '');
+  if (needle === '') {
     return null;
   }
-  var needle = searchable(query);
   return posts.filter(function (post) {
     return searchable(post.title).indexOf(needle) !== -1;
   });
@@ -23,6 +25,9 @@ if (typeof module !== 'undefined') {
 if (typeof document !== 'undefined') {
   (function () {
     var episodeIndex = null;
+    // The text the dropdown is answering, or null once the visitor has dismissed it.
+    var pendingQuery = null;
+    var pressing = false;
 
     // The index is fetched once per page and then reused for every keystroke.
     function loadEpisodeIndex() {
@@ -32,6 +37,11 @@ if (typeof document !== 'undefined') {
             throw new Error('search.json responded with ' + response.status);
           }
           return response.json();
+        }).then(function (index) {
+          if (!Array.isArray(index)) {
+            throw new Error('search.json is not a list of episodes');
+          }
+          return index;
         });
         episodeIndex.catch(function () { episodeIndex = null; });
       }
@@ -70,6 +80,7 @@ if (typeof document !== 'undefined') {
     }
 
     function hideResultsPage() {
+      pendingQuery = null;
       clearResults();
       resultsContainer().classList.remove('shown');
     }
@@ -130,34 +141,44 @@ if (typeof document !== 'undefined') {
       return;
     }
 
-    document.documentElement.classList.add('search-ready');
-
     var searchArea = searchBox.form;
 
-    searchBox.addEventListener('input', function () {
+    function showResults() {
       var query = searchBox.value;
-      if (query === null || query.length === 0) {
+      if (searchable(query) === '') {
         hideResultsPage();
         return;
       }
+      pendingQuery = query;
       loadEpisodeIndex().then(function (posts) {
-        // Only render for the text still in the box; earlier keystrokes may resolve later.
-        if (searchBox.value !== query) {
+        // The index can arrive after the text changed or the visitor moved on.
+        if (pendingQuery !== query) {
           return;
         }
         var matches = filterPosts(posts, query);
-        if (matches === null) {
-          hideResultsPage();
-        } else if (matches.length === 0) {
+        if (matches.length === 0) {
           noResultsPage();
         } else {
           layoutResultsPage(matches);
         }
-      }).catch(function () {
-        if (searchBox.value === query) {
+      }, function (error) {
+        console.error(error);
+        if (pendingQuery === query) {
           searchUnavailablePage();
         }
+      }).catch(function (error) {
+        // A fault in this code, not an outage, so the visitor is not told search is down.
+        console.error(error);
       });
+    }
+
+    searchBox.addEventListener('input', showResults);
+
+    // Dismissing keeps the text, so coming back to it brings its results back.
+    searchBox.addEventListener('focus', function () {
+      if (!resultsContainer().classList.contains('shown')) {
+        showResults();
+      }
     });
 
     searchBox.addEventListener('keydown', function (event) {
@@ -197,13 +218,20 @@ if (typeof document !== 'undefined') {
       }
     });
 
-    // Only when focus has somewhere else to go: Safari does not focus a link on click,
-    // so during a click on a result focus goes nowhere, and closing then would remove
-    // the result before the click lands. Clicks away are handled above.
+    document.addEventListener('mousedown', function () { pressing = true; });
+    document.addEventListener('mouseup', function () { pressing = false; });
+
+    // For keyboard moves only, when focus has somewhere else to go. A click away is handled
+    // above: closing during the press would shift the page under the pointer below the
+    // desktop width, so the click would miss. And Safari does not focus a link on click, so
+    // during a click on a result focus goes nowhere and the result must stay for the click.
     searchArea.addEventListener('focusout', function (event) {
-      if (event.relatedTarget && !searchArea.contains(event.relatedTarget)) {
+      if (!pressing && event.relatedTarget && !searchArea.contains(event.relatedTarget)) {
         hideResultsPage();
       }
     });
+
+    // Last, so a failure above leaves search hidden instead of showing a dead box.
+    document.documentElement.classList.add('search-ready');
   })();
 }

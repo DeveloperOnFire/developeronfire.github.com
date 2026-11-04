@@ -19,6 +19,18 @@ test('filterPosts ignores a leading space in the query', () => {
   assert.equal(filterPosts(posts, ' episode').length, 2);
 });
 
+test('filterPosts finds a title with ø from a plain o', () => {
+  assert.equal(filterPosts([{ title: 'Aslak Hellesøy', url: '/a' }], 'hellesoy').length, 1);
+});
+
+test('filterPosts finds a title with æ from a plain ae', () => {
+  assert.equal(filterPosts([{ title: 'Christina Kjær Seime', url: '/a' }], 'kjaer').length, 1);
+});
+
+test('filterPosts finds nothing to search for in a query of accent marks alone', () => {
+  assert.equal(filterPosts(posts, '\u0301'), null);
+});
+
 test('filterPosts finds an accented title from an unaccented query', () => {
   assert.equal(filterPosts([{ title: 'Enrique López Mañas', url: '/a' }], 'lopez').length, 1);
 });

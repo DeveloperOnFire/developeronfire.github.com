@@ -573,6 +573,30 @@ class SiteTest < Minitest::Test
     assert_empty content_pages.reject { |page| html(page).at_css('input#search') }
   end
 
+  def test_search_box_refuses_text_longer_than_any_episode_title
+    assert_equal search_index.map { |entry| entry['title'].length }.max, html('index.html').at_css('input#search')['maxlength'].to_i
+  end
+
+  def test_search_stays_hidden_until_the_script_is_ready
+    assert_match(/^\.site-search \{[^}]*display: none/, stylesheet)
+  end
+
+  def test_narrow_layout_reveals_search_with_the_class_the_script_sets
+    assert_includes stylesheet, ".#{search_ready_class} .site-search { display: block; }"
+  end
+
+  def test_desktop_layout_holds_the_search_box_space_until_ready
+    assert_match(/^\s+\.site-search \{[^}]*visibility: hidden/, stylesheet)
+  end
+
+  def test_desktop_layout_reveals_search_with_the_class_the_script_sets
+    assert_includes stylesheet, ".#{search_ready_class} .site-search { visibility: visible; }"
+  end
+
+  def test_forced_colours_keep_the_selected_result_visible
+    assert_match(/@media \(forced-colors: active\).*\.search-result li\.selected \{ outline:/m, stylesheet)
+  end
+
   def test_every_page_has_the_search_result_container_search_js_needs
     assert_empty content_pages.reject { |page| html(page).at_css('.search-result-container') }
   end
@@ -726,6 +750,10 @@ class SiteTest < Minitest::Test
 
   def stylesheet
     SITE.join('assets/themes/on-fire/css/style.css').read
+  end
+
+  def search_ready_class
+    SITE.join('assets/themes/on-fire/scripts/search.js').read[/documentElement\.classList\.add\('([\w-]+)'\)/, 1]
   end
 
   def card_links(page)
