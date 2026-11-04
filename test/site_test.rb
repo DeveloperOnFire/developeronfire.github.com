@@ -486,6 +486,20 @@ class SiteTest < Minitest::Test
     assert_empty content_pages.select { |page| html(page).css('script:not([src])').any? { |script| script.text.match?(/className|classList/) } }
   end
 
+  def test_every_page_loads_trackjs_without_blocking_rendering
+    assert_empty content_pages.reject { |page| html(page).at_css('script[src*="cdn.trackjs.com"][async]') }
+  end
+
+  def test_every_page_sets_the_trackjs_config_before_the_agent
+    missing = content_pages.reject do |page|
+      scripts = html(page).css('script')
+      config = scripts.find_index { |script| script.text.include?('window._trackJs') }
+      agent = scripts.find_index { |script| script['src'].to_s.include?('cdn.trackjs.com') }
+      config && agent && config < agent
+    end
+    assert_empty missing
+  end
+
   def test_every_page_loads_the_search_script
     assert_empty content_pages.reject { |page| html(page).at_css(%(script[src="#{SCRIPTS}/search.js"])) }
   end
@@ -496,6 +510,10 @@ class SiteTest < Minitest::Test
 
   def test_book_recommendations_page_loads_its_script
     assert html('book-recommendations.html').at_css(%(script[src="#{SCRIPTS}/book-recommendations.js"]))
+  end
+
+  def test_book_recommendations_page_explains_itself_without_scripts
+    assert_includes html('book-recommendations.html').css('noscript').text, 'JavaScript'
   end
 
   def test_book_recommendations_page_has_the_list_its_script_fills

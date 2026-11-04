@@ -1,13 +1,18 @@
 // Episode search: filters the episode index (search.json) by title as the
 // visitor types, and lets the keyboard pick a result.
 
+// Case, accents and surrounding spaces do not count: "lopez " finds "López".
+function searchable(text) {
+  return text.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().trim();
+}
+
 function filterPosts(posts, query) {
   if (query === null || query === undefined || query.match(/^\s*$/) !== null) {
     return null;
   }
-  var needle = query.toLowerCase();
+  var needle = searchable(query);
   return posts.filter(function (post) {
-    return post.title.toLowerCase().indexOf(needle) !== -1;
+    return searchable(post.title).indexOf(needle) !== -1;
   });
 }
 
@@ -48,12 +53,20 @@ if (typeof document !== 'undefined') {
       }
     }
 
-    function noResultsPage() {
+    function messagePage(message) {
       clearResults();
       resultsContainer().classList.add('shown');
-      var emptyListNotification = document.createElement('li');
-      emptyListNotification.innerText = 'No results found';
-      resultsList().appendChild(emptyListNotification);
+      var notification = document.createElement('li');
+      notification.innerText = message;
+      resultsList().appendChild(notification);
+    }
+
+    function noResultsPage() {
+      messagePage('No results found');
+    }
+
+    function searchUnavailablePage() {
+      messagePage('Search is unavailable right now.');
     }
 
     function hideResultsPage() {
@@ -92,7 +105,8 @@ if (typeof document !== 'undefined') {
 
     function selectResult(move) {
       var list = resultsList();
-      if (list.children.length === 0) {
+      // A message row is not a result, so there is nothing to select.
+      if (list.getElementsByTagName('a').length === 0) {
         return;
       }
       var selected = currentSelection();
@@ -116,6 +130,10 @@ if (typeof document !== 'undefined') {
       return;
     }
 
+    document.documentElement.classList.add('search-ready');
+
+    var searchArea = searchBox.form;
+
     searchBox.addEventListener('input', function () {
       var query = searchBox.value;
       if (query === null || query.length === 0) {
@@ -136,7 +154,9 @@ if (typeof document !== 'undefined') {
           layoutResultsPage(matches);
         }
       }).catch(function () {
-        noResultsPage();
+        if (searchBox.value === query) {
+          searchUnavailablePage();
+        }
       });
     });
 
@@ -157,6 +177,32 @@ if (typeof document !== 'undefined') {
         if (link) {
           window.location = link.href;
         }
+      }
+    });
+
+    // Escape from a focused result. The box is about to be emptied and the result
+    // removed, so focus goes back to the box, and the mobile menu stays as it was.
+    searchArea.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && event.target !== searchBox) {
+        event.stopPropagation();
+        searchBox.value = '';
+        hideResultsPage();
+        searchBox.focus();
+      }
+    });
+
+    document.addEventListener('click', function (event) {
+      if (!searchArea.contains(event.target)) {
+        hideResultsPage();
+      }
+    });
+
+    // Only when focus has somewhere else to go: Safari does not focus a link on click,
+    // so during a click on a result focus goes nowhere, and closing then would remove
+    // the result before the click lands. Clicks away are handled above.
+    searchArea.addEventListener('focusout', function (event) {
+      if (event.relatedTarget && !searchArea.contains(event.relatedTarget)) {
+        hideResultsPage();
       }
     });
   })();

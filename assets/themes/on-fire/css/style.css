@@ -241,7 +241,10 @@ iframe { color-scheme: light; }
 }
 .site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--text); }
 
-.site-search { position: relative; margin-top: 0.9rem; }
+/* search.js adds search-ready; without it the box could never return anything. This is
+   not the js class, because that comes from site-menu.js and says nothing about search. */
+.site-search { display: none; position: relative; margin-top: 0.9rem; }
+.search-ready .site-search { display: block; }
 
 #search {
   width: 100%;
@@ -315,7 +318,9 @@ iframe { color-scheme: light; }
   }
   .site-nav a[aria-current="page"] { border-bottom-color: var(--flame); }
 
-  .site-search { width: 190px; margin-top: 0; }
+  /* Keeps its place in the header, so the links do not shift when search.js runs. */
+  .site-search { display: block; width: 190px; margin-top: 0; visibility: hidden; }
+  .search-ready .site-search { visibility: visible; }
   #search { min-height: 38px; padding-block: 0.3rem; font-size: 0.875rem; }
 
   .search-result-container { position: absolute; top: 100%; right: 0; }
@@ -919,4 +924,7 @@ time.chapter-timestamp {
     forced-color-adjust: none;
   }
   .menu-toggle[aria-expanded="true"] .menu-toggle-bars { background: transparent; }
+
+  /* Forced colours remove the selected result's shadow and background. */
+  .search-result li.selected { outline: 3px solid Highlight; outline-offset: -3px; }
 }

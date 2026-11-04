@@ -189,6 +189,126 @@ test('Enter with no matches goes nowhere', async () => {
   assert.equal(window.location.hash, '');
 });
 
+test('ArrowDown does not select the no-results row', async () => {
+  const { type, key, list } = searchPage();
+  type('zzz');
+  await settle();
+  key('ArrowDown');
+  assert.equal(list.querySelectorAll('.selected').length, 0);
+});
+
+test('ArrowUp does not select the no-results row', async () => {
+  const { type, key, list } = searchPage();
+  type('zzz');
+  await settle();
+  key('ArrowUp');
+  assert.equal(list.querySelectorAll('.selected').length, 0);
+});
+
+test('ArrowDown does not select the failure row', async () => {
+  const { type, key, list } = searchPage(() => Promise.reject(new Error('offline')));
+  type('reem');
+  await settle();
+  key('ArrowDown');
+  assert.equal(list.querySelectorAll('.selected').length, 0);
+});
+
+test('Enter on the failure row goes nowhere', async () => {
+  const { type, key, window } = searchPage(() => Promise.reject(new Error('offline')));
+  type('reem');
+  await settle();
+  key('ArrowDown');
+  key('Enter');
+  assert.equal(window.location.hash, '');
+});
+
+test('a query with a trailing space still finds the episode', async () => {
+  const { type, list } = searchPage();
+  type('humans ');
+  await settle();
+  assert.equal(list.querySelectorAll('a').length, 1);
+});
+
+test('clicking outside the search area closes the dropdown', async () => {
+  const { document, container } = await allThreeResults();
+  document.querySelector('.hero').click();
+  assert.equal(container.classList.contains('shown'), false);
+});
+
+test('clicking outside the search area keeps the text in the box', async () => {
+  const { document, box } = await allThreeResults();
+  document.querySelector('.hero').click();
+  assert.equal(box.value, 'Episode');
+});
+
+test('clicking in the search box keeps the dropdown open', async () => {
+  const { box, container } = await allThreeResults();
+  box.click();
+  assert.equal(container.classList.contains('shown'), true);
+});
+
+test('focus moving outside the search area closes the dropdown', async () => {
+  const { window, document, box, container } = await allThreeResults();
+  box.dispatchEvent(new window.FocusEvent('focusout', { bubbles: true, relatedTarget: document.querySelector('.hero a') }));
+  assert.equal(container.classList.contains('shown'), false);
+});
+
+test('focus moving from the box to a result keeps the dropdown open', async () => {
+  const { window, box, list, container } = await allThreeResults();
+  box.dispatchEvent(new window.FocusEvent('focusout', { bubbles: true, relatedTarget: list.querySelector('a') }));
+  assert.equal(container.classList.contains('shown'), true);
+});
+
+// Safari does not focus a link on click, so the box loses focus to nothing part way through
+// a click on a result. Closing here would remove the result before the click lands.
+test('focus going nowhere keeps the dropdown open so a result can still be clicked', async () => {
+  const { window, box, container } = await allThreeResults();
+  box.dispatchEvent(new window.FocusEvent('focusout', { bubbles: true, relatedTarget: null }));
+  assert.equal(container.classList.contains('shown'), true);
+});
+
+test('Escape on a focused result clears the box', async () => {
+  const { window, box, list } = await allThreeResults();
+  const result = list.querySelector('a');
+  result.focus();
+  press(window, result, 'Escape');
+  assert.equal(box.value, '');
+});
+
+test('Escape on a focused result closes the dropdown', async () => {
+  const { window, list, container } = await allThreeResults();
+  const result = list.querySelector('a');
+  result.focus();
+  press(window, result, 'Escape');
+  assert.equal(container.classList.contains('shown'), false);
+});
+
+test('Escape on a focused result returns focus to the box', async () => {
+  const { window, document, box, list } = await allThreeResults();
+  const result = list.querySelector('a');
+  result.focus();
+  press(window, result, 'Escape');
+  assert.equal(document.activeElement, box);
+});
+
+test('Escape on a focused result leaves the mobile menu open', async () => {
+  const { window, document, list, type } = searchPage();
+  await settle();
+  const menu = document.getElementById('site-menu');
+  document.querySelector('.menu-toggle').click();
+  type('Episode');
+  await settle();
+  const result = list.querySelector('a');
+  result.focus();
+  press(window, result, 'Escape');
+  assert.equal(menu.classList.contains('open'), true);
+});
+
+test('the search script marks the page once search can work', () => {
+  const { document } = searchPage();
+  assert.equal(document.documentElement.classList.contains('search-ready'), true);
+});
+
 test('Escape clears the box', async () => {
   const { key, box } = await allThreeResults();
   key('Escape');
@@ -234,6 +354,30 @@ test('the episode index is fetched once however much is typed', async () => {
   type('al');
   await settle();
   assert.deepEqual(browser.fetchCalls, ['/search.json']);
+});
+
+test('a failed index load says search is unavailable, not that nothing matched', async () => {
+  const { type, list } = searchPage(() => Promise.reject(new Error('offline')));
+  type('reem');
+  await settle();
+  assert.equal(list.textContent.trim(), 'Search is unavailable right now.');
+});
+
+test('an error response says search is unavailable, not that nothing matched', async () => {
+  const { type, list } = searchPage(() => Promise.resolve(errorResponse(episodes)));
+  type('reem');
+  await settle();
+  assert.equal(list.textContent.trim(), 'Search is unavailable right now.');
+});
+
+test('a failed load arriving after the box was emptied opens nothing', async () => {
+  let fail;
+  const page = searchPage(() => new Promise((resolve, reject) => { fail = reject; }));
+  page.type('reem');
+  page.type('');
+  fail(new Error('offline'));
+  await settle();
+  assert.equal(page.container.classList.contains('shown'), false);
 });
 
 test('a failed index load opens the dropdown rather than failing silently', async () => {

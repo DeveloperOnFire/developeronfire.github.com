@@ -11,6 +11,22 @@ test('filterPosts matches titles regardless of letter case', () => {
   assert.deepEqual(filterPosts(posts, 'aimee').map((p) => p.url), ['/podcast/b']);
 });
 
+test('filterPosts ignores a trailing space in the query', () => {
+  assert.deepEqual(filterPosts(posts, 'inspired ').map((p) => p.url), ['/podcast/b']);
+});
+
+test('filterPosts ignores a leading space in the query', () => {
+  assert.equal(filterPosts(posts, ' episode').length, 2);
+});
+
+test('filterPosts finds an accented title from an unaccented query', () => {
+  assert.equal(filterPosts([{ title: 'Enrique López Mañas', url: '/a' }], 'lopez').length, 1);
+});
+
+test('filterPosts finds an unaccented title from an accented query', () => {
+  assert.equal(filterPosts([{ title: 'Enrique Lopez', url: '/a' }], 'lópez').length, 1);
+});
+
 test('filterPosts matches on any substring of the title', () => {
   assert.deepEqual(filterPosts(posts, '452').map((p) => p.url), ['/podcast/b']);
 });

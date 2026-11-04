@@ -35,8 +35,10 @@
     <link href="{{ BASE_PATH }}{{ site.JB.rss_path }}" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
 
     <!-- BEGIN TRACKJS -->
+    <!-- Async so a slow or hanging CDN cannot hold up the page. The agent reads this config
+         when it runs. The cost is that errors before it has loaded are not reported. -->
     <script type="text/javascript">window._trackJs = { token: 'f052509eeda6484190736c0cfa708e55' };</script>
-    <script type="text/javascript" src="https://cdn.trackjs.com/releases/current/tracker.js"></script>
+    <script type="text/javascript" async src="https://cdn.trackjs.com/releases/current/tracker.js"></script>
     <!-- END TRACKJS -->
 
   </head>
