@@ -36,6 +36,15 @@ class SiteTest < Minitest::Test
     'space-grotesk-latin-700-normal.woff2' => '35f8aec56cfd5cbfdb03cc68733a54a0b05bb3617ffcd5fd332badc0b045ca55'
   }.freeze
 
+  # The show is finished: these pages used to sell or book something.
+  CLOSED_OFFER_PAGES = %w[sponsors/media-kit.html guest-information.html subscribed/index.html punch-fear.html].freeze
+
+  ACTIVE_SHOW_PHRASES = [
+    'publishes every week', 'sponsorship rate', 'Discounts are available', 'Schedule Interview',
+    'This will book', 'schedule a time', 'keep up with what is happening', "We'll be in touch",
+    'will be updated with more stories'
+  ].freeze
+
   MAIN_NAVIGATION = ['Episodes', 'Subscribe', 'About', 'Blog', 'Book Recommendations'].freeze
 
   def setup
@@ -251,6 +260,36 @@ class SiteTest < Minitest::Test
                 .select { |ref| local?(ref) }.reject { |ref| resolves?(ref, page) }.map { |ref| "#{page}: #{ref}" }
     end
     assert_empty missing.uniq
+  end
+
+  def test_closed_offer_pages_use_no_active_show_language
+    found = CLOSED_OFFER_PAGES.product(ACTIVE_SHOW_PHRASES).select { |page, phrase| main_text(page).include?(phrase) }
+    assert_empty found
+  end
+
+  # Dave's training page has its own, separate booking link and is not a closed offer.
+  def test_only_the_training_page_links_to_calendly
+    assert_equal ['training/index.html'], content_pages.select { |page| html(page).at_css('a[href*="calendly.com"]') }
+  end
+
+  def test_media_kit_says_sponsorship_is_closed
+    assert_includes main_text('sponsors/media-kit.html'), 'sponsorship is closed'
+  end
+
+  def test_guest_information_says_interviews_are_no_longer_booked
+    assert_includes main_text('guest-information.html'), 'no longer booking interviews'
+  end
+
+  def test_guest_information_keeps_the_standard_questions
+    assert_equal 11, html('guest-information.html').css('main li').size
+  end
+
+  def test_no_page_links_to_the_ebook_over_plain_http
+    assert_empty content_pages.select { |page| html(page).at_css('a[href^="http://traffic.libsyn.com/developeronfire/punch-fear-ebook"]') }
+  end
+
+  def test_subscribed_page_offers_the_ebook_as_a_button
+    assert html('subscribed/index.html').at_css('main a.button.button-primary[href$="punch-fear-ebook.pdf"]')
   end
 
   def test_no_page_embeds_the_retired_mailing_list_form
@@ -678,6 +717,11 @@ class SiteTest < Minitest::Test
     @content_pages ||= Dir.glob(SITE.join('**/*.html'))
                           .reject { |path| File.read(path).match?(/http-equiv=["']?refresh/i) }
                           .map { |path| Pathname.new(path).relative_path_from(SITE).to_s }
+  end
+
+  # A page's visible text, with the curly quotes the Markdown renderer adds undone.
+  def main_text(page)
+    html(page).at_css('main').text.tr('’', "'").gsub(/\s+/, ' ')
   end
 
   def stylesheet

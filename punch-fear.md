@@ -18,5 +18,5 @@ Dave has written a book about becoming a podcaster, getting involved in software
 
 You have 2 options:
 
-* [Buy the more complete edition that will be updated with more stories and more inspiration](https://leanpub.com/punch-fear)
-* [You can download the free eBook edition here](http://traffic.libsyn.com/developeronfire/punch-fear-ebook.pdf)
+* [Buy the more complete edition](https://leanpub.com/punch-fear)
+* [You can download the free eBook edition here](https://traffic.libsyn.com/developeronfire/punch-fear-ebook.pdf)
