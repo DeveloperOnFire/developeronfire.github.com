@@ -489,6 +489,23 @@ class SiteTest < Minitest::Test
     assert_empty episode_pages.select { |page| html(page).css('.sponsor-message, .sponsor-title').any? { |copy| copy.text.match?(%r{</?(ul|li|p)>}) } }
   end
 
+  def test_no_episode_carries_a_dailydrip_ad
+    assert_empty sponsor_links.grep(/dailydrip/)
+  end
+
+  def test_no_episode_carries_a_remote_conference_ad
+    assert_empty sponsor_links.grep(/remoteconference/)
+  end
+
+  # DailyDrip's domain looks parked, so these must not send visitors to whoever buys it.
+  def test_dailydrip_redirect_page_is_gone
+    refute SITE.join('dailydrip.html').exist?
+  end
+
+  def test_dd_redirect_page_is_gone
+    refute SITE.join('dd.html').exist?
+  end
+
   # --- site shell ---------------------------------------------------------------------
 
   def test_every_page_has_a_skip_link
@@ -722,6 +739,10 @@ class SiteTest < Minitest::Test
   # A page's visible text, with the curly quotes the Markdown renderer adds undone.
   def main_text(page)
     html(page).at_css('main').text.tr('’', "'").gsub(/\s+/, ' ')
+  end
+
+  def sponsor_links
+    episode_pages.flat_map { |page| html(page).css('a.sponsor').map { |ad| ad['href'] } }
   end
 
   def stylesheet
