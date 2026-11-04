@@ -66,6 +66,14 @@ class SiteTest < Minitest::Test
     assert_empty episodes.select { |episode| episode.fetch('guests', []).any? { |guest| guest['image'].to_s.empty? } }.map { |episode| episode['title'] }
   end
 
+  def test_every_guest_twitter_value_is_a_valid_handle
+    assert_empty all_guests.map { |guest| guest['twitter'] }.compact.reject { |handle| handle.to_s.match?(/\A[A-Za-z0-9_]{1,15}\z/) }
+  end
+
+  def test_every_guest_blog_value_is_an_http_url
+    assert_empty all_guests.map { |guest| guest['blog'] }.compact.reject { |blog| blog.to_s.match?(%r{\Ahttps?://\S+\z}) }
+  end
+
   def test_no_episode_uses_the_retired_flat_guest_fields
     legacy = episodes.select { |episode| episode.keys.intersect?(%w[guest_name guest_blog guest_twitter]) }
     assert_empty legacy.map { |episode| episode['title'] }
@@ -591,6 +599,11 @@ class SiteTest < Minitest::Test
 
   def episodes
     @episodes ||= Dir.glob(SOURCE.join('Podcast/_posts/*')).sort.map { |path| front_matter_of(path) }
+  end
+
+  # Every guest entry there is, on episodes and on guest pages.
+  def all_guests
+    episodes.flat_map { |episode| episode.fetch('guests', []) } + guest_pages.values.flatten
   end
 
   def guest_pages
