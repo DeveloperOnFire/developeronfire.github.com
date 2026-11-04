@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { filterPosts } = require('../../assets/themes/bootstrap-3/scripts/search.js');
+const { filterPosts } = require('../../assets/themes/on-fire/scripts/search.js');
 
 const posts = [
   { title: 'Episode 001 | John Sonmez: Simple Programmer', url: '/podcast/a' },

@@ -1,0 +1,61 @@
+{%- comment -%}
+  A guest's profile: photo, links, bio, and every episode and blog post they appear in.
+
+  Identity: two guest entries are the same person when both carry a Twitter handle and
+  the handles match (case-insensitively); when either side has no handle, the names
+  must match. Handles distinguish namesakes (two different Jared Smiths have pages);
+  names cover guests who have no handle.
+  Usage: {% include themes/on-fire/guest-profile.html guest=page.guest %}
+{%- endcomment -%}
+<article class="guest-profile">
+  <header class="guest-profile-header">
+    <img class="guest" src="{{ include.guest.image | escape }}" width="160" height="160" alt="{{ include.guest.name | escape }}">
+    <div>
+      {%- if include.guest.blog %}
+      <h2><a target="_blank" rel="noopener noreferrer" href="{{ include.guest.blog | escape }}">{{ include.guest.name | escape }}</a></h2>
+      {%- else %}
+      <h2>{{ include.guest.name | escape }}</h2>
+      {%- endif %}
+      {%- if include.guest.twitter %}
+      <p class="guest-handle"><a target="_blank" rel="noopener noreferrer" href="https://twitter.com/{{ include.guest.twitter | escape }}">@{{ include.guest.twitter | escape }}</a></p>
+      {%- endif %}
+    </div>
+  </header>
+
+  {%- if include.guest.bio %}
+  <p class="guest-bio">{{ include.guest.bio | escape }}</p>
+  {%- endif %}
+
+  <h3>{{ include.guest.firstName | escape }}'s appearances on the show</h3>
+  <ul class="link-rows appearances">
+    {%- assign page_handle = include.guest.twitter | downcase -%}
+    {%- for post in site.categories.Podcast reversed -%}
+      {%- for postGuest in post.guests -%}
+        {%- assign same_guest = false -%}
+        {%- if include.guest.twitter and postGuest.twitter -%}
+          {%- assign post_handle = postGuest.twitter | downcase -%}
+          {%- if post_handle == page_handle -%}{%- assign same_guest = true -%}{%- endif -%}
+        {%- elsif postGuest.name == include.guest.name -%}
+          {%- assign same_guest = true -%}
+        {%- endif -%}
+        {%- if same_guest %}
+    <li><a href="{{ post.url }}">{{ post.title | escape }}</a></li>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor %}
+  </ul>
+
+  {%- capture guest_blog_posts -%}
+    {%- for post in site.categories.Blog reversed -%}
+      {%- if post.author == include.guest.name %}
+    <li><a href="{{ post.url }}">{{ post.title | escape }}</a></li>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if guest_blog_posts != '' %}
+
+  <h3>{{ include.guest.firstName | escape }}'s posts on the blog</h3>
+  <ul class="link-rows blog-posts">{{ guest_blog_posts }}
+  </ul>
+  {%- endif %}
+</article>

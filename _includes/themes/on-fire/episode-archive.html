@@ -1,0 +1,25 @@
+{%- comment -%}
+  Every episode as compact cards, newest first, grouped by year.
+  Usage: {% include themes/on-fire/episode-archive.html %}
+{%- endcomment -%}
+{%- assign episodes_by_year = site.categories.Podcast | group_by_exp: 'post', "post.date | date: '%Y'" -%}
+<nav class="year-nav" aria-label="Jump to year">
+  <ul>
+    {%- for year in episodes_by_year %}
+    <li><a href="#year-{{ year.name }}">{{ year.name }}</a></li>
+    {%- endfor %}
+  </ul>
+</nav>
+{% for year in episodes_by_year %}
+<section class="archive-year" aria-labelledby="year-{{ year.name }}">
+  <div class="section-heading">
+    <h2 id="year-{{ year.name }}">{{ year.name }}</h2>
+    <p>{{ year.items.size }} episodes</p>
+  </div>
+  <ul class="episode-grid episode-grid-compact">
+    {%- for post in year.items %}
+    <li>{% include themes/on-fire/episode-card.html episode=post %}</li>
+    {%- endfor %}
+  </ul>
+</section>
+{% endfor %}

@@ -1,0 +1,22 @@
+{%- comment -%}
+  An episode as a card: guest photo(s), "EP 452 · 43 min", guest name and subject.
+  The photos carry empty alt text because the guest's name is right beside them.
+  Usage: {% include themes/on-fire/episode-card.html episode=post %}
+{%- endcomment -%}
+{%- include themes/on-fire/episode-display.html episode=include.episode -%}
+<article class="episode-card">
+  <a href="{{ BASE_PATH }}{{ include.episode.url }}">
+    <div class="episode-card-photos">
+      {%- for guest in include.episode.guests %}
+      <img src="{{ guest.image | escape }}" width="400" height="333" loading="lazy" alt="">
+      {%- endfor %}
+    </div>
+    <div class="episode-card-body">
+      <p class="episode-card-meta">{{ episode_label }}{% if episode_minutes != '' %} · {{ episode_minutes }} min{% endif %}</p>
+      <h3>{{ episode_guests | escape }}</h3>
+      {%- if episode_subject != '' %}
+      <p class="episode-card-subject">{{ episode_subject | escape }}</p>
+      {%- endif %}
+    </div>
+  </a>
+</article>

@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { parseTimeToSeconds } = require('../../assets/themes/bootstrap-3/scripts/mediaPlayer.js');
+const { parseTimeToSeconds } = require('../../assets/themes/on-fire/scripts/mediaPlayer.js');
 
 test('parseTimeToSeconds converts minutes and seconds', () => {
   assert.equal(parseTimeToSeconds('3:10'), 190);

@@ -1,0 +1,26 @@
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="eyebrow">{{ site.categories.Podcast.size }} episodes · 2015–2019</p>
+      <h1>Software is made by <em>people.</em> Hear their stories.</h1>
+      <p class="lede">Expressing, exposing, and sharing the humanity of software developers.</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="/episodes">Browse all {{ site.categories.Podcast.size }} episodes</a>
+        <a class="button button-secondary" href="/subscribe">Subscribe</a>
+      </div>
+    </div>
+    <img class="hero-emblem" src="/assets/images/developeronfire-emblem.webp" width="542" height="640" alt="" fetchpriority="high">
+  </div>
+</section>
+
+<section class="container section" aria-labelledby="from-the-archive">
+  <div class="section-heading">
+    <h2 id="from-the-archive">From the archive</h2>
+    <a href="/episodes">All episodes <span aria-hidden="true">→</span></a>
+  </div>
+  <ul class="episode-grid">
+    {%- for post in site.categories.Podcast limit:8 %}
+    <li>{% include themes/on-fire/episode-card.html episode=post %}</li>
+    {%- endfor %}
+  </ul>
+</section>

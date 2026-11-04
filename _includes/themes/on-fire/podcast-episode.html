@@ -1,0 +1,61 @@
+{% include themes/on-fire/episode-display.html episode=page %}
+<div class="container page">
+  <header class="page-heading">
+    <p class="eyebrow">{{ episode_label }}{% if episode_minutes != '' %} · {{ episode_minutes }} min{% endif %} · <span class="date">{{ page.date | date_to_long_string }}</span></p>
+    <h1>{{ episode_heading | escape }}</h1>
+    {%- if page.tagline %}
+    <p class="lede">{{ page.tagline }}</p>
+    {%- endif %}
+  </header>
+
+  <div class="post-full episode-layout">
+    {% if page.guests and page.guests != empty %}
+    <aside class="episode-guests" aria-labelledby="episode-guests-heading">
+      <h2 id="episode-guests-heading">{% if page.guests.size > 1 %}Guests{% else %}Guest{% endif %}</h2>
+      {% for guest in page.guests %}
+        {% include themes/on-fire/guest-card.html guest=guest %}
+      {% endfor %}
+    </aside>
+    {% endif %}
+
+    <div class="episode-body">
+      {% if page.link %}
+      <div class="medium">
+        <audio src="{{ page.link | escape }}" id="episode-audio" controls="controls" preload="metadata"></audio>
+        <div class="medium-footer">
+          <a target="_blank" rel="noopener noreferrer" href="{{ page.link | escape }}">Download</a>
+          {% if page.audio_editing_message %}
+          <span class="audio-editing-message">{{ page.audio_editing_message }}</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="content">
+        {{ content }}
+      </div>
+      {% include themes/on-fire/twitter-share.html %}
+    </div>
+
+    {% if page.sponsors and page.sponsors != empty %}
+    <aside class="episode-sponsors" aria-labelledby="episode-sponsors-heading">
+      <h2 id="episode-sponsors-heading">Episode sponsored by</h2>
+      {% for sponsor_ad in page.sponsors %}
+      <a class="sponsor" href="{{ sponsor_ad.url | escape }}" rel="sponsored">
+        <img class="sponsor-img" src="{{ sponsor_ad.image | escape }}" width="300" height="250" loading="lazy" alt="{{ sponsor_ad.title | strip_html | escape }}">
+        <div class="sponsor-title">{{ sponsor_ad.title | strip_html | escape }}</div>
+        {%- comment -%} Sponsor copy is written with ul, li and p tags. Everything is escaped first, so only those come back as markup. {%- endcomment %}
+        <div class="sponsor-message">{{ sponsor_ad.text | escape | replace: '&lt;ul&gt;', '<ul>' | replace: '&lt;/ul&gt;', '</ul>' | replace: '&lt;li&gt;', '<li>' | replace: '&lt;/li&gt;', '</li>' | replace: '&lt;p&gt;', '<p>' | replace: '&lt;/p&gt;', '</p>' }}</div>
+      </a>
+      {% endfor %}
+    </aside>
+    {% endif %}
+  </div>
+
+  <div class="post-footer">
+    {% include themes/on-fire/post-navigation.html posts=site.categories.Podcast archive_url=site.JB.archive_path archive_label="All Episodes" %}
+    {% include JB/comments %}
+  </div>
+</div>
+
+<script src="/assets/themes/on-fire/scripts/mediaPlayer.js"></script>
