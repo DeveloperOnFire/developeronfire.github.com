@@ -16,7 +16,7 @@ class SiteTest < Minitest::Test
 
   # Hosts the site knowingly loads scripts from. Disqus injects its embed
   # script at runtime and so never appears as a script[src] in the markup.
-  KNOWN_SCRIPT_HOSTS = %w[cdn.trackjs.com platform.twitter.com www.googletagmanager.com].freeze
+  KNOWN_SCRIPT_HOSTS = %w[cdn.trackjs.com platform.twitter.com].freeze
 
   # The only asset left at the old theme path: a 2015 blog post (and so blog-rss.xml)
   # links to it by absolute URL, and neither may change.
@@ -147,8 +147,8 @@ class SiteTest < Minitest::Test
     assert_equal 2, html(episode_page('episode-219')).css('main .guest img').size
   end
 
-  def test_analytics_tag_is_rendered_on_episode_pages
-    assert_equal 1, html(episode_page('episode-452')).css('script[src^="https://www.googletagmanager.com/gtag/js"]').size
+  def test_no_page_loads_google_analytics
+    assert_empty rendered_pages('**/*.html').select { |page| SITE.join(page).read.include?('googletagmanager') }
   end
 
   def test_every_episode_page_uses_the_episode_layout
