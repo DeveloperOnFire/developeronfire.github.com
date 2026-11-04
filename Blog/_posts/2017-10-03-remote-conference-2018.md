@@ -18,7 +18,7 @@ Getting to interact with top-notch developers is a treat. I have benefitted grea
 
 In order to share that experience and get you closer to what I have gone through in bringing you the amazing interviews I have had with awesome folks, I have decided to put on a remote conference for software developers.
 
-I am pleased to announce that the [Developer On Fire Remote Conference](https://remoteconference.developeronfire.com/) will take place from January 22 - January 24, 2018.  You can find out more and purchase your ticket on the site by clicking on the link.
+I am pleased to announce that the Developer On Fire Remote Conference will take place from January 22 - January 24, 2018.
 
 After getting responses to a survey I created about interest in such an event, I have reached out to several desired speakers that were requested via the survey. The site reflects some of the amazing people who have agreed in principle (though not firmly yet without more details and a talk submission process).
 

@@ -497,6 +497,10 @@ class SiteTest < Minitest::Test
     assert_empty sponsor_links.grep(/remoteconference/)
   end
 
+  def test_no_page_links_to_the_retired_conference_site
+    assert_empty content_pages.select { |page| SITE.join(page).read.include?('remoteconference.developeronfire.com') }
+  end
+
   # DailyDrip's domain looks parked, so these must not send visitors to whoever buys it.
   def test_dailydrip_redirect_page_is_gone
     refute SITE.join('dailydrip.html').exist?
