@@ -876,7 +876,7 @@ class SiteTest < Minitest::Test
   def resolves?(href, page)
     return false if href.strip.empty?
 
-    path = href.split(/[#?]/).first.to_s.chomp('/')
+    path = URI.decode_uri_component(href.split(/[#?]/).first.to_s).chomp('/')
     path = File.join('/', File.dirname(page), path) unless path.empty? || path.start_with?('/')
     path = '/index' if path.empty?
     [SITE.join(".#{path}"), SITE.join(".#{path}.html"), SITE.join(".#{path}/index.html")].any? { |candidate| candidate.file? }
