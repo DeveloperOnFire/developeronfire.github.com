@@ -7,8 +7,10 @@
 <article class="episode-card">
   <a href="{{ BASE_PATH }}{{ include.episode.url }}">
     <div class="episode-card-photos">
+      {%- if include.episode.guests.size > 1 %}{% assign photo_sizes = '(max-width: 559px) 25vw, 150px' %}{% else %}{% assign photo_sizes = '(max-width: 559px) 50vw, 300px' %}{% endif %}
       {%- for guest in include.episode.guests %}
-      <img src="{{ guest.image | escape }}" width="400" height="333" loading="lazy" alt="">
+      {%- assign photo = guest.image | split: '/' | last | slugify %}
+      <img src="{{ site.guest_photos }}/card-320/{{ photo }}.webp" srcset="{{ site.guest_photos }}/card-320/{{ photo }}.webp 320w, {{ site.guest_photos }}/card-640/{{ photo }}.webp 640w" sizes="{{ photo_sizes }}" width="320" height="267" loading="lazy" alt="">
       {%- endfor %}
     </div>
     <div class="episode-card-body">

@@ -510,6 +510,33 @@ class SiteTest < Minitest::Test
     refute SITE.join('dd.html').exist?
   end
 
+  # --- guest photos -------------------------------------------------------------------------
+
+  def test_no_page_shows_an_original_guest_photo
+    assert_empty guest_photo_sources.reject { |_, src| src.start_with?('/assets/images/guests/') }
+  end
+
+  def test_every_guest_photo_copy_a_page_shows_exists
+    assert_empty guest_photo_sources.reject { |_, src| SITE.join(".#{src}").file? }
+  end
+
+  def test_every_wide_card_photo_a_card_offers_exists
+    wide = html('episodes.html').css('.episode-card-photos img').flat_map { |img| img['srcset'].to_s.scan(%r{(\S+) 640w}).flatten }
+    assert_empty wide.reject { |src| SITE.join(".#{src}").file? }
+  end
+
+  def test_every_card_offers_a_wide_copy_for_sharp_screens
+    assert_empty html('episodes.html').css('.episode-card-photos img').reject { |img| img['srcset'].to_s.include?(' 640w') }
+  end
+
+  def test_every_search_result_photo_exists
+    assert_empty search_index.reject { |entry| SITE.join(".#{entry['image']}").file? }.map { |entry| entry['title'] }
+  end
+
+  def test_no_guest_photo_copy_weighs_more_than_64_kb
+    assert_empty Dir[SOURCE.join('assets/images/guests/*/*.webp').to_s].select { |file| File.size(file) > 64 * 1024 }
+  end
+
   # --- site shell ---------------------------------------------------------------------
 
   def test_every_page_has_a_skip_link
@@ -779,6 +806,12 @@ class SiteTest < Minitest::Test
 
   def search_ready_class
     SITE.join('assets/themes/on-fire/scripts/search.js').read[/documentElement\.classList\.add\('([\w-]+)'\)/, 1]
+  end
+
+  # Every guest photo the layouts show, as [page, src]: episode cards, guest cards and
+  # profiles. Photos written into page bodies are content and keep their originals.
+  def guest_photo_sources
+    content_pages.flat_map { |page| html(page).css('.guest-card img.guest, .guest-profile img.guest, .episode-card-photos img').map { |img| [page, img['src']] } }
   end
 
   def card_links(page)
