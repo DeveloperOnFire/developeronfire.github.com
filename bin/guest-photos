@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Makes the small WebP copies of guest photos that the pages show. GitHub Pages
+# cannot resize images at build time, so the copies are generated here and
+# committed. The originals stay as they are: link previews use them, and they are
+# the source for regenerating.
+#
+# Run after adding or replacing a guest photo. It writes only missing copies, or
+# every copy with --force. Needs ImageMagick with WebP support; the ruby:3.3.4
+# image has it:
+#   docker run --rm --user "$(id -u):$(id -g)" -v "$PWD":/site -w /site ruby:3.3.4 bin/guest-photos
+
+require 'fileutils'
+require 'open3'
+require 'yaml'
+require 'date'
+
+ROOT = File.expand_path('..', __dir__)
+OUT = File.join(ROOT, 'assets/images/guests')
+
+# Card copies are cropped to the card's 6:5 frame, two widths for srcset. The square
+# copy serves every round photo, the largest of which is 160px wide.
+VARIANTS = {
+  'card-320' => '320x267',
+  'card-640' => '640x533',
+  'square-320' => '320x320'
+}.freeze
+
+# Same as Jekyll's default slugify, which the templates use to find the copies.
+def slug(image)
+  File.basename(image).downcase.gsub(/[^[:alnum:]]+/, '-').gsub(/\A-+|-+\z/, '')
+end
+
+def front_matter(file)
+  text = File.read(file, encoding: 'utf-8')
+  return {} unless text.start_with?('---')
+
+  YAML.safe_load(text.split(/^---\s*$/, 3)[1], permitted_classes: [Date, Time]) || {}
+rescue Psych::SyntaxError
+  {}
+end
+
+def photos
+  files = Dir.chdir(ROOT) { `git ls-files -z -- '*.md' '*.html'`.split("\0") }
+  files.flat_map do |file|
+    data = front_matter(File.join(ROOT, file))
+    guests = Array(data['guests']) + Array(data['guest'])
+    [data['image'], *guests.map { |guest| guest.is_a?(Hash) ? guest['image'] : nil }]
+  end.compact.select { |image| image.start_with?('/assets/images/') }.uniq.sort
+end
+
+force = ARGV.include?('--force')
+made = 0
+missing = []
+photos.each do |image|
+  source = File.join(ROOT, image)
+  unless File.file?(source)
+    missing << image
+    next
+  end
+  VARIANTS.each do |variant, size|
+    target = File.join(OUT, variant, "#{slug(image)}.webp")
+    next if File.exist?(target) && !force
+
+    FileUtils.mkdir_p(File.dirname(target))
+    # [0] takes the first frame; ^ fills the frame before the centre crop, matching
+    # object-fit: cover; -strip drops metadata such as camera location.
+    _, err, status = Open3.capture3('convert', "#{source}[0]", '-auto-orient', '-resize', "#{size}^",
+                                    '-gravity', 'center', '-extent', size, '-strip', '-quality', '78', target)
+    abort "convert failed for #{image}: #{err}" unless status.success?
+    made += 1
+  end
+end
+puts "#{made} copies written"
+abort "missing originals:\n  #{missing.join("\n  ")}" unless missing.empty?

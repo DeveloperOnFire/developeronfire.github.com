@@ -9,7 +9,8 @@
 {%- endcomment -%}
 <article class="guest-profile">
   <header class="guest-profile-header">
-    <img class="guest" src="{{ include.guest.image | escape }}" width="160" height="160" alt="{{ include.guest.name | escape }}">
+    {%- assign photo = include.guest.image | split: '/' | last | slugify %}
+    <img class="guest" src="{{ site.guest_photos }}/square-320/{{ photo }}.webp" width="160" height="160" alt="{{ include.guest.name | escape }}">
     <div>
       {%- if include.guest.blog %}
       <h2><a target="_blank" rel="noopener noreferrer" href="{{ include.guest.blog | escape }}">{{ include.guest.name | escape }}</a></h2>

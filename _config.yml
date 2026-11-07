@@ -33,6 +33,10 @@ author :
 #
 production_url : https://developeronfire.com
 
+# Small WebP copies of guest photos, made by bin/guest-photos. Pages show these; link
+# previews use the originals.
+guest_photos : /assets/images/guests
+
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #
 JB :
