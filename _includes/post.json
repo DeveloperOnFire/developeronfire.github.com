@@ -2,11 +2,8 @@
   "title"    : {{ post.title | jsonify }},
   "category" : {{ post.category | jsonify }},
   "url"     : {{ post.url  | jsonify}},
-  {% if post.image %}
-    "image"     : {{ post.image  | jsonify}},
-  {% else %}
-    "image"     : {{ post.guests[0].image  | jsonify}},
-  {% endif %}
+  {% assign photo = post.image | default: post.guests[0].image | split: '/' | last | slugify %}
+    "image"     : {{ site.guest_photos | append: '/square-320/' | append: photo | append: '.webp' | jsonify }},
   "date"     : {
     "day"   : "{{ post.date | date: "%d" }}",
     "month" : "{{ post.date | date: "%B" }}",
