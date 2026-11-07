@@ -510,7 +510,7 @@ class SiteTest < Minitest::Test
     refute SITE.join('dd.html').exist?
   end
 
-  # --- guest photos -------------------------------------------------------------------------
+  # --- guest photos and link previews -------------------------------------------------
 
   def test_no_page_shows_an_original_guest_photo
     assert_empty guest_photo_sources.reject { |_, src| src.start_with?('/assets/images/guests/') }
@@ -535,6 +535,46 @@ class SiteTest < Minitest::Test
 
   def test_no_guest_photo_copy_weighs_more_than_64_kb
     assert_empty Dir[SOURCE.join('assets/images/guests/*/*.webp').to_s].select { |file| File.size(file) > 64 * 1024 }
+  end
+
+  def test_episode_description_is_its_one_line_summary
+    assert_equal 'Kyle Welch talks with Dave Rael about saying yes, community involvement, prioritizing family, and work culture',
+                 meta(episode_page('episode-388'), 'description')
+  end
+
+  def test_episode_preview_uses_its_one_line_summary
+    assert_equal meta(episode_page('episode-388'), 'description'), meta(episode_page('episode-388'), 'og:description')
+  end
+
+  def test_episode_without_a_summary_falls_back_to_its_subtitle
+    assert_equal 'Developer On Fire: John Sonmez', meta(episode_page('episode-001'), 'og:description')
+  end
+
+  def test_episode_preview_shows_the_guest_photo
+    assert_equal 'https://developeronfire.com/assets/images/KyleWelch.jpg', meta(episode_page('episode-388'), 'og:image')
+  end
+
+  def test_preview_photo_names_with_spaces_are_escaped
+    assert_equal 'https://developeronfire.com/assets/images/David%20DeWolf.jpg', meta(episode_page('episode-380'), 'og:image')
+  end
+
+  def test_every_preview_photo_exists
+    missing = content_pages.reject do |page|
+      SITE.join(".#{URI.decode_uri_component(meta(page, 'og:image').to_s.delete_prefix('https://developeronfire.com'))}").file?
+    end
+    assert_empty missing
+  end
+
+  def test_every_page_has_a_preview_title
+    assert_empty content_pages.select { |page| meta(page, 'og:title').to_s.strip.empty? }
+  end
+
+  def test_every_preview_links_to_the_live_site
+    assert_empty content_pages.reject { |page| meta(page, 'og:url').to_s.start_with?('https://developeronfire.com/') }
+  end
+
+  def test_every_page_asks_for_a_summary_card
+    assert_empty content_pages.reject { |page| meta(page, 'twitter:card') == 'summary' }
   end
 
   # --- site shell ---------------------------------------------------------------------
@@ -812,6 +852,11 @@ class SiteTest < Minitest::Test
   # profiles. Photos written into page bodies are content and keep their originals.
   def guest_photo_sources
     content_pages.flat_map { |page| html(page).css('.guest-card img.guest, .guest-profile img.guest, .episode-card-photos img').map { |img| [page, img['src']] } }
+  end
+
+  # A meta tag's content, by name or property.
+  def meta(page, key)
+    html(page).at_css(%(meta[name="#{key}"], meta[property="#{key}"]))&.[]('content')
   end
 
   def card_links(page)

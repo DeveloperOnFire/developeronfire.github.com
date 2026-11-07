@@ -4,7 +4,26 @@
     <meta charset="utf-8">
 
     <title>{% if page.title == site.title %}{{ site.title }}{% else %}{{ page.title | escape }} | {{ site.title }}{% endif %}</title>
-    <meta name="description" content="{{ page.description | default: page.subtitle | default: site.description | escape }}">
+    {%- comment -%}
+      An episode's one-line summary sits in its show notes ("Kyle Welch talks with Dave Rael
+      about ..."), so it is lifted from there for the description and link previews. The
+      earliest episodes have none and fall back to their subtitle.
+    {%- endcomment -%}
+    {%- assign page_summary = '' %}
+    {%- if page.content contains 'class="subtitle">' %}
+      {%- assign summary_parts = page.content | split: 'class="subtitle">' %}
+      {%- assign page_summary = summary_parts[1] | split: '</div>' | first | strip_html | normalize_whitespace | strip %}
+    {%- endif %}
+    {%- if page_summary == '' %}{% assign page_summary = page.description | default: page.subtitle | default: site.description %}{% endif %}
+    {%- if page.image %}{% assign share_image = page.image %}{% elsif page.guests %}{% assign share_image = page.guests.first.image %}{% elsif page.guest %}{% assign share_image = page.guest.image %}{% else %}{% assign share_image = '/assets/images/developeronfire-itunes.png' %}{% endif %}
+    <meta name="description" content="{{ page_summary | escape }}">
+    <meta property="og:site_name" content="{{ site.title }}">
+    <meta property="og:type" content="{% if page.guests %}article{% else %}website{% endif %}">
+    <meta property="og:title" content="{{ page.title | default: site.title | escape }}">
+    <meta property="og:description" content="{{ page_summary | escape }}">
+    <meta property="og:url" content="{{ site.production_url }}{{ page.url | replace: 'index.html', '' | uri_escape }}">
+    <meta property="og:image" content="{{ site.production_url }}{{ share_image | uri_escape }}">
+    <meta name="twitter:card" content="summary">
     <meta name="author" content="{{ site.author.name }}">
 
     <!-- Enable responsive viewport -->
