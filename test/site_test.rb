@@ -145,6 +145,21 @@ class SiteTest < Minitest::Test
     assert_equal ['audio/mpeg'], xml('rss.xml').xpath('/rss/channel/item/enclosure/@type').map(&:value).uniq
   end
 
+  # Without a guid the feed falls back to the audio URL, so moving the audio
+  # would change the episode's identity and podcast apps would re-download it.
+  def test_every_episode_declares_its_feed_guid
+    assert_empty episodes.reject { |episode| episode['guid'] }.map { |episode| episode['title'] }
+  end
+
+  # test/fixtures/podcast-feed-guids.tsv is the live feed's episode-page => guid
+  # pairs as published before the audio left Libsyn. Apps identify episodes by
+  # guid, so any change here would show subscribers duplicate episodes.
+  def test_podcast_feed_keeps_every_published_episode_guid
+    published = SOURCE.join('test/fixtures/podcast-feed-guids.tsv').readlines(chomp: true).to_h { |row| row.split("\t", 2) }
+    built = xml('rss.xml').xpath('/rss/channel/item').to_h { |item| [item.at_xpath('link').text.strip, item.at_xpath('guid').text] }
+    assert_equal published, built
+  end
+
   def test_recent_only_feed_carries_twenty_episodes
     assert_equal 20, xml('recentonly-rss.xml').xpath('/rss/channel/item').size
   end
